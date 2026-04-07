@@ -1,0 +1,48 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,700;1,700&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-serif: "Playfair Display", serif;
+  --color-primary: #006837; /* Refined logo green */
+  --color-secondary: #ffffff;
+  --color-background: #fafaf9;
+  --color-accent: #f9b233; /* Refined logo gold */
+  --color-surface: #ffffff;
+  --color-soft-pink: #e9a6b3;
+  --color-soft-purple: #d1c1d7;
+}
+
+@layer base {
+  body {
+    @apply bg-background text-gray-900 font-sans antialiased selection:bg-primary/10 selection:text-primary;
+  }
+}
+
+.glass {
+  @apply bg-white/70 backdrop-blur-xl border border-white/20;
+}
+
+.section-padding {
+  @apply py-24 md:py-32 px-6 md:px-12 max-w-7xl mx-auto;
+}
+
+.btn-premium {
+  @apply relative inline-flex items-center justify-center px-8 py-4 font-semibold text-white transition-all duration-300 bg-primary rounded-full hover:bg-primary/90 hover:shadow-[0_0_20px_rgba(15,81,50,0.3)] active:scale-95 overflow-hidden;
+}
+
+.btn-premium-outline {
+  @apply relative inline-flex items-center justify-center px-8 py-4 font-semibold text-primary transition-all duration-300 border border-primary/20 rounded-full hover:bg-primary/5 hover:border-primary/40 active:scale-95;
+}
+
+.bento-card {
+  @apply bg-white rounded-[2rem] border border-gray-100 p-8 shadow-[0_8px_30px_rgb(0,0,0,0.02)] hover:shadow-[0_8px_30px_rgb(0,0,0,0.04)] transition-all duration-500;
+}
+
+.text-gradient {
+  @apply bg-clip-text text-transparent bg-gradient-to-br from-gray-900 via-gray-800 to-gray-600;
+}
+
+.premium-shadow {
+  @apply shadow-[0_20px_50px_rgba(0,0,0,0.05)];
+}
