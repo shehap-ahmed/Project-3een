@@ -1,8 +1,9 @@
-import { motion } from 'motion/react';
-import { useState, useEffect } from 'react';
+import { motion, AnimatePresence } from 'motion/react';
+import { useState, useEffect, useCallback } from 'react';
 import { COURSE_DATA } from '../constants';
-import { Play, CheckCircle2, ChevronRight, FileText, ArrowLeft, Check } from 'lucide-react';
+import { Play, CheckCircle2, ChevronRight, FileText, ArrowLeft, Check, Sparkles } from 'lucide-react';
 import { Link, useLocation } from 'react-router-dom';
+import confetti from 'canvas-confetti';
 
 const fadeInUp = {
   initial: { opacity: 0, y: 30 },
@@ -14,6 +15,7 @@ export default function CourseContent() {
   const location = useLocation();
   const [activeLesson, setActiveLesson] = useState(COURSE_DATA.lessons[0]);
   const [completedLessons, setCompletedLessons] = useState<number[]>([]);
+  const [showSuccess, setShowSuccess] = useState(false);
 
   // Load progress from localStorage
   useEffect(() => {
@@ -24,14 +26,29 @@ export default function CourseContent() {
   }, []);
 
   // Save progress to localStorage
-  const toggleLessonComplete = (lessonId: number) => {
-    const newCompleted = completedLessons.includes(lessonId)
-      ? completedLessons.filter(id => id !== lessonId)
-      : [...completedLessons, lessonId];
+  const toggleLessonComplete = useCallback((lessonId: number) => {
+    const isCompleting = !completedLessons.includes(lessonId);
+    const newCompleted = isCompleting
+      ? [...completedLessons, lessonId]
+      : completedLessons.filter(id => id !== lessonId);
     
     setCompletedLessons(newCompleted);
     localStorage.setItem(`course_progress_${COURSE_DATA.id}`, JSON.stringify(newCompleted));
-  };
+
+    if (isCompleting) {
+      // Trigger confetti
+      confetti({
+        particleCount: 100,
+        spread: 70,
+        origin: { y: 0.6 },
+        colors: ['#006837', '#f9b233', '#e9a6b3']
+      });
+
+      // Show success state briefly
+      setShowSuccess(true);
+      setTimeout(() => setShowSuccess(false), 2000);
+    }
+  }, [completedLessons]);
 
   const progressPercentage = Math.round((completedLessons.length / COURSE_DATA.lessons.length) * 100);
 
@@ -56,7 +73,21 @@ export default function CourseContent() {
         </div>
 
         {/* Progress Bar Header */}
-        <div className="bg-white px-6 py-4 rounded-2xl border border-gray-100 shadow-sm flex flex-col gap-2 min-w-[240px]">
+        <div className="bg-white px-6 py-4 rounded-2xl border border-gray-100 shadow-sm flex flex-col gap-2 min-w-[240px] relative overflow-hidden">
+          <AnimatePresence>
+            {showSuccess && (
+              <motion.div 
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -20 }}
+                className="absolute inset-0 bg-primary/5 flex items-center justify-center z-10 backdrop-blur-sm"
+              >
+                <span className="text-primary font-bold text-xs flex items-center gap-2">
+                  <Sparkles size={14} /> Progress Saved!
+                </span>
+              </motion.div>
+            )}
+          </AnimatePresence>
           <div className="flex justify-between items-center text-sm">
             <span className="font-bold text-gray-700">Course Progress</span>
             <span className="text-primary font-bold">{progressPercentage}%</span>
@@ -65,7 +96,7 @@ export default function CourseContent() {
             <motion.div 
               initial={{ width: 0 }}
               animate={{ width: `${progressPercentage}%` }}
-              className="h-full bg-primary transition-all duration-500"
+              className="h-full bg-primary transition-all duration-700 ease-out"
             />
           </div>
           <p className="text-[10px] text-gray-400 uppercase tracking-wider font-bold">
@@ -91,7 +122,9 @@ export default function CourseContent() {
           <div className="bg-white p-8 rounded-3xl border border-gray-100 space-y-6">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
               <h2 className="text-xl font-bold text-gray-900">Lesson Overview</h2>
-              <button
+              <motion.button
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
                 onClick={() => toggleLessonComplete(activeLesson.id)}
                 className={`flex items-center gap-2 px-6 py-2 rounded-full text-sm font-bold transition-all ${
                   completedLessons.includes(activeLesson.id)
@@ -100,11 +133,17 @@ export default function CourseContent() {
                 }`}
               >
                 {completedLessons.includes(activeLesson.id) ? (
-                  <><Check size={16} /> Completed</>
+                  <motion.span 
+                    initial={{ scale: 0.5 }}
+                    animate={{ scale: 1 }}
+                    className="flex items-center gap-2"
+                  >
+                    <Check size={16} /> Completed
+                  </motion.span>
                 ) : (
                   'Mark as Complete'
                 )}
-              </button>
+              </motion.button>
             </div>
             <p className="text-gray-500 leading-relaxed">
               In this lesson, we cover the fundamentals of {activeLesson.title.toLowerCase()}. This structured session includes live examples, practice exercises, and direct feedback from the instructor.
@@ -130,11 +169,17 @@ export default function CourseContent() {
                     activeLesson.id === lesson.id ? 'bg-primary/5 border-l-4 border-primary' : ''
                   }`}
                 >
-                  <div className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold relative ${
+                  <div className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold relative transition-all duration-300 ${
                     activeLesson.id === lesson.id ? 'bg-primary text-white' : 'bg-gray-100 text-gray-400'
                   }`}>
                     {completedLessons.includes(lesson.id) ? (
-                      <CheckCircle2 size={14} className="text-green-500 absolute -top-1 -right-1 bg-white rounded-full" />
+                      <motion.div 
+                        initial={{ scale: 0, rotate: -45 }}
+                        animate={{ scale: 1, rotate: 0 }}
+                        className="absolute -top-1 -right-1 bg-white rounded-full p-0.5 shadow-sm"
+                      >
+                        <CheckCircle2 size={14} className="text-green-500" />
+                      </motion.div>
                     ) : null}
                     {lesson.id}
                   </div>

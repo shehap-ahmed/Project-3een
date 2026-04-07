@@ -80,6 +80,30 @@ export default function Home() {
         </div>
       </section>
 
+      {/* Stats Section */}
+      <section className="max-w-7xl mx-auto px-6 -mt-16 relative z-20">
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.8 }}
+          className="bg-white/80 backdrop-blur-xl border border-gray-100 rounded-[2.5rem] p-8 md:p-12 shadow-[0_20px_50px_rgba(0,0,0,0.04)] grid grid-cols-1 sm:grid-cols-3 gap-12 text-center"
+        >
+          <div className="space-y-2">
+            <h2 className="text-4xl md:text-5xl font-bold text-primary tracking-tight">+21,000</h2>
+            <p className="text-gray-400 text-xs font-bold uppercase tracking-[0.2em]">Active Members</p>
+          </div>
+          <div className="space-y-2 border-y sm:border-y-0 sm:border-x border-gray-100 py-8 sm:py-0">
+            <h2 className="text-4xl md:text-5xl font-bold text-primary tracking-tight">24/7</h2>
+            <p className="text-gray-400 text-xs font-bold uppercase tracking-[0.2em]">Community Support</p>
+          </div>
+          <div className="space-y-2">
+            <h2 className="text-4xl md:text-5xl font-bold text-primary tracking-tight">1</h2>
+            <p className="text-gray-400 text-xs font-bold uppercase tracking-[0.2em]">Premium Course Available</p>
+          </div>
+        </motion.div>
+      </section>
+
       {/* Bento Grid Features */}
       <section className="section-padding">
         <div className="grid grid-cols-1 md:grid-cols-12 gap-6 auto-rows-[240px]">
@@ -106,7 +130,7 @@ export default function Home() {
                   </div>
                 ))}
               </div>
-              <span className="text-xs font-bold text-gray-400 uppercase tracking-widest">Join 500+ Students</span>
+              <span className="text-xs font-bold text-gray-400 uppercase tracking-widest">Join 21,000+ Students</span>
             </div>
           </motion.div>
 

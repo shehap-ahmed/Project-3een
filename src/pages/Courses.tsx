@@ -9,6 +9,8 @@ const fadeInUp = {
   transition: { duration: 0.6, ease: 'easeOut' },
 };
 
+import Logo from '../components/Logo';
+
 export default function Courses() {
   const location = useLocation();
   return (
@@ -82,8 +84,8 @@ export default function Courses() {
 
         <div className="bg-gray-50 relative overflow-hidden flex items-center justify-center p-12 lg:p-24">
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-primary/10 via-soft-purple/5 to-transparent" />
-          <div className="relative z-10 w-full aspect-square bg-white rounded-[2.5rem] shadow-2xl flex items-center justify-center text-primary font-bold text-[10rem] select-none hover:scale-105 transition-transform duration-700">
-            ع
+          <div className="relative z-10 w-full aspect-square bg-white rounded-[2.5rem] shadow-2xl flex items-center justify-center overflow-hidden hover:scale-105 transition-transform duration-700">
+            <Logo className="w-2/3 h-2/3" />
             <div className="absolute inset-0 rounded-[2.5rem] border-4 border-primary/5 m-4" />
             <div className="absolute inset-0 rounded-[2.5rem] border border-accent/20 m-8" />
           </div>
