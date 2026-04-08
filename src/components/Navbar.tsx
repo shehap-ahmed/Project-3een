@@ -37,6 +37,17 @@ export default function Navbar() {
 
   const navigate = useNavigate();
 
+  const getInitials = (user: User | null) => {
+    if (!user) return '?';
+    const name = user.user_metadata?.display_name || user.user_metadata?.name || user.email || '';
+    return name
+      .split(' ')
+      .map((n: string) => n[0])
+      .join('')
+      .toUpperCase()
+      .substring(0, 2);
+  };
+
   const handleLogout = async () => {
     await supabase.auth.signOut();
     setIsOpen(false);
@@ -77,13 +88,14 @@ export default function Navbar() {
           ))}
           
           {user ? (
-            <button
-              onClick={handleLogout}
-              className="text-[13px] font-semibold tracking-wide text-gray-500 hover:text-red-500 transition-colors flex items-center gap-2"
+            <Link
+              to="/profile"
+              className={`flex items-center justify-center w-10 h-10 rounded-full bg-primary text-white font-bold text-sm transition-all hover:scale-105 active:scale-95 shadow-lg shadow-primary/20 ${
+                location.pathname === '/profile' ? 'ring-2 ring-primary ring-offset-2' : ''
+              }`}
             >
-              <LogOut size={16} />
-              Logout
-            </button>
+              {getInitials(user)}
+            </Link>
           ) : (
             <Link
               to="/login"
@@ -142,13 +154,19 @@ export default function Navbar() {
             ))}
             
             {user ? (
-              <button
-                onClick={handleLogout}
-                className="text-xl font-bold tracking-tight text-red-500 flex items-center gap-2"
+              <Link
+                to="/profile"
+                onClick={() => setIsOpen(false)}
+                className="flex items-center gap-4 group"
               >
-                <LogOut size={20} />
-                Logout
-              </button>
+                <div className="w-12 h-12 rounded-full bg-primary flex items-center justify-center text-white font-bold text-lg shadow-lg shadow-primary/20">
+                  {getInitials(user)}
+                </div>
+                <div className="flex flex-col">
+                  <span className="text-xl font-bold text-gray-900 dark:text-white">Profile</span>
+                  <span className="text-sm text-gray-500">{user.email}</span>
+                </div>
+              </Link>
             ) : (
               <Link
                 to="/login"

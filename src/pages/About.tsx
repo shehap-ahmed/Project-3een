@@ -1,7 +1,7 @@
 import { motion } from 'motion/react';
 import { useLocation } from 'react-router-dom';
 import { CONTACT_INFO } from '../constants';
-import { Mail, MessageSquare, Instagram, Target, Heart, Globe } from 'lucide-react';
+import { Mail, MessageSquare, Instagram, Target, Heart, Globe, User, MapPin, Hash, Home, Cake, Sparkles, ArrowRight } from 'lucide-react';
 
 const fadeInUp = {
   initial: { opacity: 0, y: 30 },
@@ -72,6 +72,158 @@ export default function About() {
             </motion.div>
           ))}
         </div>
+      </section>
+
+      {/* Meet the Team Section */}
+      <section className="section-padding space-y-16">
+        <div className="text-center space-y-4">
+          <motion.div
+            {...fadeInUp}
+            className="inline-block px-4 py-1.5 bg-primary/5 text-primary rounded-full text-[11px] font-bold tracking-[0.2em] uppercase"
+          >
+            The Team
+          </motion.div>
+          <motion.h2
+            {...fadeInUp}
+            transition={{ delay: 0.1 }}
+            className="text-4xl md:text-5xl font-bold tracking-tight text-text-main"
+          >
+            Meet the Team
+          </motion.h2>
+          <motion.p
+            {...fadeInUp}
+            transition={{ delay: 0.2 }}
+            className="text-text-muted max-w-2xl mx-auto"
+          >
+            The people behind Learn Arabic and Project 3een
+          </motion.p>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          {[
+            {
+              name: 'Schoolboy',
+              role: 'Founder of Learn Arabic Community',
+              initials: 'SB',
+              details: [
+                { icon: User, text: 'Real Name: Redacted' },
+                { icon: Cake, text: 'Age: Redacted' },
+                { icon: Home, text: 'Born in: Indonesia' },
+                { icon: MapPin, text: 'Lives in: Indonesia' },
+                { icon: Hash, text: 'schoolboy' }
+              ]
+            },
+            {
+              name: 'Horus',
+              role: 'Project Manager & Admin',
+              initials: 'H',
+              details: [
+                { icon: User, text: 'Real Name: Redacted' },
+                { icon: Cake, text: '21 years old' },
+                { icon: Home, text: 'Born in: Minya, Egypt' },
+                { icon: MapPin, text: 'Lives in: Cairo, Egypt' },
+                { icon: Hash, text: 'horus123' }
+              ]
+            },
+            {
+              name: 'Jelly',
+              role: 'Admin',
+              initials: 'J',
+              details: [
+                { icon: Sparkles, text: 'Real Name: Jasmina' },
+                { icon: Cake, text: '23 years old' },
+                { icon: Home, text: 'Born in: Tashkent, Uzbekistan' },
+                { icon: MapPin, text: 'Lives in: New York, USA' },
+                { icon: Hash, text: 'jellyfish.j' },
+                { icon: Mail, text: 'jellyfishjt7@gmail.com' }
+              ]
+            }
+          ].map((member, i) => (
+            <motion.div
+              key={i}
+              {...fadeInUp}
+              transition={{ delay: i * 0.1 }}
+              className="bg-surface border border-border rounded-[2.5rem] p-8 space-y-8 group hover:border-primary/30 hover:shadow-2xl hover:shadow-primary/5 transition-all duration-500 relative overflow-hidden"
+            >
+              <div className="absolute top-0 right-0 w-32 h-32 bg-primary/5 rounded-full -mr-16 -mt-16 blur-3xl group-hover:bg-primary/10 transition-colors" />
+              
+              <div className="flex items-start justify-between relative z-10">
+                <div className="space-y-1">
+                  <h3 className="text-2xl font-bold text-text-main tracking-tight group-hover:text-primary transition-colors">
+                    {member.name}
+                  </h3>
+                  <p className="text-sm font-medium text-primary/80 tracking-wide uppercase text-[10px]">
+                    {member.role}
+                  </p>
+                </div>
+                <div className="w-14 h-14 rounded-2xl bg-primary/10 flex items-center justify-center text-primary font-bold text-xl group-hover:scale-110 transition-transform duration-500">
+                  {member.initials}
+                </div>
+              </div>
+
+              <div className="space-y-4 pt-4 border-t border-border/50 relative z-10">
+                {member.details.map((detail, j) => (
+                  <div key={j} className="flex items-center gap-3 text-text-muted group/item">
+                    <detail.icon size={16} className="text-primary/40 group-hover/item:text-primary transition-colors" />
+                    <span className="text-sm font-medium truncate">{detail.text}</span>
+                  </div>
+                ))}
+              </div>
+            </motion.div>
+          ))}
+        </div>
+      </section>
+
+      {/* Discord Community Section */}
+      <section className="section-padding">
+        <motion.div 
+          {...fadeInUp}
+          className="bg-surface border border-border rounded-[3rem] overflow-hidden flex flex-col lg:flex-row items-center gap-12 p-8 md:p-16 shadow-[0_20px_50px_rgba(0,0,0,0.04)] hover:border-primary/20 transition-all duration-500"
+        >
+          <div className="flex-1 space-y-8 text-center lg:text-left">
+            <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-green-500/5 text-green-600 dark:text-green-400 rounded-full text-[13px] font-bold tracking-wider uppercase border border-green-500/10">
+              <span className="w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse" />
+              Active Community
+            </div>
+            <div className="space-y-4">
+              <h2 className="text-4xl md:text-6xl font-bold tracking-tight text-text-main">
+                Join 21,000+ <br />
+                <span className="font-serif italic text-primary text-5xl md:text-7xl">learners</span>
+              </h2>
+              <p className="text-text-muted text-lg md:text-xl max-w-xl mx-auto lg:mx-0 leading-relaxed">
+                Practice Arabic, ask questions, and connect with others in our vibrant Discord server.
+              </p>
+            </div>
+            <div className="pt-4">
+              <a 
+                href="https://discord.gg/x52dtrhp3Y" 
+                target="_blank" 
+                rel="noopener noreferrer" 
+                className="inline-flex items-center justify-center px-10 py-5 bg-[#22C55E] hover:bg-[#16A34A] text-white rounded-full font-bold text-lg transition-all hover:scale-105 active:scale-95 shadow-xl shadow-green-500/20 group"
+              >
+                Join Server
+                <ArrowRight size={20} className="ml-2 transition-transform group-hover:translate-x-1" />
+              </a>
+            </div>
+          </div>
+
+          <div className="w-full lg:w-auto flex justify-center">
+            <div className="relative group">
+              <div className="absolute -inset-4 bg-primary/5 rounded-[2.5rem] blur-2xl group-hover:bg-primary/10 transition-colors duration-500" />
+              <div className="relative bg-gray-900 rounded-[2rem] overflow-hidden shadow-2xl border border-border/50">
+                <iframe 
+                  src="https://discord.com/widget?id=823889299325714462&theme=dark" 
+                  width="350" 
+                  height="500" 
+                  allowtransparency="true" 
+                  frameBorder="0" 
+                  sandbox="allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts"
+                  className="max-w-full"
+                ></iframe>
+              </div>
+            </div>
+          </div>
+        </motion.div>
       </section>
 
       {/* Contact Section */}

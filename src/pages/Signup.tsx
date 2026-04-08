@@ -47,7 +47,7 @@ export default function Signup() {
         // We omit 'id' because it's a bigint in the DB, while Supabase Auth ID is a UUID string.
         const { error: dbError } = await supabase
           .from('user')
-          .insert([{ name, email }]);
+          .insert([{ name, email: email.toLowerCase().trim() }]);
 
         if (dbError) throw dbError;
 

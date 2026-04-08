@@ -122,30 +122,22 @@ export default function Home() {
               </p>
             </div>
             <div className="absolute bottom-0 right-0 w-2/3 h-2/3 bg-gradient-to-tl from-primary/5 to-transparent rounded-tl-[4rem] transition-transform duration-700 group-hover:scale-110" />
-            <div className="relative z-10 flex items-center gap-4 mt-8">
-              <div className="flex -space-x-3">
-                {[1,2,3,4].map(i => (
-                  <div key={i} className="w-10 h-10 rounded-full border-2 border-white bg-gray-200 flex items-center justify-center text-[10px] font-bold text-gray-400">
-                    U{i}
-                  </div>
-                ))}
-              </div>
-              <span className="text-xs font-bold text-gray-400 uppercase tracking-widest">Join 21,000+ Students</span>
-            </div>
           </motion.div>
 
           {/* Small Feature 1 */}
-          <motion.div 
-            {...fadeInUp}
-            transition={{ delay: 0.1 }}
-            className="md:col-span-4 md:row-span-1 bento-card flex flex-col justify-center gap-4 bg-primary text-white border-none"
+          <div 
+            className="md:col-span-4 md:row-span-1 bento-card flex flex-col justify-center gap-4 bg-white dark:bg-primary border border-border dark:border-none min-h-[240px] relative z-10"
           >
-            <div className="w-10 h-10 bg-white/10 rounded-xl flex items-center justify-center">
+            <div className="w-10 h-10 bg-primary/10 dark:bg-white/10 rounded-xl flex items-center justify-center text-primary dark:text-white">
               <BookOpen size={20} />
             </div>
-            <h3 className="text-xl font-bold">Structured Curriculum</h3>
-            <p className="text-white/60 text-sm leading-relaxed">From letters to complex sentences, every step is planned.</p>
-          </motion.div>
+            <div className="relative z-20">
+              <h3 className="text-xl font-bold">Structured Curriculum</h3>
+              <p className="text-gray-500 text-sm leading-relaxed">
+                From letters to complex sentences, every step is planned.
+              </p>
+            </div>
+          </div>
 
           {/* Small Feature 2 */}
           <motion.div 
@@ -224,6 +216,58 @@ export default function Home() {
             </div>
           </motion.div>
         </div>
+      </section>
+
+      {/* Discord Community Section */}
+      <section className="section-padding">
+        <motion.div 
+          {...fadeInUp}
+          className="bg-surface border border-border rounded-[3rem] overflow-hidden flex flex-col lg:flex-row items-center gap-12 p-8 md:p-16 shadow-[0_20px_50px_rgba(0,0,0,0.04)] hover:border-primary/20 transition-all duration-500"
+        >
+          <div className="flex-1 space-y-8 text-center lg:text-left">
+            <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-green-500/5 text-green-600 dark:text-green-400 rounded-full text-[13px] font-bold tracking-wider uppercase border border-green-500/10">
+              <span className="w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse" />
+              Active Community
+            </div>
+            <div className="space-y-4">
+              <h2 className="text-4xl md:text-6xl font-bold tracking-tight text-text-main">
+                Join 21,000+ <br />
+                <span className="font-serif italic text-primary text-5xl md:text-7xl">learners</span>
+              </h2>
+              <p className="text-text-muted text-lg md:text-xl max-w-xl mx-auto lg:mx-0 leading-relaxed">
+                Practice Arabic, ask questions, and connect with others in our vibrant Discord server.
+              </p>
+            </div>
+            <div className="pt-4">
+              <a 
+                href="https://discord.gg/x52dtrhp3Y" 
+                target="_blank" 
+                rel="noopener noreferrer" 
+                className="inline-flex items-center justify-center px-10 py-5 bg-[#22C55E] hover:bg-[#16A34A] text-white rounded-full font-bold text-lg transition-all hover:scale-105 active:scale-95 shadow-xl shadow-green-500/20 group"
+              >
+                Join Server
+                <ArrowRight size={20} className="ml-2 transition-transform group-hover:translate-x-1" />
+              </a>
+            </div>
+          </div>
+
+          <div className="w-full lg:w-auto flex justify-center">
+            <div className="relative group">
+              <div className="absolute -inset-4 bg-primary/5 rounded-[2.5rem] blur-2xl group-hover:bg-primary/10 transition-colors duration-500" />
+              <div className="relative bg-gray-900 rounded-[2rem] overflow-hidden shadow-2xl border border-border/50">
+                <iframe 
+                  src="https://discord.com/widget?id=823889299325714462&theme=dark" 
+                  width="350" 
+                  height="500" 
+                  allowtransparency="true" 
+                  frameBorder="0" 
+                  sandbox="allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts"
+                  className="max-w-full"
+                ></iframe>
+              </div>
+            </div>
+          </div>
+        </motion.div>
       </section>
 
       {/* CTA Section */}

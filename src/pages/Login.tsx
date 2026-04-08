@@ -91,7 +91,15 @@ export default function Login() {
             </div>
 
             <div className="space-y-2">
-              <label className="text-xs font-bold uppercase tracking-widest text-text-muted ml-1">Password</label>
+              <div className="flex items-center justify-between ml-1">
+                <label className="text-xs font-bold uppercase tracking-widest text-text-muted">Password</label>
+                <Link 
+                  to="/forgot-password" 
+                  className="text-xs font-bold text-primary hover:underline"
+                >
+                  Forgot Password?
+                </Link>
+              </div>
               <div className="relative">
                 <Lock className="absolute left-4 top-1/2 -translate-y-1/2 text-text-muted" size={18} />
                 <input
