@@ -1,4 +1,5 @@
 import { motion } from 'motion/react';
+import logoImg from '../../learnarabic-logo_1.png';
 
 export default function Logo({ className = "w-10 h-10" }: { className?: string }) {
   return (
@@ -7,7 +8,7 @@ export default function Logo({ className = "w-10 h-10" }: { className?: string }
       whileHover={{ scale: 1.05 }}
     >
       <img 
-        src="/learnarabic-logo_1.png" 
+        src={logoImg} 
         alt="Project 3een Logo" 
         className="w-full h-full object-contain"
         referrerPolicy="no-referrer"
