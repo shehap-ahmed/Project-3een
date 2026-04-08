@@ -6,21 +6,42 @@
   --font-serif: "Playfair Display", serif;
   --color-primary: #006837; /* Refined logo green */
   --color-secondary: #ffffff;
-  --color-background: #fafaf9;
   --color-accent: #f9b233; /* Refined logo gold */
-  --color-surface: #ffffff;
   --color-soft-pink: #e9a6b3;
   --color-soft-purple: #d1c1d7;
+
+  /* Theme-aware colors using CSS variables */
+  --color-background: var(--bg);
+  --color-surface: var(--surface);
+  --color-border: var(--border);
+  --color-text-main: var(--text-main);
+  --color-text-muted: var(--text-muted);
 }
 
 @layer base {
+  :root {
+    --bg: #fafaf9;
+    --surface: #ffffff;
+    --border: #f1f1f0;
+    --text-main: #111827;
+    --text-muted: #6b7280;
+  }
+
+  .dark {
+    --bg: #0c0c0c;
+    --surface: #161616;
+    --border: #222222;
+    --text-main: #f9fafb;
+    --text-muted: #9ca3af;
+  }
+
   body {
-    @apply bg-background text-gray-900 font-sans antialiased selection:bg-primary/10 selection:text-primary;
+    @apply bg-background text-text-main font-sans antialiased selection:bg-primary/10 selection:text-primary transition-colors duration-300;
   }
 }
 
 .glass {
-  @apply bg-white/70 backdrop-blur-xl border border-white/20;
+  @apply bg-surface/70 backdrop-blur-xl border border-border/50;
 }
 
 .section-padding {
@@ -36,11 +57,15 @@
 }
 
 .bento-card {
-  @apply bg-white rounded-[2rem] border border-gray-100 p-8 shadow-[0_8px_30px_rgb(0,0,0,0.02)] hover:shadow-[0_8px_30px_rgb(0,0,0,0.04)] transition-all duration-500;
+  @apply bg-surface rounded-[2rem] border border-border p-8 shadow-[0_8px_30px_rgb(0,0,0,0.02)] hover:shadow-[0_8px_30px_rgb(0,0,0,0.04)] transition-all duration-500;
 }
 
 .text-gradient {
   @apply bg-clip-text text-transparent bg-gradient-to-br from-gray-900 via-gray-800 to-gray-600;
+}
+
+.dark .text-gradient {
+  @apply from-white via-gray-200 to-gray-400;
 }
 
 .premium-shadow {

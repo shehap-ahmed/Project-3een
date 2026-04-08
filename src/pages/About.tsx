@@ -35,7 +35,7 @@ export default function About() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.2 }}
-          className="text-5xl md:text-7xl font-bold tracking-tight text-gray-900 max-w-4xl mx-auto leading-[1.1]"
+          className="text-5xl md:text-7xl font-bold tracking-tight text-text-main max-w-4xl mx-auto leading-[1.1]"
         >
           Making Arabic Education <br />
           <span className="font-serif italic text-primary">Accessible to All.</span>
@@ -44,14 +44,14 @@ export default function About() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.4 }}
-          className="text-lg md:text-xl text-gray-500 max-w-2xl mx-auto leading-relaxed"
+          className="text-lg md:text-xl text-text-muted max-w-2xl mx-auto leading-relaxed"
         >
           Founded in 2021, Project 3een is a community-driven initiative dedicated to helping students worldwide master the Arabic language through structure and support.
         </motion.p>
       </section>
 
       {/* Mission Section */}
-      <section className="bg-white py-32">
+      <section className="bg-surface py-32 transition-colors duration-300">
         <div className="section-padding grid md:grid-cols-3 gap-12">
           {[
             { icon: Target, title: 'Our Mission', desc: 'To provide a structured, clear, and affordable path for absolute beginners to learn Modern Standard Arabic.' },
@@ -64,11 +64,11 @@ export default function About() {
               transition={{ delay: i * 0.1 }}
               className="bento-card space-y-6 text-center group hover:-translate-y-2 transition-transform duration-500"
             >
-              <div className="w-16 h-16 bg-primary/5 rounded-2xl flex items-center justify-center text-primary mx-auto transition-colors group-hover:bg-primary group-hover:text-white">
+              <div className="w-16 h-16 bg-primary/5 dark:bg-primary/10 rounded-2xl flex items-center justify-center text-primary mx-auto transition-colors group-hover:bg-primary group-hover:text-white">
                 <item.icon size={32} />
               </div>
-              <h3 className="text-xl font-bold text-gray-900 tracking-tight">{item.title}</h3>
-              <p className="text-gray-500 text-sm leading-relaxed">{item.desc}</p>
+              <h3 className="text-xl font-bold text-text-main tracking-tight">{item.title}</h3>
+              <p className="text-text-muted text-sm leading-relaxed">{item.desc}</p>
             </motion.div>
           ))}
         </div>

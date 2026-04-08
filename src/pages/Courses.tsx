@@ -26,10 +26,10 @@ export default function Courses() {
         <div className="inline-block px-4 py-1 bg-primary/5 text-primary rounded-full text-[11px] font-bold uppercase tracking-[0.2em]">
           Curriculum
         </div>
-        <h1 className="text-5xl md:text-6xl font-bold text-gray-900 tracking-tight leading-tight">
+        <h1 className="text-5xl md:text-6xl font-bold text-text-main tracking-tight leading-tight">
           Our <span className="font-serif italic text-primary">Courses</span>
         </h1>
-        <p className="text-gray-500 max-w-xl mx-auto text-lg">
+        <p className="text-text-muted max-w-xl mx-auto text-lg">
           Structured programs designed to take you from absolute zero to confident speaker.
         </p>
       </motion.div>
@@ -37,7 +37,7 @@ export default function Courses() {
       <motion.div
         {...fadeInUp}
         transition={{ delay: 0.2 }}
-        className="bg-white rounded-[3rem] border border-gray-100 overflow-hidden shadow-[0_30px_100px_rgba(0,0,0,0.04)] grid lg:grid-cols-2"
+        className="bg-surface rounded-[3rem] border border-border overflow-hidden shadow-[0_30px_100px_rgba(0,0,0,0.04)] grid lg:grid-cols-2 transition-colors duration-300"
       >
         <div className="p-10 md:p-20 space-y-10">
           <div className="space-y-6">
@@ -45,8 +45,8 @@ export default function Courses() {
               <span className="w-1 h-1 bg-accent rounded-full" />
               Pilot Program
             </div>
-            <h2 className="text-4xl font-bold text-gray-900 leading-tight">{COURSE_DATA.title}</h2>
-            <div className="flex flex-wrap gap-x-8 gap-y-4 text-sm font-semibold text-gray-400">
+            <h2 className="text-4xl font-bold text-text-main leading-tight">{COURSE_DATA.title}</h2>
+            <div className="flex flex-wrap gap-x-8 gap-y-4 text-sm font-semibold text-text-muted">
               <div className="flex items-center gap-2">
                 <User size={16} className="text-primary" />
                 <span>{COURSE_DATA.instructor}</span>
@@ -63,11 +63,11 @@ export default function Courses() {
           </div>
 
           <div className="space-y-6">
-            <h3 className="font-bold text-gray-900 uppercase text-xs tracking-widest">What you'll master:</h3>
+            <h3 className="font-bold text-text-main uppercase text-xs tracking-widest">What you'll master:</h3>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               {COURSE_DATA.topics.map((topic, i) => (
-                <div key={i} className="flex items-center gap-3 text-sm font-medium text-gray-600 group">
-                  <div className="w-6 h-6 rounded-lg bg-primary/5 flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-white transition-colors">
+                <div key={i} className="flex items-center gap-3 text-sm font-medium text-text-main opacity-80 group">
+                  <div className="w-6 h-6 rounded-lg bg-primary/5 dark:bg-primary/10 flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-white transition-colors">
                     <CheckCircle2 size={12} />
                   </div>
                   <span>{topic}</span>
@@ -82,9 +82,9 @@ export default function Courses() {
           </Link>
         </div>
 
-        <div className="bg-gray-50 relative overflow-hidden flex items-center justify-center p-12 lg:p-24">
+        <div className="bg-background relative overflow-hidden flex items-center justify-center p-12 lg:p-24 transition-colors duration-300">
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-primary/10 via-soft-purple/5 to-transparent" />
-          <div className="relative z-10 w-full aspect-square bg-white rounded-[2.5rem] shadow-2xl flex items-center justify-center overflow-hidden hover:scale-105 transition-transform duration-700">
+          <div className="relative z-10 w-full aspect-square bg-surface rounded-[2.5rem] shadow-2xl flex items-center justify-center overflow-hidden hover:scale-105 transition-transform duration-700 border border-border">
             <Logo className="w-2/3 h-2/3" />
             <div className="absolute inset-0 rounded-[2.5rem] border-4 border-primary/5 m-4" />
             <div className="absolute inset-0 rounded-[2.5rem] border border-accent/20 m-8" />

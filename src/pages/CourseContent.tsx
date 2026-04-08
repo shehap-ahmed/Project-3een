@@ -63,17 +63,17 @@ export default function CourseContent() {
     >
       <motion.div {...fadeInUp} className="flex flex-col md:flex-row md:items-center justify-between gap-6">
         <div className="flex items-center gap-4">
-          <Link to="/courses" className="w-10 h-10 rounded-full bg-gray-50 flex items-center justify-center text-gray-600 hover:bg-primary hover:text-white transition-all">
+          <Link to="/courses" className="w-10 h-10 rounded-full bg-background flex items-center justify-center text-text-muted hover:bg-primary hover:text-white transition-all border border-border">
             <ArrowLeft size={18} />
           </Link>
           <div>
-            <h1 className="text-2xl md:text-3xl font-bold text-gray-900">{COURSE_DATA.title}</h1>
-            <p className="text-gray-500 text-sm">Instructor: {COURSE_DATA.instructor}</p>
+            <h1 className="text-2xl md:text-3xl font-bold text-text-main">{COURSE_DATA.title}</h1>
+            <p className="text-text-muted text-sm">Instructor: {COURSE_DATA.instructor}</p>
           </div>
         </div>
 
         {/* Progress Bar Header */}
-        <div className="bg-white px-6 py-4 rounded-2xl border border-gray-100 shadow-sm flex flex-col gap-2 min-w-[240px] relative overflow-hidden">
+        <div className="bg-surface px-6 py-4 rounded-2xl border border-border shadow-sm flex flex-col gap-2 min-w-[240px] relative overflow-hidden transition-colors duration-300">
           <AnimatePresence>
             {showSuccess && (
               <motion.div 
@@ -89,17 +89,17 @@ export default function CourseContent() {
             )}
           </AnimatePresence>
           <div className="flex justify-between items-center text-sm">
-            <span className="font-bold text-gray-700">Course Progress</span>
+            <span className="font-bold text-text-main opacity-80">Course Progress</span>
             <span className="text-primary font-bold">{progressPercentage}%</span>
           </div>
-          <div className="w-full h-2 bg-gray-100 rounded-full overflow-hidden">
+          <div className="w-full h-2 bg-background rounded-full overflow-hidden">
             <motion.div 
               initial={{ width: 0 }}
               animate={{ width: `${progressPercentage}%` }}
               className="h-full bg-primary transition-all duration-700 ease-out"
             />
           </div>
-          <p className="text-[10px] text-gray-400 uppercase tracking-wider font-bold">
+          <p className="text-[10px] text-text-muted uppercase tracking-wider font-bold">
             {completedLessons.length} of {COURSE_DATA.lessons.length} lessons completed
           </p>
         </div>
@@ -119,16 +119,16 @@ export default function CourseContent() {
             </div>
           </div>
 
-          <div className="bg-white p-8 rounded-3xl border border-gray-100 space-y-6">
+          <div className="bg-surface p-8 rounded-3xl border border-border space-y-6 transition-colors duration-300">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-              <h2 className="text-xl font-bold text-gray-900">Lesson Overview</h2>
+              <h2 className="text-xl font-bold text-text-main">Lesson Overview</h2>
               <motion.button
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
                 onClick={() => toggleLessonComplete(activeLesson.id)}
                 className={`flex items-center gap-2 px-6 py-2 rounded-full text-sm font-bold transition-all ${
                   completedLessons.includes(activeLesson.id)
-                    ? 'bg-green-100 text-green-700 border border-green-200'
+                    ? 'bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400 border border-green-200 dark:border-green-800'
                     : 'bg-primary text-white hover:bg-primary/90'
                 }`}
               >
@@ -145,7 +145,7 @@ export default function CourseContent() {
                 )}
               </motion.button>
             </div>
-            <p className="text-gray-500 leading-relaxed">
+            <p className="text-text-muted leading-relaxed">
               In this lesson, we cover the fundamentals of {activeLesson.title.toLowerCase()}. This structured session includes live examples, practice exercises, and direct feedback from the instructor.
             </p>
           </div>
@@ -153,30 +153,30 @@ export default function CourseContent() {
 
         {/* Sidebar Lesson List */}
         <motion.div {...fadeInUp} transition={{ delay: 0.4 }} className="space-y-6">
-          <div className="bg-white rounded-3xl border border-gray-100 overflow-hidden shadow-sm">
-            <div className="p-6 border-b border-gray-50 flex items-center justify-between">
-              <h3 className="font-bold text-gray-900">Course Content</h3>
+          <div className="bg-surface rounded-3xl border border-border overflow-hidden shadow-sm transition-colors duration-300">
+            <div className="p-6 border-b border-border flex items-center justify-between">
+              <h3 className="font-bold text-text-main">Course Content</h3>
               <span className="text-xs font-semibold text-primary bg-primary/10 px-2 py-1 rounded-full">
                 {COURSE_DATA.lessons.length} Lessons
               </span>
             </div>
-            <div className="divide-y divide-gray-50">
+            <div className="divide-y divide-border">
               {COURSE_DATA.lessons.map((lesson) => (
                 <button
                   key={lesson.id}
                   onClick={() => setActiveLesson(lesson)}
-                  className={`w-full p-6 flex items-center gap-4 text-left transition-all hover:bg-gray-50 ${
-                    activeLesson.id === lesson.id ? 'bg-primary/5 border-l-4 border-primary' : ''
+                  className={`w-full p-6 flex items-center gap-4 text-left transition-all hover:bg-background ${
+                    activeLesson.id === lesson.id ? 'bg-primary/5 dark:bg-primary/10 border-l-4 border-primary' : ''
                   }`}
                 >
                   <div className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold relative transition-all duration-300 ${
-                    activeLesson.id === lesson.id ? 'bg-primary text-white' : 'bg-gray-100 text-gray-400'
+                    activeLesson.id === lesson.id ? 'bg-primary text-white' : 'bg-background text-text-muted'
                   }`}>
                     {completedLessons.includes(lesson.id) ? (
                       <motion.div 
                         initial={{ scale: 0, rotate: -45 }}
                         animate={{ scale: 1, rotate: 0 }}
-                        className="absolute -top-1 -right-1 bg-white rounded-full p-0.5 shadow-sm"
+                        className="absolute -top-1 -right-1 bg-surface rounded-full p-0.5 shadow-sm"
                       >
                         <CheckCircle2 size={14} className="text-green-500" />
                       </motion.div>
@@ -184,26 +184,26 @@ export default function CourseContent() {
                     {lesson.id}
                   </div>
                   <div className="flex-grow">
-                    <p className={`text-sm font-bold ${activeLesson.id === lesson.id ? 'text-primary' : 'text-gray-900'}`}>
+                    <p className={`text-sm font-bold ${activeLesson.id === lesson.id ? 'text-primary' : 'text-text-main'}`}>
                       {lesson.title}
                     </p>
-                    <p className="text-xs text-gray-400">Video Lesson</p>
+                    <p className="text-xs text-text-muted">Video Lesson</p>
                   </div>
                   {activeLesson.id === lesson.id ? (
                     <Play size={14} className="text-primary" fill="currentColor" />
                   ) : (
-                    <ChevronRight size={14} className="text-gray-300" />
+                    <ChevronRight size={14} className="text-border" />
                   )}
                 </button>
               ))}
-              <div className="p-6 bg-gray-50/50">
+              <div className="p-6 bg-background/50">
                 <div className="flex items-center gap-4 text-left opacity-60">
                   <div className="w-8 h-8 rounded-full bg-accent text-white flex items-center justify-center text-xs font-bold">
                     <FileText size={14} />
                   </div>
                   <div className="flex-grow">
-                    <p className="text-sm font-bold text-gray-900">Final Exam</p>
-                    <p className="text-xs text-gray-400">Quiz Placeholder</p>
+                    <p className="text-sm font-bold text-text-main">Final Exam</p>
+                    <p className="text-xs text-text-muted">Quiz Placeholder</p>
                   </div>
                 </div>
               </div>

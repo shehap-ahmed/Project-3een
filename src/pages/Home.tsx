@@ -33,11 +33,11 @@ export default function Home() {
           Enrollment Open for 2026
         </motion.div>
         
-        <motion.h1
+          <motion.h1
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
-          className="text-6xl md:text-8xl font-bold tracking-tight text-gray-900 max-w-5xl leading-[1.05] mb-8"
+          className="text-6xl md:text-8xl font-bold tracking-tight text-text-main max-w-5xl leading-[1.05] mb-8"
         >
           Master Arabic <br />
           <span className="font-serif italic text-primary">from the ground up.</span>
@@ -47,7 +47,7 @@ export default function Home() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.4 }}
-          className="text-lg md:text-xl text-gray-500 max-w-2xl leading-relaxed mb-12"
+          className="text-lg md:text-xl text-text-muted max-w-2xl leading-relaxed mb-12"
         >
           A structured, premium learning experience by Project 3een. Designed for absolute beginners who value clarity, structure, and community.
         </motion.p>
@@ -87,19 +87,19 @@ export default function Home() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.8 }}
-          className="bg-white/80 backdrop-blur-xl border border-gray-100 rounded-[2.5rem] p-8 md:p-12 shadow-[0_20px_50px_rgba(0,0,0,0.04)] grid grid-cols-1 sm:grid-cols-3 gap-12 text-center"
+          className="bg-surface/80 backdrop-blur-xl border border-border rounded-[2.5rem] p-8 md:p-12 shadow-[0_20px_50px_rgba(0,0,0,0.04)] grid grid-cols-1 sm:grid-cols-3 gap-12 text-center"
         >
           <div className="space-y-2">
             <h2 className="text-4xl md:text-5xl font-bold text-primary tracking-tight">+21,000</h2>
-            <p className="text-gray-400 text-xs font-bold uppercase tracking-[0.2em]">Active Members</p>
+            <p className="text-text-muted text-xs font-bold uppercase tracking-[0.2em]">Active Members</p>
           </div>
-          <div className="space-y-2 border-y sm:border-y-0 sm:border-x border-gray-100 py-8 sm:py-0">
+          <div className="space-y-2 border-y sm:border-y-0 sm:border-x border-border py-8 sm:py-0">
             <h2 className="text-4xl md:text-5xl font-bold text-primary tracking-tight">24/7</h2>
-            <p className="text-gray-400 text-xs font-bold uppercase tracking-[0.2em]">Community Support</p>
+            <p className="text-text-muted text-xs font-bold uppercase tracking-[0.2em]">Community Support</p>
           </div>
           <div className="space-y-2">
             <h2 className="text-4xl md:text-5xl font-bold text-primary tracking-tight">1</h2>
-            <p className="text-gray-400 text-xs font-bold uppercase tracking-[0.2em]">Premium Course Available</p>
+            <p className="text-text-muted text-xs font-bold uppercase tracking-[0.2em]">Premium Course Available</p>
           </div>
         </motion.div>
       </section>
@@ -113,11 +113,11 @@ export default function Home() {
             className="md:col-span-8 md:row-span-2 bento-card flex flex-col justify-between group overflow-hidden relative"
           >
             <div className="relative z-10 space-y-4">
-              <div className="w-12 h-12 bg-primary/5 rounded-2xl flex items-center justify-center text-primary">
+              <div className="w-12 h-12 bg-primary/5 dark:bg-primary/10 rounded-2xl flex items-center justify-center text-primary">
                 <Video size={24} />
               </div>
-              <h3 className="text-3xl font-bold tracking-tight">Interactive Live Sessions</h3>
-              <p className="text-gray-500 max-w-md leading-relaxed">
+              <h3 className="text-3xl font-bold tracking-tight text-text-main">Interactive Live Sessions</h3>
+              <p className="text-text-muted max-md leading-relaxed">
                 Experience real-time learning with Angelo, our lead Iraqi instructor. Get direct feedback, participate in drills, and master pronunciation in a live environment.
               </p>
             </div>
@@ -167,11 +167,11 @@ export default function Home() {
             className="md:col-span-12 md:row-span-1 bento-card flex items-center justify-between group"
           >
             <div className="space-y-2">
-              <h3 className="text-2xl font-bold tracking-tight">Homework & Direct Feedback</h3>
-              <p className="text-gray-500 text-sm leading-relaxed max-w-xl">We don't just teach; we ensure you learn. Regular assignments are reviewed by our team to keep you on track.</p>
+              <h3 className="text-2xl font-bold tracking-tight text-text-main">Homework & Direct Feedback</h3>
+              <p className="text-text-muted text-sm leading-relaxed max-w-xl">We don't just teach; we ensure you learn. Regular assignments are reviewed by our team to keep you on track.</p>
             </div>
             <div className="hidden md:flex items-center gap-4">
-              <div className="w-16 h-16 bg-gray-50 rounded-2xl flex items-center justify-center text-primary group-hover:rotate-12 transition-transform">
+              <div className="w-16 h-16 bg-background rounded-2xl flex items-center justify-center text-primary group-hover:rotate-12 transition-transform">
                 <MessageCircle size={32} />
               </div>
             </div>
@@ -180,17 +180,17 @@ export default function Home() {
       </section>
 
       {/* Premium Video Section */}
-      <section className="bg-white py-32 relative overflow-hidden">
+      <section className="bg-surface py-32 relative overflow-hidden transition-colors duration-300">
         <div className="section-padding grid lg:grid-cols-2 gap-20 items-center">
           <motion.div {...fadeInUp} className="space-y-8">
             <div className="inline-block px-4 py-1 bg-accent/10 text-accent rounded-full text-xs font-bold uppercase tracking-widest">
               Course Preview
             </div>
-            <h2 className="text-4xl md:text-5xl font-bold tracking-tight leading-[1.1]">
+            <h2 className="text-4xl md:text-5xl font-bold tracking-tight leading-[1.1] text-text-main">
               Experience the <br />
               <span className="font-serif italic text-primary">Project 3een Method</span>
             </h2>
-            <p className="text-gray-500 leading-relaxed text-lg">
+            <p className="text-text-muted leading-relaxed text-lg">
               Our pilot course has been refined through live testing with real students. Watch how we break down complex Arabic concepts into simple, digestible lessons.
             </p>
             <div className="space-y-4">
@@ -199,7 +199,7 @@ export default function Home() {
                   <div className="w-5 h-5 rounded-full bg-primary/10 flex items-center justify-center text-primary">
                     <CheckCircle2 size={12} />
                   </div>
-                  <span className="text-sm font-semibold text-gray-700">{item}</span>
+                  <span className="text-sm font-semibold text-text-main opacity-80">{item}</span>
                 </div>
               ))}
             </div>

@@ -1,21 +1,47 @@
 import { motion, AnimatePresence } from 'motion/react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
-import { Menu, X, MessageSquare } from 'lucide-react';
+import { Menu, X, MessageSquare, LogOut, LogIn } from 'lucide-react';
 import { NAV_LINKS, CONTACT_INFO } from '../constants';
+import { supabase } from '../lib/supabase';
+import { User } from '@supabase/supabase-js';
+import ThemeToggle from './ThemeToggle';
 
 import Logo from './Logo';
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [user, setUser] = useState<User | null>(null);
   const location = useLocation();
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 20);
     window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+    
+    // Check current auth state
+    supabase.auth.getUser().then(({ data: { user } }) => {
+      setUser(user);
+    });
+
+    // Listen for auth changes
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      setUser(session?.user ?? null);
+    });
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      subscription.unsubscribe();
+    };
   }, []);
+
+  const navigate = useNavigate();
+
+  const handleLogout = async () => {
+    await supabase.auth.signOut();
+    setIsOpen(false);
+    navigate('/');
+  };
 
   return (
     <nav
@@ -28,7 +54,7 @@ export default function Navbar() {
       >
         <Link to="/" className="flex items-center gap-3 group">
           <Logo className="w-9 h-9" />
-          <span className="font-bold text-lg tracking-tight text-gray-900">
+          <span className="font-bold text-lg tracking-tight text-text-main transition-colors">
             Project 3een
           </span>
         </Link>
@@ -49,6 +75,31 @@ export default function Navbar() {
               }`} />
             </Link>
           ))}
+          
+          {user ? (
+            <button
+              onClick={handleLogout}
+              className="text-[13px] font-semibold tracking-wide text-gray-500 hover:text-red-500 transition-colors flex items-center gap-2"
+            >
+              <LogOut size={16} />
+              Logout
+            </button>
+          ) : (
+            <Link
+              to="/login"
+              className={`text-[13px] font-semibold tracking-wide transition-all duration-300 hover:text-primary relative group ${
+                location.pathname === '/login' ? 'text-primary' : 'text-gray-500'
+              }`}
+            >
+              Login
+              <span className={`absolute -bottom-1.5 left-0 h-0.5 bg-primary transition-all duration-300 ${
+                location.pathname === '/login' ? 'w-full' : 'w-0 group-hover:w-full'
+              }`} />
+            </Link>
+          )}
+
+          <ThemeToggle />
+
           <a
             href={CONTACT_INFO.discord}
             target="_blank"
@@ -61,7 +112,7 @@ export default function Navbar() {
 
         {/* Mobile Toggle */}
         <button
-          className="md:hidden text-gray-900 p-1"
+          className="md:hidden text-text-main p-1"
           onClick={() => setIsOpen(!isOpen)}
         >
           {isOpen ? <X size={20} /> : <Menu size={20} />}
@@ -89,7 +140,33 @@ export default function Navbar() {
                 {link.name}
               </Link>
             ))}
-            <div className="h-px bg-gray-100 my-2" />
+            
+            {user ? (
+              <button
+                onClick={handleLogout}
+                className="text-xl font-bold tracking-tight text-red-500 flex items-center gap-2"
+              >
+                <LogOut size={20} />
+                Logout
+              </button>
+            ) : (
+              <Link
+                to="/login"
+                onClick={() => setIsOpen(false)}
+                className={`text-xl font-bold tracking-tight ${
+                  location.pathname === '/login' ? 'text-primary' : 'text-text-main'
+                }`}
+              >
+                Login
+              </Link>
+            )}
+
+            <div className="flex items-center justify-between pt-4 border-t border-gray-100 dark:border-dark-border">
+              <span className="text-sm font-bold text-gray-400 uppercase tracking-widest">Theme</span>
+              <ThemeToggle />
+            </div>
+
+            <div className="h-px bg-gray-100 dark:bg-dark-border my-2" />
             <a
               href={CONTACT_INFO.discord}
               target="_blank"
