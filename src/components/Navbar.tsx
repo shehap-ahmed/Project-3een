@@ -88,14 +88,16 @@ export default function Navbar() {
           ))}
           
           {user ? (
-            <Link
-              to="/profile"
-              className={`flex items-center justify-center w-10 h-10 rounded-full bg-primary text-white font-bold text-sm transition-all hover:scale-105 active:scale-95 shadow-lg shadow-primary/20 ${
-                location.pathname === '/profile' ? 'ring-2 ring-primary ring-offset-2' : ''
-              }`}
-            >
-              {getInitials(user)}
-            </Link>
+            <div className="flex items-center gap-6">
+              <Link
+                to="/profile"
+                className={`flex items-center justify-center w-10 h-10 rounded-full bg-primary text-white font-bold text-sm transition-all hover:scale-105 active:scale-95 shadow-lg shadow-primary/20 ${
+                  location.pathname === '/profile' ? 'ring-2 ring-primary ring-offset-2' : ''
+                }`}
+              >
+                {getInitials(user)}
+              </Link>
+            </div>
           ) : (
             <Link
               to="/login"
@@ -140,7 +142,11 @@ export default function Navbar() {
             exit={{ opacity: 0, y: 10, scale: 0.95 }}
             className="absolute top-full left-6 right-6 mt-4 glass rounded-[2rem] p-8 flex flex-col gap-6 md:hidden shadow-2xl"
           >
-            {NAV_LINKS.map((link) => (
+            {[
+              { name: 'Home', path: '/' },
+              { name: 'Courses', path: '/courses' },
+              { name: 'About', path: '/about' }
+            ].map((link) => (
               <Link
                 key={link.path}
                 to={link.path}
@@ -154,19 +160,12 @@ export default function Navbar() {
             ))}
             
             {user ? (
-              <Link
-                to="/profile"
-                onClick={() => setIsOpen(false)}
-                className="flex items-center gap-4 group"
+              <button
+                onClick={handleLogout}
+                className="text-xl font-bold tracking-tight text-red-500 text-left"
               >
-                <div className="w-12 h-12 rounded-full bg-primary flex items-center justify-center text-white font-bold text-lg shadow-lg shadow-primary/20">
-                  {getInitials(user)}
-                </div>
-                <div className="flex flex-col">
-                  <span className="text-xl font-bold text-gray-900 dark:text-white">Profile</span>
-                  <span className="text-sm text-gray-500">{user.email}</span>
-                </div>
-              </Link>
+                Logout
+              </button>
             ) : (
               <Link
                 to="/login"
@@ -178,22 +177,6 @@ export default function Navbar() {
                 Login
               </Link>
             )}
-
-            <div className="flex items-center justify-between pt-4 border-t border-gray-100 dark:border-dark-border">
-              <span className="text-sm font-bold text-gray-400 uppercase tracking-widest">Theme</span>
-              <ThemeToggle />
-            </div>
-
-            <div className="h-px bg-gray-100 dark:bg-dark-border my-2" />
-            <a
-              href={CONTACT_INFO.discord}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center justify-center gap-2 bg-primary text-white px-5 py-4 rounded-2xl font-bold"
-            >
-              <MessageSquare size={18} />
-              Join Discord
-            </a>
           </motion.div>
         )}
       </AnimatePresence>

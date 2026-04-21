@@ -36,7 +36,8 @@
   }
 
   body {
-    @apply bg-background text-text-main font-sans antialiased selection:bg-primary/10 selection:text-primary transition-colors duration-300;
+    @apply bg-background text-text-main font-sans antialiased transition-colors duration-300;
+    user-select: none;
   }
 }
 

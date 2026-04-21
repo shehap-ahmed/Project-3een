@@ -11,7 +11,7 @@ export default function Login() {
   const [error, setError] = useState<string | null>(null);
   const location = useLocation();
   const navigate = useNavigate();
-  const from = location.state?.from?.pathname || '/course-content';
+  const from = location.state?.from?.pathname || '/courses';
 
   useEffect(() => {
     const checkAuth = async () => {

@@ -10,7 +10,9 @@ import Signup from './pages/Signup';
 import Login from './pages/Login';
 import ForgotPassword from './pages/ForgotPassword';
 import ResetPassword from './pages/ResetPassword';
+import Admin from './pages/Admin';
 import ProtectedRoute from './components/ProtectedRoute';
+import ScrollToTop from './components/ScrollToTop';
 
 function AnimatedRoutes() {
   const location = useLocation();
@@ -20,7 +22,23 @@ function AnimatedRoutes() {
         <Route path="/" element={<Home />} />
         <Route path="/courses" element={<Courses />} />
         <Route 
+          path="/admin" 
+          element={
+            <ProtectedRoute requireAdmin={true}>
+              <Admin />
+            </ProtectedRoute>
+          } 
+        />
+        <Route 
           path="/course-content" 
+          element={
+            <ProtectedRoute>
+              <CourseContent />
+            </ProtectedRoute>
+          } 
+        />
+        <Route 
+          path="/course/:id" 
           element={
             <ProtectedRoute>
               <CourseContent />
@@ -48,6 +66,7 @@ function AnimatedRoutes() {
 export default function App() {
   return (
     <Router>
+      <ScrollToTop />
       <Layout>
         <AnimatedRoutes />
       </Layout>

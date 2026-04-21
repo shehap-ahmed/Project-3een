@@ -1,7 +1,7 @@
 import { motion } from 'motion/react';
 import { Link, useLocation } from 'react-router-dom';
 import { ArrowRight, BookOpen, Users, Video, MessageCircle, CheckCircle2, Play } from 'lucide-react';
-import { CONTACT_INFO } from '../constants';
+import { CONTACT_INFO, COURSE_DATA } from '../constants';
 
 const fadeInUp = {
   initial: { opacity: 0, y: 30 },
@@ -22,22 +22,13 @@ export default function Home() {
       className="space-y-32 pb-32"
     >
       {/* Hero Section */}
-      <section className="section-padding relative min-h-[80vh] flex flex-col items-center justify-center text-center">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-          className="inline-flex items-center gap-2 px-4 py-1.5 bg-primary/5 text-primary rounded-full text-[13px] font-bold tracking-wider uppercase mb-8 border border-primary/10"
-        >
-          <span className="w-1.5 h-1.5 bg-primary rounded-full animate-pulse" />
-          Enrollment Open for 2026
-        </motion.div>
+      <section className="section-padding relative min-h-[50vh] md:min-h-[60vh] lg:min-h-[80vh] flex flex-col items-center justify-center text-center py-12 md:py-20 lg:py-0">
         
           <motion.h1
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
-          className="text-6xl md:text-8xl font-bold tracking-tight text-text-main max-w-5xl leading-[1.05] mb-8"
+          className="text-4xl md:text-6xl lg:text-8xl font-bold tracking-tight text-text-main max-w-5xl leading-[1.1] mb-6 md:mb-8"
         >
           Master Arabic <br />
           <span className="font-serif italic text-primary">from the ground up.</span>
@@ -47,7 +38,7 @@ export default function Home() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.4 }}
-          className="text-lg md:text-xl text-text-muted max-w-2xl leading-relaxed mb-12"
+          className="text-base md:text-lg lg:text-xl text-text-muted max-w-2xl leading-relaxed mb-8 md:mb-12 px-4 md:px-0"
         >
           A structured, premium learning experience by Project 3een. Designed for absolute beginners who value clarity, structure, and community.
         </motion.p>
@@ -56,19 +47,19 @@ export default function Home() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.6 }}
-          className="flex flex-col sm:flex-row gap-5"
+          className="flex flex-col sm:flex-row gap-4 md:gap-5 w-full md:w-auto px-6 md:px-0"
         >
-          <Link to="/courses" className="btn-premium group">
+          <Link to="/courses" className="btn-premium group w-full md:w-auto justify-center">
             Start Learning Now
             <ArrowRight size={18} className="ml-2 transition-transform group-hover:translate-x-1" />
           </Link>
-          <a href={CONTACT_INFO.discord} target="_blank" rel="noopener noreferrer" className="btn-premium-outline">
+          <a href={CONTACT_INFO.discord} target="_blank" rel="noopener noreferrer" className="btn-premium-outline hidden md:flex">
             Join the Community
           </a>
         </motion.div>
 
-        {/* Decorative Background */}
-        <div className="absolute inset-0 -z-10 overflow-hidden">
+        {/* Decorative Background - Hidden on Mobile */}
+        <div className="hidden lg:block absolute inset-0 -z-10 overflow-hidden">
           <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[1000px] h-[600px] bg-gradient-to-b from-primary/5 via-soft-purple/5 to-transparent rounded-full blur-[120px]" />
           <div className="absolute top-0 right-0 w-[400px] h-[400px] bg-accent/5 rounded-full blur-[100px]" />
           <div className="absolute bottom-0 left-0 w-[300px] h-[300px] bg-soft-pink/5 rounded-full blur-[80px]" />
@@ -81,52 +72,51 @@ export default function Home() {
       </section>
 
       {/* Stats Section */}
-      <section className="max-w-7xl mx-auto px-6 -mt-16 relative z-20">
+      <section className="max-w-7xl mx-auto px-6 -mt-12 md:-mt-8 lg:-mt-16 relative z-20">
         <motion.div 
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.8 }}
-          className="bg-surface/80 backdrop-blur-xl border border-border rounded-[2.5rem] p-8 md:p-12 shadow-[0_20px_50px_rgba(0,0,0,0.04)] grid grid-cols-1 sm:grid-cols-3 gap-12 text-center"
+          className="bg-surface/80 backdrop-blur-xl border border-border rounded-[2rem] md:rounded-[2.5rem] p-6 md:p-8 lg:p-12 shadow-[0_20px_50px_rgba(0,0,0,0.04)] grid grid-cols-1 sm:grid-cols-3 gap-6 md:gap-8 lg:gap-12 text-center"
         >
-          <div className="space-y-2">
-            <h2 className="text-4xl md:text-5xl font-bold text-primary tracking-tight">+21,000</h2>
-            <p className="text-text-muted text-xs font-bold uppercase tracking-[0.2em]">Active Members</p>
+          <div className="space-y-1 md:space-y-2">
+            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-primary tracking-tight">+21,000</h2>
+            <p className="text-text-muted text-[10px] font-bold uppercase tracking-[0.2em]">Active Members</p>
           </div>
-          <div className="space-y-2 border-y sm:border-y-0 sm:border-x border-border py-8 sm:py-0">
-            <h2 className="text-4xl md:text-5xl font-bold text-primary tracking-tight">24/7</h2>
-            <p className="text-text-muted text-xs font-bold uppercase tracking-[0.2em]">Community Support</p>
+          <div className="space-y-1 md:space-y-2 border-y sm:border-y-0 sm:border-x border-border py-4 sm:py-0">
+            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-primary tracking-tight">24/7</h2>
+            <p className="text-text-muted text-[10px] font-bold uppercase tracking-[0.2em]">Community Support</p>
           </div>
-          <div className="space-y-2">
-            <h2 className="text-4xl md:text-5xl font-bold text-primary tracking-tight">1</h2>
-            <p className="text-text-muted text-xs font-bold uppercase tracking-[0.2em]">Premium Course Available</p>
+          <div className="space-y-1 md:space-y-2">
+            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-primary tracking-tight">1</h2>
+            <p className="text-text-muted text-[10px] font-bold uppercase tracking-[0.2em]">Available Course</p>
           </div>
         </motion.div>
       </section>
 
-      {/* Bento Grid Features */}
+      {/* Bento Grid Features - Simplified for Tablet */}
       <section className="section-padding">
-        <div className="grid grid-cols-1 md:grid-cols-12 gap-6 auto-rows-[240px]">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-6 md:auto-rows-fr lg:md:auto-rows-[240px]">
           {/* Large Feature */}
           <motion.div 
             {...fadeInUp}
-            className="md:col-span-8 md:row-span-2 bento-card flex flex-col justify-between group overflow-hidden relative"
+            className="md:col-span-2 lg:col-span-8 lg:row-span-2 bento-card flex flex-col justify-between group overflow-hidden relative p-8 lg:p-10"
           >
             <div className="relative z-10 space-y-4">
               <div className="w-12 h-12 bg-primary/5 dark:bg-primary/10 rounded-2xl flex items-center justify-center text-primary">
                 <Video size={24} />
               </div>
-              <h3 className="text-3xl font-bold tracking-tight text-text-main">Interactive Live Sessions</h3>
-              <p className="text-text-muted max-md leading-relaxed">
-                Experience real-time learning with Angelo, our lead Iraqi instructor. Get direct feedback, participate in drills, and master pronunciation in a live environment.
+              <h3 className="text-2xl md:text-3xl font-bold tracking-tight text-text-main">Interactive Live Sessions</h3>
+              <p className="text-text-muted text-sm md:text-base leading-relaxed">
+                Experience real-time learning with experienced teachers, get direct feedback, participate in drills, and master pronunciation in a live environment.
               </p>
             </div>
-            <div className="absolute bottom-0 right-0 w-2/3 h-2/3 bg-gradient-to-tl from-primary/5 to-transparent rounded-tl-[4rem] transition-transform duration-700 group-hover:scale-110" />
           </motion.div>
 
           {/* Small Feature 1 */}
           <div 
-            className="md:col-span-4 md:row-span-1 bento-card flex flex-col justify-center gap-4 bg-white dark:bg-primary border border-border dark:border-none min-h-[240px] relative z-10"
+            className="md:col-span-1 lg:col-span-4 lg:row-span-1 bento-card flex flex-col justify-center gap-4 bg-white dark:bg-primary border border-border dark:border-none min-h-[200px] md:min-h-0 relative z-10"
           >
             <div className="w-10 h-10 bg-primary/10 dark:bg-white/10 rounded-xl flex items-center justify-center text-primary dark:text-white">
               <BookOpen size={20} />
@@ -143,7 +133,7 @@ export default function Home() {
           <motion.div 
             {...fadeInUp}
             transition={{ delay: 0.2 }}
-            className="md:col-span-4 md:row-span-1 bento-card flex flex-col justify-center gap-4"
+            className="md:col-span-1 lg:col-span-4 lg:row-span-1 bento-card flex flex-col justify-center gap-4 min-h-[200px] md:min-h-0"
           >
             <div className="w-10 h-10 bg-accent/10 rounded-xl flex items-center justify-center text-accent">
               <Users size={20} />
@@ -156,13 +146,13 @@ export default function Home() {
           <motion.div 
             {...fadeInUp}
             transition={{ delay: 0.3 }}
-            className="md:col-span-12 md:row-span-1 bento-card flex items-center justify-between group"
+            className="md:col-span-2 lg:col-span-12 lg:row-span-1 bento-card flex flex-col md:flex-row md:items-center justify-between group gap-4 md:gap-0"
           >
             <div className="space-y-2">
               <h3 className="text-2xl font-bold tracking-tight text-text-main">Homework & Direct Feedback</h3>
               <p className="text-text-muted text-sm leading-relaxed max-w-xl">We don't just teach; we ensure you learn. Regular assignments are reviewed by our team to keep you on track.</p>
             </div>
-            <div className="hidden md:flex items-center gap-4">
+            <div className="hidden lg:flex items-center gap-4">
               <div className="w-16 h-16 bg-background rounded-2xl flex items-center justify-center text-primary group-hover:rotate-12 transition-transform">
                 <MessageCircle size={32} />
               </div>
@@ -172,21 +162,21 @@ export default function Home() {
       </section>
 
       {/* Premium Video Section */}
-      <section className="bg-surface py-32 relative overflow-hidden transition-colors duration-300">
-        <div className="section-padding grid lg:grid-cols-2 gap-20 items-center">
-          <motion.div {...fadeInUp} className="space-y-8">
-            <div className="inline-block px-4 py-1 bg-accent/10 text-accent rounded-full text-xs font-bold uppercase tracking-widest">
-              Course Preview
+      <section className="bg-surface py-16 md:py-32 relative overflow-hidden transition-colors duration-300">
+        <div className="section-padding grid lg:grid-cols-2 gap-12 md:gap-20 items-center">
+          <motion.div {...fadeInUp} className="space-y-6 md:space-y-8">
+            <div className="inline-block px-4 py-1 bg-accent/10 text-accent rounded-full text-[10px] md:text-xs font-bold uppercase tracking-widest">
+              Available Course
             </div>
-            <h2 className="text-4xl md:text-5xl font-bold tracking-tight leading-[1.1] text-text-main">
-              Experience the <br />
+            <h2 className="text-3xl md:text-5xl font-bold tracking-tight leading-[1.2] md:leading-[1.1] text-text-main">
+              Experience the <br className="hidden md:block" />
               <span className="font-serif italic text-primary">Project 3een Method</span>
             </h2>
-            <p className="text-text-muted leading-relaxed text-lg">
+            <p className="text-text-muted leading-relaxed text-base md:text-lg">
               Our pilot course has been refined through live testing with real students. Watch how we break down complex Arabic concepts into simple, digestible lessons.
             </p>
-            <div className="space-y-4">
-              {['Live Iraqi Teacher', 'Modern Standard Arabic', 'Interactive Q&A'].map((item, i) => (
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              {['Arabic Native Speaker Teacher', 'MSA', 'Interactive Q&A'].map((item, i) => (
                 <div key={i} className="flex items-center gap-3">
                   <div className="w-5 h-5 rounded-full bg-primary/10 flex items-center justify-center text-primary">
                     <CheckCircle2 size={12} />
@@ -199,19 +189,19 @@ export default function Home() {
 
           <motion.div 
             {...fadeInUp}
-            className="relative group"
+            className="relative group px-4 md:px-0"
           >
-            <div className="absolute -inset-4 bg-primary/5 rounded-[3rem] blur-2xl group-hover:bg-primary/10 transition-colors duration-500" />
-            <div className="relative aspect-video bg-gray-900 rounded-[2.5rem] overflow-hidden shadow-2xl border border-gray-100 group-hover:scale-[1.02] transition-transform duration-700">
+            <div className="absolute -inset-4 bg-primary/5 rounded-[3rem] blur-2xl group-hover:bg-primary/10 transition-colors duration-500 hidden md:block" />
+            <div className="relative aspect-video bg-gray-900 rounded-2xl md:rounded-[2.5rem] overflow-hidden shadow-2xl border border-gray-100/10 group-hover:scale-[1.02] transition-transform duration-700">
               <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
               <div className="absolute inset-0 flex items-center justify-center">
-                <button className="w-20 h-20 bg-white rounded-full flex items-center justify-center text-primary shadow-2xl transition-all duration-500 hover:scale-110 active:scale-95">
-                  <Play size={28} fill="currentColor" className="ml-1" />
+                <button className="w-16 h-16 md:w-20 md:h-20 bg-white rounded-full flex items-center justify-center text-primary shadow-2xl transition-all duration-500 hover:scale-110 active:scale-95">
+                  <Play size={24} md:size={28} fill="currentColor" className="ml-1" />
                 </button>
               </div>
-              <div className="absolute bottom-8 left-8">
-                <p className="text-white font-bold text-xl">MSA Beginner Pilot Course</p>
-                <p className="text-white/60 text-sm">Live Demo Preview</p>
+              <div className="absolute bottom-6 left-6 md:bottom-8 md:left-8">
+                <p className="text-white font-bold text-lg md:text-xl">MSA Beginner Pilot Course</p>
+                <p className="text-white/60 text-xs md:text-sm">Live Demo Preview</p>
               </div>
             </div>
           </motion.div>
@@ -222,19 +212,19 @@ export default function Home() {
       <section className="section-padding">
         <motion.div 
           {...fadeInUp}
-          className="bg-surface border border-border rounded-[3rem] overflow-hidden flex flex-col lg:flex-row items-center gap-12 p-8 md:p-16 shadow-[0_20px_50px_rgba(0,0,0,0.04)] hover:border-primary/20 transition-all duration-500"
+          className="bg-surface border border-border rounded-[2rem] md:rounded-[3rem] overflow-hidden flex flex-col lg:flex-row items-center gap-8 md:gap-12 p-6 md:p-16 shadow-[0_20px_50px_rgba(0,0,0,0.04)] hover:border-primary/20 transition-all duration-500"
         >
-          <div className="flex-1 space-y-8 text-center lg:text-left">
-            <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-green-500/5 text-green-600 dark:text-green-400 rounded-full text-[13px] font-bold tracking-wider uppercase border border-green-500/10">
+          <div className="flex-1 space-y-6 md:space-y-8 text-center lg:text-left">
+            <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-green-500/5 text-green-600 dark:text-green-400 rounded-full text-[10px] md:text-[13px] font-bold tracking-wider uppercase border border-green-500/10">
               <span className="w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse" />
               Active Community
             </div>
             <div className="space-y-4">
-              <h2 className="text-4xl md:text-6xl font-bold tracking-tight text-text-main">
-                Join 21,000+ <br />
-                <span className="font-serif italic text-primary text-5xl md:text-7xl">learners</span>
+              <h2 className="text-3xl md:text-6xl font-bold tracking-tight text-text-main">
+                Join 21,000+ <br className="hidden md:block" />
+                <span className="font-serif italic text-primary text-4xl md:text-7xl">learners</span>
               </h2>
-              <p className="text-text-muted text-lg md:text-xl max-w-xl mx-auto lg:mx-0 leading-relaxed">
+              <p className="text-text-muted text-base md:text-xl max-w-xl mx-auto lg:mx-0 leading-relaxed">
                 Practice Arabic, ask questions, and connect with others in our vibrant Discord server.
               </p>
             </div>
@@ -243,7 +233,7 @@ export default function Home() {
                 href="https://discord.gg/x52dtrhp3Y" 
                 target="_blank" 
                 rel="noopener noreferrer" 
-                className="inline-flex items-center justify-center px-10 py-5 bg-[#22C55E] hover:bg-[#16A34A] text-white rounded-full font-bold text-lg transition-all hover:scale-105 active:scale-95 shadow-xl shadow-green-500/20 group"
+                className="inline-flex items-center justify-center w-full md:w-auto px-10 py-4 md:py-5 bg-[#22C55E] hover:bg-[#16A34A] text-white rounded-xl md:rounded-full font-bold text-lg transition-all hover:scale-105 active:scale-95 shadow-xl shadow-green-500/20 group"
               >
                 Join Server
                 <ArrowRight size={20} className="ml-2 transition-transform group-hover:translate-x-1" />
@@ -251,7 +241,7 @@ export default function Home() {
             </div>
           </div>
 
-          <div className="w-full lg:w-auto flex justify-center">
+          <div className="w-full lg:w-auto flex justify-center hidden md:flex">
             <div className="relative group">
               <div className="absolute -inset-4 bg-primary/5 rounded-[2.5rem] blur-2xl group-hover:bg-primary/10 transition-colors duration-500" />
               <div className="relative bg-gray-900 rounded-[2rem] overflow-hidden shadow-2xl border border-border/50">
@@ -274,20 +264,20 @@ export default function Home() {
       <section className="section-padding">
         <motion.div 
           {...fadeInUp}
-          className="bg-gray-900 rounded-[3rem] p-12 md:p-24 text-center space-y-10 relative overflow-hidden"
+          className="bg-gray-900 rounded-[2rem] md:rounded-[3rem] p-8 md:p-24 text-center space-y-8 md:space-y-10 relative overflow-hidden"
         >
           <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(circle_at_top_right,_var(--tw-gradient-stops))] from-primary/20 via-transparent to-transparent opacity-50" />
           
           <div className="space-y-4 relative z-10">
-            <h2 className="text-4xl md:text-6xl font-bold text-white tracking-tight">Ready to start your journey?</h2>
-            <p className="text-white/50 text-lg max-w-xl mx-auto">Join hundreds of students mastering Arabic with our structured program.</p>
+            <h2 className="text-3xl md:text-6xl font-bold text-white tracking-tight">Ready to start your journey?</h2>
+            <p className="text-white/50 text-base md:text-lg max-w-xl mx-auto">Join hundreds of students mastering Arabic with our structured program.</p>
           </div>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center relative z-10">
-            <Link to="/courses" className="bg-white text-gray-900 px-10 py-5 rounded-full font-bold hover:bg-gray-100 transition-all hover:scale-105 active:scale-95 shadow-xl">
+            <Link to="/courses" className="bg-white text-gray-900 px-10 py-4 md:py-5 rounded-xl md:rounded-full font-bold hover:bg-gray-100 transition-all hover:scale-105 active:scale-95 shadow-xl w-full md:w-auto">
               Enroll in Course
             </Link>
-            <a href={CONTACT_INFO.discord} target="_blank" rel="noopener noreferrer" className="bg-white/10 backdrop-blur-md text-white border border-white/10 px-10 py-5 rounded-full font-bold hover:bg-white/20 transition-all">
+            <a href={CONTACT_INFO.discord} target="_blank" rel="noopener noreferrer" className="bg-white/10 backdrop-blur-md text-white border border-white/10 px-10 py-4 md:py-5 rounded-xl md:rounded-full font-bold hover:bg-white/20 transition-all w-full md:w-auto">
               Join Discord
             </a>
           </div>
