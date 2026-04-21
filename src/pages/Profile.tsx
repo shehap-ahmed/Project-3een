@@ -9,6 +9,7 @@ export default function Profile() {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
   const [updating, setUpdating] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(false);
   const [message, setMessage] = useState<{ type: 'success' | 'error', text: string } | null>(null);
   const [displayName, setDisplayName] = useState('');
   const navigate = useNavigate();
@@ -19,6 +20,21 @@ export default function Profile() {
       if (user) {
         setUser(user);
         setDisplayName(user.user_metadata?.display_name || '');
+        
+        // Check for admin role
+        try {
+          const { data, error } = await supabase
+            .from('user')
+            .select('role')
+            .eq('email', user.email?.toLowerCase().trim())
+            .maybeSingle();
+          
+          if (!error && data?.role?.toLowerCase() === 'admin') {
+            setIsAdmin(true);
+          }
+        } catch (err) {
+          console.error("Error checking admin role:", err);
+        }
       } else {
         navigate('/login');
       }
@@ -84,11 +100,16 @@ export default function Profile() {
             className="md:col-span-4 space-y-6"
           >
             <div className="bento-card p-8 flex flex-col items-center text-center gap-4">
-              <div className="w-24 h-24 bg-primary/10 rounded-full flex items-center justify-center text-primary">
+              <div className="w-24 h-24 bg-primary/10 rounded-full flex items-center justify-center text-primary relative">
                 <UserIcon size={48} />
+                {isAdmin && (
+                  <div className="absolute -top-1 -right-1 bg-amber-500 text-white p-1.5 rounded-full shadow-lg border-2 border-background">
+                    <Shield size={14} />
+                  </div>
+                )}
               </div>
               <div>
-                <h2 className="text-xl font-bold text-text-main">{displayName || 'Student'}</h2>
+                <h2 className="text-xl font-bold text-text-main">{displayName || (isAdmin ? 'Administrator' : 'Student')}</h2>
                 <p className="text-sm text-text-muted">{user.email}</p>
               </div>
               <div className="w-full h-px bg-border my-2" />
@@ -99,6 +120,18 @@ export default function Profile() {
                 <LogOut size={18} />
                 Sign Out
               </button>
+
+              {isAdmin && (
+                <div className="w-full pt-4 border-t border-border mt-2">
+                  <button
+                    onClick={() => navigate('/admin')}
+                    className="w-full flex items-center justify-center gap-2 bg-amber-500/10 text-amber-600 dark:text-amber-400 hover:bg-amber-500/20 py-3 rounded-xl transition-colors font-bold text-sm"
+                  >
+                    <Shield size={18} />
+                    Admin Dashboard
+                  </button>
+                </div>
+              )}
             </div>
 
             <div className="bento-card p-6 space-y-4">
