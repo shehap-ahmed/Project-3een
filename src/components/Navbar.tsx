@@ -124,13 +124,25 @@ export default function Navbar() {
           </a>
         </div>
 
-        {/* Mobile Toggle */}
-        <button
-          className="md:hidden text-text-main p-1"
-          onClick={() => setIsOpen(!isOpen)}
-        >
-          {isOpen ? <X size={20} /> : <Menu size={20} />}
-        </button>
+        {/* Mobile Toggle & Profile */}
+        <div className="flex md:hidden items-center gap-3">
+          {user && (
+            <Link
+              to="/profile"
+              className={`flex items-center justify-center w-8 h-8 rounded-full bg-primary text-white font-bold text-[10px] transition-all active:scale-95 shadow-lg shadow-primary/20 ${
+                location.pathname === '/profile' ? 'ring-2 ring-primary ring-offset-2' : ''
+              }`}
+            >
+              {getInitials(user)}
+            </Link>
+          )}
+          <button
+            className="text-text-main p-1"
+            onClick={() => setIsOpen(!isOpen)}
+          >
+            {isOpen ? <X size={20} /> : <Menu size={20} />}
+          </button>
+        </div>
       </div>
 
       {/* Mobile Menu */}
@@ -160,12 +172,23 @@ export default function Navbar() {
             ))}
             
             {user ? (
-              <button
-                onClick={handleLogout}
-                className="text-xl font-bold tracking-tight text-red-500 text-left"
-              >
-                Logout
-              </button>
+              <>
+                <Link
+                  to="/profile"
+                  onClick={() => setIsOpen(false)}
+                  className={`text-xl font-bold tracking-tight ${
+                    location.pathname === '/profile' ? 'text-primary' : 'text-text-main'
+                  }`}
+                >
+                  Profile
+                </Link>
+                <button
+                  onClick={handleLogout}
+                  className="text-xl font-bold tracking-tight text-red-500 text-left"
+                >
+                  Logout
+                </button>
+              </>
             ) : (
               <Link
                 to="/login"
