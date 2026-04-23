@@ -20,7 +20,7 @@ export default function Home() {
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
       transition={{ duration: 0.6 }}
-      className="space-y-32 pb-32"
+      className="space-y-16 md:space-y-24 lg:space-y-32 pb-16 md:pb-24 lg:pb-32"
     >
       {/* Hero Section */}
       <section className="section-padding relative min-h-[50vh] md:min-h-[60vh] lg:min-h-[80vh] flex flex-col items-center justify-center text-center py-12 md:py-20 lg:py-0">
@@ -73,7 +73,7 @@ export default function Home() {
       </section>
 
       {/* Stats Section */}
-      <section className="max-w-7xl mx-auto px-6 -mt-12 md:-mt-8 lg:-mt-16 relative z-20">
+      <section className="max-w-7xl mx-auto px-6 -mt-8 md:-mt-12 lg:-mt-16 relative z-20">
         <motion.div 
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -163,7 +163,7 @@ export default function Home() {
       </section>
 
       {/* Premium Video Section */}
-      <section className="bg-surface py-16 md:py-32 relative overflow-hidden transition-colors duration-300">
+      <section className="bg-surface py-12 md:py-20 lg:py-32 relative overflow-hidden transition-colors duration-300">
         <div className="section-padding grid lg:grid-cols-2 gap-12 md:gap-20 items-center">
           <motion.div {...fadeInUp} className="space-y-6 md:space-y-8">
             <div className="inline-block px-4 py-1 bg-accent/10 text-accent rounded-full text-[10px] md:text-xs font-bold uppercase tracking-widest">
@@ -265,7 +265,7 @@ export default function Home() {
       <section className="section-padding">
         <motion.div 
           {...fadeInUp}
-          className="bg-gray-900 rounded-[2rem] md:rounded-[3rem] p-8 md:p-24 text-center space-y-8 md:space-y-10 relative overflow-hidden"
+          className="bg-gray-900 rounded-[2rem] md:rounded-[3rem] p-8 md:p-16 lg:p-24 text-center space-y-8 md:space-y-10 relative overflow-hidden"
         >
           <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(circle_at_top_right,_var(--tw-gradient-stops))] from-primary/20 via-transparent to-transparent opacity-50" />
           

@@ -121,7 +121,7 @@ export default function Navbar() {
             rel="noopener noreferrer"
             className="flex items-center gap-2 bg-primary text-white px-6 py-2.5 rounded-full text-[13px] font-bold hover:bg-primary/90 transition-all hover:scale-105 active:scale-95 shadow-lg shadow-primary/10"
           >
-            <DiscordIcon size={16} />
+            <DiscordIcon size={16} className="hidden lg:block" />
             Join Discord
           </a>
         </div>
@@ -179,7 +179,6 @@ export default function Navbar() {
               rel="noopener noreferrer"
               className="flex items-center gap-3 text-xl font-bold tracking-tight text-primary"
             >
-              <DiscordIcon size={24} />
               Join Discord
             </a>
             

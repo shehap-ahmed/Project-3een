@@ -178,7 +178,7 @@ export default function Courses() {
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
       transition={{ duration: 0.6 }}
-      className="section-padding space-y-12 md:space-y-24 pb-32"
+      className="section-padding space-y-12 md:space-y-16 lg:space-y-24 pb-16 md:pb-24 lg:pb-32"
     >
       <motion.div {...fadeInUp} className="text-center space-y-4 md:space-y-6 pt-12 md:pt-0">
         <div className="inline-block px-4 py-1 bg-primary/5 text-primary rounded-full text-[10px] md:text-[11px] font-bold uppercase tracking-[0.2em]">

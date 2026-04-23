@@ -309,7 +309,7 @@ export default function CourseContent() {
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
       transition={{ duration: 0.4 }}
-      className="section-padding space-y-8 md:space-y-12 pb-24"
+      className="section-padding space-y-6 md:space-y-12 pb-16 md:pb-24 lg:pb-32"
     >
       <motion.div {...fadeInUp} className="flex flex-col md:flex-row md:items-center justify-between gap-6">
         <div className="flex items-center gap-4">

@@ -84,8 +84,8 @@ export default function Profile() {
   };
 
   return (
-    <div className="min-h-screen bg-background py-12 px-6">
-      <div className="max-w-4xl mx-auto space-y-8">
+    <div className="min-h-screen bg-background py-8 md:py-12 px-4 md:px-6">
+      <div className="max-w-4xl mx-auto space-y-6 md:space-y-8">
         {/* Header */}
         <motion.div {...fadeInUp} className="space-y-2">
           <h1 className="text-4xl font-bold tracking-tight text-text-main">User Profile</h1>

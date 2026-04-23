@@ -188,9 +188,9 @@ export default function Admin() {
     <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
-      className="min-h-screen bg-background py-12 px-4 sm:px-6 lg:px-8"
+      className="min-h-screen bg-background py-8 md:py-12 px-4 sm:px-6 lg:px-8"
     >
-      <div className="max-w-4xl mx-auto space-y-12">
+      <div className="max-w-4xl mx-auto space-y-8 md:space-y-12">
         {/* Header */}
         <div className="flex items-center justify-between">
           <div className="space-y-1">

@@ -20,7 +20,7 @@ export default function About() {
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
       transition={{ duration: 0.6 }}
-      className="space-y-32 pb-32"
+      className="space-y-16 md:space-y-24 lg:space-y-32 pb-16 md:pb-24 lg:pb-32"
     >
       {/* About Hero */}
       <section className="section-padding text-center space-y-6 md:space-y-8 pt-12 md:pt-0">
@@ -52,7 +52,7 @@ export default function About() {
       </section>
 
       {/* Mission Section - 2 Columns on Tablet */}
-      <section className="bg-surface py-16 md:py-20 lg:py-32 transition-colors duration-300">
+      <section className="bg-surface py-12 md:py-20 lg:py-32 transition-colors duration-300">
         <div className="section-padding grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-12">
           {[
             { icon: Target, title: 'Our Mission', desc: 'To provide a structured, clear, and affordable path for absolute beginners to learn Arabic.' },
@@ -76,7 +76,7 @@ export default function About() {
       </section>
 
       {/* Meet the Team Section */}
-      <section className="section-padding space-y-16 md:space-y-24">
+      <section className="section-padding space-y-12 md:space-y-16 lg:space-y-24">
         <div className="text-center space-y-4">
           <motion.div
             {...fadeInUp}
@@ -275,7 +275,7 @@ export default function About() {
       <section className="section-padding">
         <motion.div
           {...fadeInUp}
-          className="bg-gray-900 rounded-[2rem] md:rounded-[3rem] p-8 md:p-20 text-center space-y-12 md:space-y-16 overflow-hidden relative"
+          className="bg-gray-900 rounded-[2rem] md:rounded-[3rem] p-8 md:p-12 lg:p-20 text-center space-y-12 md:space-y-16 overflow-hidden relative"
         >
           <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-primary/20 via-transparent to-transparent opacity-30" />
           
