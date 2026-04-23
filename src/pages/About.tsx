@@ -1,7 +1,8 @@
 import { motion } from 'motion/react';
 import { useLocation } from 'react-router-dom';
 import { CONTACT_INFO } from '../constants';
-import { Mail, MessageSquare, Instagram, Target, Heart, Globe, User, MapPin, Hash, Home, Cake, Sparkles, ArrowRight } from 'lucide-react';
+import { Mail, Instagram, Target, Heart, Globe, User, MapPin, Hash, Home, Cake, Sparkles, ArrowRight } from 'lucide-react';
+import DiscordIcon from '../components/DiscordIcon';
 
 const fadeInUp = {
   initial: { opacity: 0, y: 30 },
@@ -112,7 +113,7 @@ export default function About() {
                   { icon: Cake, text: 'Age: Redacted' },
                   { icon: Home, text: 'Born in: Indonesia' },
                   { icon: MapPin, text: 'Lives in: Indonesia' },
-                  { icon: Hash, text: 'schoolboy' }
+                  { icon: DiscordIcon, text: 'schoolboy' }
                 ]
               },
               {
@@ -124,7 +125,7 @@ export default function About() {
                   { icon: Cake, text: '21 years old' },
                   { icon: Home, text: 'Born in: Minya, Egypt' },
                   { icon: MapPin, text: 'Lives in: Cairo, Egypt' },
-                  { icon: Hash, text: 'horus123' }
+                  { icon: DiscordIcon, text: 'horus123' }
                 ]
               },
               {
@@ -136,7 +137,7 @@ export default function About() {
                   { icon: Cake, text: '23 years old' },
                   { icon: Home, text: 'Born in: Tashkent, Uzbekistan' },
                   { icon: MapPin, text: 'Lives in: New York, USA' },
-                  { icon: Hash, text: 'jellyfish.j' },
+                  { icon: DiscordIcon, text: 'jellyfish.j' },
                   { icon: Mail, text: 'jellyfishjt7@gmail.com' }
                 ]
               }
@@ -153,7 +154,7 @@ export default function About() {
                   { icon: User, text: 'Real Name: Aiham' },
                   { icon: Home, text: 'Born in: Iraq, Baghdad' },
                   { icon: MapPin, text: 'Lives in: Iraq, Baghdad' },
-                  { icon: Hash, text: 'angelo_8808' },
+                  { icon: DiscordIcon, text: 'angelo_8808' },
                   { icon: Mail, text: 'aiham.88.iq@gmail.com' }
                 ]
               },
@@ -166,7 +167,7 @@ export default function About() {
                   { icon: Cake, text: '22 years old' },
                   { icon: Home, text: 'Born in: Alexandria, Egypt' },
                   { icon: MapPin, text: 'Lives in: Alexandria, Egypt' },
-                  { icon: Hash, text: 'falcon76444' }
+                  { icon: DiscordIcon, text: 'falcon76444' }
                 ]
               }
             ]
@@ -204,7 +205,7 @@ export default function About() {
                   </div>
 
                   <div className="space-y-3 md:space-y-4 pt-4 border-t border-border/50 relative z-10">
-                    {member.details.slice(0, member.details.length > 4 ? 4 : undefined).map((detail, j) => (
+                    {member.details.map((detail, j) => (
                       <div key={j} className="flex items-center gap-3 text-text-muted group/item">
                         <detail.icon size={14} className="text-primary/40 group-hover/item:text-primary transition-colors" />
                         <span className="text-xs lg:text-sm font-medium truncate">{detail.text}</span>
@@ -286,7 +287,7 @@ export default function About() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6 relative z-10">
             {[
               { icon: Mail, label: 'Email Us', value: CONTACT_INFO.email, href: `mailto:${CONTACT_INFO.email}` },
-              { icon: MessageSquare, label: 'Discord', value: 'Join our community', href: CONTACT_INFO.discord },
+              { icon: DiscordIcon, label: 'Discord', value: 'Join our community', href: CONTACT_INFO.discord },
               { icon: Instagram, label: 'Instagram', value: '@learnarabic.dc', href: CONTACT_INFO.instagram },
             ].map((item, i) => (
               <a

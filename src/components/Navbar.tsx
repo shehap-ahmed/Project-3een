@@ -1,7 +1,8 @@
 import { motion, AnimatePresence } from 'motion/react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
-import { Menu, X, MessageSquare, LogOut, LogIn } from 'lucide-react';
+import { Menu, X, LogOut, LogIn } from 'lucide-react';
+import DiscordIcon from './DiscordIcon';
 import { NAV_LINKS, CONTACT_INFO } from '../constants';
 import { supabase } from '../lib/supabase';
 import { User } from '@supabase/supabase-js';
@@ -118,8 +119,9 @@ export default function Navbar() {
             href={CONTACT_INFO.discord}
             target="_blank"
             rel="noopener noreferrer"
-            className="bg-primary text-white px-6 py-2.5 rounded-full text-[13px] font-bold hover:bg-primary/90 transition-all hover:scale-105 active:scale-95 shadow-lg shadow-primary/10"
+            className="flex items-center gap-2 bg-primary text-white px-6 py-2.5 rounded-full text-[13px] font-bold hover:bg-primary/90 transition-all hover:scale-105 active:scale-95 shadow-lg shadow-primary/10"
           >
+            <DiscordIcon size={16} />
             Join Discord
           </a>
         </div>
@@ -170,6 +172,16 @@ export default function Navbar() {
                 {link.name}
               </Link>
             ))}
+
+            <a
+              href={CONTACT_INFO.discord}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-3 text-xl font-bold tracking-tight text-primary"
+            >
+              <DiscordIcon size={24} />
+              Join Discord
+            </a>
             
             {user ? (
               <>

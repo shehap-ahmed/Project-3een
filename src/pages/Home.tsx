@@ -1,6 +1,7 @@
 import { motion } from 'motion/react';
 import { Link, useLocation } from 'react-router-dom';
-import { ArrowRight, BookOpen, Users, Video, MessageCircle, CheckCircle2, Play } from 'lucide-react';
+import { ArrowRight, BookOpen, Video, MessageCircle, CheckCircle2, Play } from 'lucide-react';
+import DiscordIcon from '../components/DiscordIcon';
 import { CONTACT_INFO, COURSE_DATA } from '../constants';
 
 const fadeInUp = {
@@ -136,7 +137,7 @@ export default function Home() {
             className="md:col-span-1 lg:col-span-4 lg:row-span-1 bento-card flex flex-col justify-center gap-4 min-h-[200px] md:min-h-0"
           >
             <div className="w-10 h-10 bg-accent/10 rounded-xl flex items-center justify-center text-accent">
-              <Users size={20} />
+              <DiscordIcon size={20} />
             </div>
             <h3 className="text-xl font-bold">Discord Hub</h3>
             <p className="text-gray-500 text-sm leading-relaxed">A vibrant community for 24/7 support and practice.</p>
@@ -154,7 +155,7 @@ export default function Home() {
             </div>
             <div className="hidden lg:flex items-center gap-4">
               <div className="w-16 h-16 bg-background rounded-2xl flex items-center justify-center text-primary group-hover:rotate-12 transition-transform">
-                <MessageCircle size={32} />
+                <DiscordIcon size={32} />
               </div>
             </div>
           </motion.div>

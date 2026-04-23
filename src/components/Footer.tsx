@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import { CONTACT_INFO } from '../constants';
-import { Instagram, Mail, MessageSquare } from 'lucide-react';
+import { Instagram, Mail } from 'lucide-react';
+import DiscordIcon from './DiscordIcon';
 
 import Logo from './Logo';
 
@@ -38,7 +39,7 @@ export default function Footer() {
               rel="noopener noreferrer"
               className="w-10 h-10 rounded-full bg-background flex items-center justify-center text-text-muted hover:bg-primary hover:text-white transition-all border border-border"
             >
-              <MessageSquare size={18} />
+              <DiscordIcon size={18} />
             </a>
             <a
               href={CONTACT_INFO.instagram}

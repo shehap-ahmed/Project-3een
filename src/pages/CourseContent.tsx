@@ -2,6 +2,7 @@ import { motion, AnimatePresence } from 'motion/react';
 import { useState, useEffect, useCallback } from 'react';
 import { COURSE_DATA } from '../constants';
 import { Play, CheckCircle2, ChevronRight, FileText, ArrowLeft, Check, Sparkles, BookOpen, Loader2, ArrowRight } from 'lucide-react';
+import DiscordIcon from '../components/DiscordIcon';
 import { Link, useLocation, useParams } from 'react-router-dom';
 import confetti from 'canvas-confetti';
 import { supabase } from '../lib/supabase';
@@ -578,8 +579,9 @@ export default function CourseContent() {
               href="https://discord.gg/x52dtrhp3Y"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-block text-sm font-bold text-accent hover:underline"
+              className="inline-flex items-center gap-2 text-sm font-bold text-accent hover:underline"
             >
+              <DiscordIcon size={16} />
               Go to Discord →
             </a>
           </div>
