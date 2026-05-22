@@ -86,8 +86,11 @@ export default function Admin() {
       
       if (error) throw error;
       setCourses(data || []);
-    } catch (err) {
+    } catch (err: any) {
       console.error('Error fetching courses:', err);
+      setError(err.message === 'Failed to fetch' 
+        ? 'Network error: Supabase unreachable.' 
+        : err.message);
     }
   };
 
@@ -101,8 +104,11 @@ export default function Admin() {
       
       if (error) throw error;
       setLessons(data || []);
-    } catch (err) {
+    } catch (err: any) {
       console.error('Error fetching lessons:', err);
+      setError(err.message === 'Failed to fetch' 
+        ? 'Network error: Supabase unreachable.' 
+        : err.message);
     }
   };
 

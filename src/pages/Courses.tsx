@@ -1,7 +1,7 @@
 import { motion } from 'motion/react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { COURSE_DATA } from '../constants';
-import { User, Layers, Users, CheckCircle2, ArrowRight, Globe, BookOpen, Loader2 } from 'lucide-react';
+import { User, Layers, Users, CheckCircle2, ArrowRight, Globe, BookOpen, Loader2, AlertCircle, Lock } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import { supabase } from '../lib/supabase';
 
@@ -36,6 +36,7 @@ export default function Courses() {
   const [courses, setCourses] = useState<Course[]>([]);
   const [enrollments, setEnrollments] = useState<string[]>([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   const [enrollingId, setEnrollingId] = useState<string | null>(null);
 
   useEffect(() => {
@@ -43,6 +44,7 @@ export default function Courses() {
       console.log("Courses: fetchCourses started");
       try {
         setLoading(true);
+        setError(null);
         
         // 1. Fetch courses (Always public if RLS allows)
         const { data: coursesData, error: coursesError } = await supabase
@@ -77,25 +79,34 @@ export default function Courses() {
         }
 
         // 2. Separately fetch session and enrollments
-        const { data: { session } } = await supabase.auth.getSession();
-        if (session?.user) {
-          console.log("Fetching enrollments for user:", session.user.id);
-          const { data: enrollData } = await supabase
-            .from('enrollments')
-            .select('course_id')
-            .eq('user_id', session.user.id);
-          
-          const dbEnrollments = enrollData ? enrollData.map(e => String(e.course_id)) : [];
-          const localEnrollments = JSON.parse(localStorage.getItem('local_enrollments') || '[]');
-          const castedLocal = localEnrollments.map((id: any) => String(id));
-          setEnrollments([...new Set([...dbEnrollments, ...castedLocal])]);
-        } else {
-          // Fallback to local enrollments for guests
-          const localEnrollments = JSON.parse(localStorage.getItem('local_enrollments') || '[]');
-          setEnrollments(localEnrollments.map((id: any) => String(id)));
+        try {
+          const { data: { session } } = await supabase.auth.getSession();
+          if (session?.user) {
+            console.log("Fetching enrollments for user:", session.user.id);
+            const { data: enrollData, error: enrollError } = await supabase
+              .from('enrollments')
+              .select('course_id')
+              .eq('user_id', session.user.id);
+            
+            if (enrollError) console.warn("Enrollment fetch error:", enrollError);
+            
+            const dbEnrollments = enrollData ? enrollData.map(e => String(e.course_id)) : [];
+            const localEnrollments = JSON.parse(localStorage.getItem('local_enrollments') || '[]');
+            const castedLocal = localEnrollments.map((id: any) => String(id));
+            setEnrollments([...new Set([...dbEnrollments, ...castedLocal])]);
+          } else {
+            // Fallback to local enrollments for guests
+            const localEnrollments = JSON.parse(localStorage.getItem('local_enrollments') || '[]');
+            setEnrollments(localEnrollments.map((id: any) => String(id)));
+          }
+        } catch (sessionErr: any) {
+          console.warn("Session/Enrollment fetch error (non-critical):", sessionErr);
         }
-      } catch (err) {
+      } catch (err: any) {
         console.error('Critical error in courses effect:', err);
+        setError(err.message === 'Failed to fetch' 
+          ? 'Unable to connect to the database. This usually means the Supabase project is inactive or your internet connection is down.'
+          : `System error: ${err.message || 'Unknown network error'}`);
       } finally {
         setLoading(false);
       }
@@ -242,33 +253,19 @@ export default function Courses() {
               </div>
             </div>
 
-            <div className="pt-4">
-              {enrollments.includes(String(COURSE_DATA.id)) ? (
-                <div className="space-y-4">
-                  <Link to="/course-content" className="btn-premium w-full group py-4 md:py-5">
-                    Go to Course
-                    <ArrowRight size={18} className="ml-2 transition-transform group-hover:translate-x-1" />
-                  </Link>
-                </div>
-              ) : (
-                <button 
-                  onClick={() => handleEnroll(COURSE_DATA.id)}
-                  disabled={enrollingId === String(COURSE_DATA.id)}
-                  className="btn-premium w-full group py-4 md:py-5 flex items-center justify-center gap-2"
-                >
-                  {enrollingId === String(COURSE_DATA.id) ? (
-                    <div className="flex items-center gap-2">
-                      <Loader2 className="animate-spin" size={20} />
-                      <span>Enrolling...</span>
-                    </div>
-                  ) : (
-                    <>
-                      Start Course
-                      <ArrowRight size={18} className="ml-2 transition-transform group-hover:translate-x-1" />
-                    </>
-                  )}
-                </button>
-              )}
+            <div className="pt-4 space-y-4">
+              <div className="flex items-center gap-3 p-4 rounded-xl bg-accent/10 border border-accent/20 text-text-main text-xs md:text-sm font-medium">
+                <Lock size={16} className="text-accent shrink-0" />
+                <span>This course will be available after the live course launches.</span>
+              </div>
+              
+              <button 
+                disabled
+                className="w-full py-4 md:py-5 flex items-center justify-center gap-2 bg-text-muted/10 text-text-muted/50 font-bold rounded-full border border-border/80 cursor-not-allowed text-sm uppercase tracking-wider"
+              >
+                <Lock size={16} />
+                <span>Locked</span>
+              </button>
             </div>
           </div>
 
@@ -298,6 +295,18 @@ export default function Courses() {
           <div className="flex flex-col items-center justify-center py-20 space-y-4">
             <Loader2 className="animate-spin text-primary" size={40} />
             <p className="text-text-muted font-medium">Loading courses...</p>
+          </div>
+        ) : error ? (
+          <div className="text-center py-20 bg-red-50 dark:bg-red-900/10 rounded-[2.5rem] border border-red-200 dark:border-red-900/20">
+            <AlertCircle className="mx-auto text-red-500 mb-4" size={48} />
+            <h3 className="text-xl font-bold text-red-600 dark:text-red-400">Connection Error</h3>
+            <p className="text-red-500/80 mt-2 max-w-md mx-auto">{error}</p>
+            <button 
+              onClick={() => window.location.reload()}
+              className="mt-6 px-6 py-2 bg-red-600 text-white rounded-full font-bold text-sm hover:bg-red-700 transition-colors"
+            >
+              Retry Connection
+            </button>
           </div>
         ) : courses.length === 0 ? (
           <div className="text-center py-20 bg-surface rounded-[2.5rem] border border-border border-dashed">

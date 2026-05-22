@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { motion } from 'motion/react';
 import { Link, useLocation } from 'react-router-dom';
 import { ArrowRight, BookOpen, Video, MessageCircle, CheckCircle2, Play } from 'lucide-react';
@@ -13,6 +14,7 @@ const fadeInUp = {
 
 export default function Home() {
   const location = useLocation();
+  const [isPlaying, setIsPlaying] = useState(false);
   return (
     <motion.div
       key={location.pathname}
@@ -194,16 +196,32 @@ export default function Home() {
           >
             <div className="absolute -inset-4 bg-primary/5 rounded-[3rem] blur-2xl group-hover:bg-primary/10 transition-colors duration-500 hidden md:block" />
             <div className="relative aspect-video bg-gray-900 rounded-2xl md:rounded-[2.5rem] overflow-hidden shadow-2xl border border-gray-100/10 group-hover:scale-[1.02] transition-transform duration-700">
-              <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
-              <div className="absolute inset-0 flex items-center justify-center">
-                <button className="w-16 h-16 md:w-20 md:h-20 bg-white rounded-full flex items-center justify-center text-primary shadow-2xl transition-all duration-500 hover:scale-110 active:scale-95">
-                  <Play size={24} md:size={28} fill="currentColor" className="ml-1" />
-                </button>
-              </div>
-              <div className="absolute bottom-6 left-6 md:bottom-8 md:left-8">
-                <p className="text-white font-bold text-lg md:text-xl">MSA Beginner Pilot Course</p>
-                <p className="text-white/60 text-xs md:text-sm">Live Demo Preview</p>
-              </div>
+              {isPlaying ? (
+                <iframe
+                  src="https://www.youtube.com/embed/ZpMmrqvZITE?autoplay=1&modestbranding=1&rel=0"
+                  className="w-full h-full"
+                  frameBorder="0"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowFullScreen
+                  title="Project 3een Method Video"
+                ></iframe>
+              ) : (
+                <>
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    <button 
+                      onClick={() => setIsPlaying(true)}
+                      className="w-16 h-16 md:w-20 md:h-20 bg-white rounded-full flex items-center justify-center text-primary shadow-2xl transition-all duration-500 hover:scale-110 active:scale-95 cursor-pointer z-10"
+                    >
+                      <Play size={24} md:size={28} fill="currentColor" className="ml-1" />
+                    </button>
+                  </div>
+                  <div className="absolute bottom-6 left-6 md:bottom-8 md:left-8">
+                    <p className="text-white font-bold text-lg md:text-xl">MSA Beginner Pilot Course</p>
+                    <p className="text-white/60 text-xs md:text-sm">Live Demo Preview</p>
+                  </div>
+                </>
+              )}
             </div>
           </motion.div>
         </div>

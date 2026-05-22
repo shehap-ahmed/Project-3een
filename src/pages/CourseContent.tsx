@@ -1,7 +1,7 @@
 import { motion, AnimatePresence } from 'motion/react';
 import { useState, useEffect, useCallback } from 'react';
 import { COURSE_DATA } from '../constants';
-import { Play, CheckCircle2, ChevronRight, FileText, ArrowLeft, Check, Sparkles, BookOpen, Loader2, ArrowRight } from 'lucide-react';
+import { Play, CheckCircle2, ChevronRight, FileText, ArrowLeft, Check, Sparkles, BookOpen, Loader2, ArrowRight, AlertCircle } from 'lucide-react';
 import DiscordIcon from '../components/DiscordIcon';
 import { Link, useLocation, useParams } from 'react-router-dom';
 import confetti from 'canvas-confetti';
@@ -43,6 +43,7 @@ export default function CourseContent() {
   const [isEnrolled, setIsEnrolled] = useState(false);
   const [enrolling, setEnrolling] = useState(false);
   const [enrollError, setEnrollError] = useState<string | null>(null);
+  const [fetchError, setFetchError] = useState<string | null>(null);
   const [showEnrolledMessage, setShowEnrolledMessage] = useState(false);
   const [currentCourseId, setCurrentCourseId] = useState<string | null>(null);
   
@@ -56,6 +57,7 @@ export default function CourseContent() {
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
+      setFetchError(null);
       const slug = manualCourseId || urlId || COURSE_DATA.id;
       console.log("Loading course with identifier:", slug);
       
@@ -165,8 +167,11 @@ export default function CourseContent() {
             }
           }
         }
-      } catch (err) {
+      } catch (err: any) {
         console.error('Error fetching course content:', err);
+        setFetchError(err.message === 'Failed to fetch' 
+          ? 'Unable to load course content. This project might be offline.' 
+          : err.message);
       } finally {
         setLoading(false);
       }
@@ -271,19 +276,33 @@ export default function CourseContent() {
     );
   }
 
-  if (!course) {
+  if (!course || fetchError) {
     return (
       <div className="min-h-[60vh] flex flex-col items-center justify-center space-y-6 text-center px-4">
-        <div className="w-20 h-20 rounded-full bg-primary/10 flex items-center justify-center text-primary">
-          <BookOpen size={40} />
+        <div className="w-20 h-20 rounded-full bg-red-500/10 flex items-center justify-center text-red-500">
+          <AlertCircle size={40} />
         </div>
         <div className="space-y-2">
-          <h2 className="text-2xl font-bold text-text-main">Course Not Found</h2>
-          <p className="text-text-muted max-w-md">The course you are looking for doesn't exist or has been removed.</p>
+          <h2 className="text-2xl font-bold text-text-main">
+            {fetchError ? 'Connection Error' : 'Course Not Found'}
+          </h2>
+          <p className="text-text-muted max-w-md">
+            {fetchError || "The course you are looking for doesn't exist or has been removed."}
+          </p>
         </div>
-        <Link to="/courses" className="btn-premium">
-          Back to Courses
-        </Link>
+        <div className="flex gap-4">
+          <Link to="/courses" className="btn-premium">
+            Back to Courses
+          </Link>
+          {fetchError && (
+            <button 
+              onClick={() => window.location.reload()}
+              className="px-6 py-2 bg-background border border-border rounded-full font-bold text-sm hover:bg-surface transition-colors"
+            >
+              Retry
+            </button>
+          )}
+        </div>
       </div>
     );
   }

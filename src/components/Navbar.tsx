@@ -55,6 +55,10 @@ export default function Navbar() {
     navigate('/');
   };
 
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
   return (
     <nav
       className={`fixed top-6 left-0 right-0 z-50 transition-all duration-500 px-6`}
@@ -64,7 +68,16 @@ export default function Navbar() {
           scrolled ? 'glass shadow-[0_8px_30px_rgb(0,0,0,0.04)]' : 'bg-transparent'
         }`}
       >
-        <Link to="/" className="flex items-center gap-3 group">
+        <Link 
+          to="/" 
+          className="flex items-center gap-3 group"
+          onClick={(e) => {
+            if (location.pathname === '/') {
+              e.preventDefault();
+              scrollToTop();
+            }
+          }}
+        >
           <Logo className="w-9 h-9" />
           <span className="font-bold text-lg tracking-tight text-text-main transition-colors">
             Project 3een
