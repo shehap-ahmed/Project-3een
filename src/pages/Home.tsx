@@ -1,6 +1,7 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion } from 'motion/react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { supabase } from '../lib/supabase';
 import { ArrowRight, BookOpen, Video, MessageCircle, CheckCircle2, Play } from 'lucide-react';
 import DiscordIcon from '../components/DiscordIcon';
 import { CONTACT_INFO, COURSE_DATA } from '../constants';
@@ -14,7 +15,35 @@ const fadeInUp = {
 
 export default function Home() {
   const location = useLocation();
+  const navigate = useNavigate();
   const [isPlaying, setIsPlaying] = useState(false);
+
+  useEffect(() => {
+    let active = true;
+    const checkOAuthRedirect = async () => {
+      if (window.location.hash.includes('access_token=') || window.location.hash.includes('id_token=')) {
+        const { data: { session } } = await supabase.auth.getSession();
+        if (session && active) {
+          navigate('/courses', { replace: true });
+        } else if (active) {
+          const { data: { subscription } } = supabase.auth.onAuthStateChange((event, currentSession) => {
+            if (currentSession && active) {
+              subscription.unsubscribe();
+              navigate('/courses', { replace: true });
+            }
+          });
+          return () => {
+            active = false;
+            subscription.unsubscribe();
+          };
+        }
+      }
+    };
+    checkOAuthRedirect();
+    return () => {
+      active = false;
+    };
+  }, [navigate]);
   return (
     <motion.div
       key={location.pathname}

@@ -53,7 +53,7 @@ export default function Login() {
     setLoading(true);
     setError(null);
     try {
-      const redirectToUrl = `${window.location.origin}${from}`;
+      const redirectToUrl = `${window.location.origin}/`;
       const isIframe = window.self !== window.top;
 
       const { data, error: authError } = await supabase.auth.signInWithOAuth({
