@@ -3,6 +3,7 @@ import { motion } from 'motion/react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { supabase } from '../lib/supabase';
 import { ArrowRight, Mail, Lock, AlertCircle, Loader2 } from 'lucide-react';
+import DiscordIcon from '../components/DiscordIcon';
 
 export default function Login() {
   const [email, setEmail] = useState('');
@@ -53,7 +54,10 @@ export default function Login() {
     setLoading(true);
     setError(null);
     try {
-      const redirectToUrl = `${window.location.origin}/`;
+      const isProduction = window.location.origin.includes('project-3een.vercel.app');
+      const redirectToUrl = isProduction 
+        ? 'https://project-3een.vercel.app/auth/callback' 
+        : `${window.location.origin}/auth/callback`;
       const isIframe = window.self !== window.top;
 
       const { data, error: authError } = await supabase.auth.signInWithOAuth({
@@ -91,6 +95,55 @@ export default function Login() {
     } catch (err: any) {
       console.error('Google Auth Error:', err);
       setError(err.message || 'An error occurred during Google Sign In');
+      setLoading(false);
+    }
+  };
+
+  const handleDiscordSignIn = async () => {
+    setLoading(true);
+    setError(null);
+    try {
+      const isProduction = window.location.origin.includes('project-3een.vercel.app');
+      const redirectToUrl = isProduction 
+        ? 'https://project-3een.vercel.app/auth/callback' 
+        : `${window.location.origin}/auth/callback`;
+      const isIframe = window.self !== window.top;
+
+      const { data, error: authError } = await supabase.auth.signInWithOAuth({
+        provider: 'discord',
+        options: {
+          redirectTo: redirectToUrl,
+          skipBrowserRedirect: isIframe,
+        }
+      });
+
+      if (authError) throw authError;
+
+      if (isIframe && data?.url) {
+        const authWindow = window.open(data.url, 'discord_auth_popup', 'width=600,height=700,status=no,resizable=yes');
+        
+        if (!authWindow) {
+          setError('Popup blocked! Please allow popups for this site, or open the app in a new tab.');
+          setLoading(false);
+          return;
+        }
+
+        const checkSessionInterval = setInterval(async () => {
+          const { data: { session } } = await supabase.auth.getSession();
+          if (session) {
+            clearInterval(checkSessionInterval);
+            authWindow.close();
+            navigate(from, { replace: true });
+          }
+          if (authWindow.closed) {
+            clearInterval(checkSessionInterval);
+            setLoading(false);
+          }
+        }, 1500);
+      }
+    } catch (err: any) {
+      console.error('Discord Auth Error:', err);
+      setError(err.message || 'An error occurred during Discord Sign In');
       setLoading(false);
     }
   };
@@ -191,6 +244,16 @@ export default function Login() {
               <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z" fill="#EA4335"/>
             </svg>
             <span className="text-sm tracking-wide">Continue with Google</span>
+          </button>
+
+          <button
+            type="button"
+            onClick={handleDiscordSignIn}
+            disabled={loading}
+            className="w-full py-4 px-6 bg-background border border-border hover:bg-surface hover:border-text-muted/30 text-text-main font-bold rounded-2xl transition-all duration-300 flex items-center justify-center gap-3 group relative cursor-pointer active:scale-[0.98] shadow-sm hover:shadow-md disabled:opacity-50"
+          >
+            <DiscordIcon size={20} className="text-[#5865F2] transition-transform group-hover:scale-105 duration-300 shrink-0" />
+            <span className="text-sm tracking-wide">Continue with Discord</span>
           </button>
 
           <p className="text-center text-sm text-gray-500">
