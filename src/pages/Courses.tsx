@@ -199,7 +199,7 @@ export default function Courses() {
           Our <span className="font-serif italic text-primary">Courses</span>
         </h1>
         <p className="text-text-muted max-w-xl mx-auto text-base md:text-lg px-4 md:px-0">
-          Structured programs designed to take you from absolute zero to confident speaker.
+          Step-by-step lessons designed to help you start reading and speaking Arabic.
         </p>
       </motion.div>
 
@@ -240,7 +240,7 @@ export default function Courses() {
             </div>
 
             <div className="space-y-4 md:space-y-6">
-              <h3 className="font-bold text-text-main uppercase text-[10px] md:text-xs tracking-widest text-center lg:text-left">What you'll master:</h3>
+              <h3 className="font-bold text-text-main uppercase text-[10px] md:text-xs tracking-widest text-center lg:text-left">What you'll learn:</h3>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 lg:gap-4 max-w-sm mx-auto lg:mx-0">
                 {COURSE_DATA.lessons.slice(0, 6).map((lesson, i) => (
                   <div key={i} className="flex items-center gap-3 text-xs md:text-sm font-medium text-text-main opacity-80 group">
@@ -349,7 +349,7 @@ export default function Courses() {
                   {/* What You Will Learn Section */}
                   {course.lessons && course.lessons.length > 0 && (
                     <div className="pt-4 space-y-3">
-                      <h4 className="font-bold text-text-main uppercase text-[10px] tracking-widest opacity-60">What you'll master:</h4>
+                      <h4 className="font-bold text-text-main uppercase text-[10px] tracking-widest opacity-60">What you'll learn:</h4>
                       <div className="grid grid-cols-1 gap-2">
                         {course.lessons.slice(0, 6).map((lesson) => (
                           <div key={lesson.id} className="flex items-center gap-2 text-[11px] font-medium text-text-main opacity-80">

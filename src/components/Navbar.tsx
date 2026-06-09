@@ -6,7 +6,6 @@ import DiscordIcon from './DiscordIcon';
 import { NAV_LINKS, CONTACT_INFO } from '../constants';
 import { supabase } from '../lib/supabase';
 import { User } from '@supabase/supabase-js';
-import ThemeToggle from './ThemeToggle';
 
 import Logo from './Logo';
 
@@ -125,8 +124,6 @@ export default function Navbar() {
               }`} />
             </Link>
           )}
-
-          <ThemeToggle />
 
           <a
             href={CONTACT_INFO.discord}

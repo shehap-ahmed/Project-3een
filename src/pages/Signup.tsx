@@ -169,8 +169,8 @@ export default function Signup() {
     >
       <div className="w-full max-w-md space-y-8">
         <div className="text-center space-y-2">
-          <h1 className="text-4xl font-bold tracking-tight text-text-main">Create Account</h1>
-          <p className="text-text-muted">Join the Project 3een community today.</p>
+          <h1 className="text-4xl font-bold tracking-tight text-text-main">Join Project 3een</h1>
+          <p className="text-text-muted">Create an account to track your progress and practice with us.</p>
         </div>
 
         <form onSubmit={handleSignup} className="bg-surface p-8 rounded-[2.5rem] border border-border shadow-xl space-y-6 transition-colors duration-300">
@@ -275,10 +275,10 @@ export default function Signup() {
             <span className="text-sm tracking-wide">Continue with Discord</span>
           </button>
 
-          <p className="text-center text-sm text-gray-500">
+          <p className="text-center text-sm text-gray-500 font-sans">
             Already have an account?{' '}
             <Link to="/login" className="text-primary font-bold hover:underline">
-              Login
+              Sign in
             </Link>
           </p>
         </form>

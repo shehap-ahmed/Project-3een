@@ -158,7 +158,7 @@ export default function Login() {
       <div className="w-full max-w-md space-y-8">
         <div className="text-center space-y-2">
           <h1 className="text-4xl font-bold tracking-tight text-text-main">Welcome Back</h1>
-          <p className="text-text-muted">Continue your Arabic journey.</p>
+          <p className="text-text-muted">Sign in to keep learning.</p>
         </div>
 
         <form onSubmit={handleLogin} className="bg-surface p-8 rounded-[2.5rem] border border-border shadow-xl space-y-6 transition-colors duration-300">

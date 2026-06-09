@@ -17,7 +17,7 @@ export default function Footer() {
             </span>
           </Link>
           <p className="text-text-muted text-sm max-w-xs leading-relaxed">
-            A structured program designed for complete beginners to master the Arabic language from zero.
+            A community-run project helping complete beginners learn Arabic, step by step.
           </p>
         </div>
 

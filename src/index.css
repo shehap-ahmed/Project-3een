@@ -20,11 +20,11 @@
 
 @layer base {
   :root {
-    --bg: #fafaf9;
-    --surface: #ffffff;
-    --border: #f1f1f0;
-    --text-main: #111827;
-    --text-muted: #6b7280;
+    --bg: #0c0c0c;
+    --surface: #161616;
+    --border: #222222;
+    --text-main: #f9fafb;
+    --text-muted: #9ca3af;
   }
 
   .dark {
@@ -62,11 +62,7 @@
 }
 
 .text-gradient {
-  @apply bg-clip-text text-transparent bg-gradient-to-br from-gray-900 via-gray-800 to-gray-600;
-}
-
-.dark .text-gradient {
-  @apply from-white via-gray-200 to-gray-400;
+  @apply bg-clip-text text-transparent bg-gradient-to-br from-white via-gray-200 to-gray-400;
 }
 
 .premium-shadow {
