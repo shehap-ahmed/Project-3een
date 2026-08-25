@@ -36,7 +36,7 @@ export interface QuestionAudioPair {
  */
 export const MSA_CLASS_7_AUDIO_MAP: Record<string, string> = {
   // Page 1 (Questions 1 - 5)
-  'q1': '/audio/msa-class-7/q1.m4a',
+  'q1': '/audio/msa-class-7/q1.mp3',
   'a1': '/audio/msa-class-7/a1.mp3',
   'q2': '/audio/msa-class-7/q2.mp3',
   'a2': '/audio/msa-class-7/a2.mp3',
