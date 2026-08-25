@@ -1,9 +1,9 @@
 import { motion, AnimatePresence } from 'motion/react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { Menu, X, LogOut, LogIn } from 'lucide-react';
 import DiscordIcon from './DiscordIcon';
-import { NAV_LINKS, CONTACT_INFO } from '../constants';
+import { NAV_LINKS, CONTACT_INFO, NavLinkItem } from '../constants';
 import { supabase } from '../lib/supabase';
 import { User } from '@supabase/supabase-js';
 
@@ -13,29 +13,84 @@ export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [user, setUser] = useState<User | null>(null);
+  const [userRole, setUserRole] = useState<string | null>(null);
   const location = useLocation();
+
+  const fetchRole = useCallback(async (currentUser: User | null) => {
+    if (!currentUser?.email) {
+      setUserRole(null);
+      return;
+    }
+
+    try {
+      const { data, error } = await supabase
+        .from('user')
+        .select('role')
+        .eq('email', currentUser.email.toLowerCase().trim())
+        .maybeSingle();
+
+      if (!error && data?.role) {
+        setUserRole(data.role.toLowerCase().trim());
+      } else if (currentUser.user_metadata?.role) {
+        setUserRole(String(currentUser.user_metadata.role).toLowerCase().trim());
+      } else {
+        setUserRole('student');
+      }
+    } catch {
+      const metaRole = currentUser.user_metadata?.role || 'student';
+      setUserRole(String(metaRole).toLowerCase().trim());
+    }
+  }, []);
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 20);
     window.addEventListener('scroll', handleScroll);
     
     // Check current auth state
-    supabase.auth.getUser().then(({ data: { user } }) => {
-      setUser(user);
-    });
+    supabase.auth.getUser()
+      .then((res) => {
+        const currentUser = res?.data?.user ?? null;
+        setUser(currentUser);
+        fetchRole(currentUser);
+      })
+      .catch(() => {
+        setUser(null);
+        setUserRole(null);
+      });
 
     // Listen for auth changes
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
-      setUser(session?.user ?? null);
+      const currentUser = session?.user ?? null;
+      setUser(currentUser);
+      fetchRole(currentUser);
     });
 
     return () => {
       window.removeEventListener('scroll', handleScroll);
       subscription.unsubscribe();
     };
-  }, []);
+  }, [fetchRole]);
 
   const navigate = useNavigate();
+
+  const isLinkVisible = (link: NavLinkItem) => {
+    if (!link.requiresAuth && !link.requiredRole) {
+      return true;
+    }
+    // If not logged in, hide protected links
+    if (!user) {
+      return false;
+    }
+    // If role required, check that current user has required role or is admin
+    if (link.requiredRole) {
+      const normalizedCurrentRole = (userRole || '').toLowerCase().trim();
+      const normalizedRequiredRole = link.requiredRole.toLowerCase().trim();
+      return normalizedCurrentRole === normalizedRequiredRole || normalizedCurrentRole === 'admin';
+    }
+    return true;
+  };
+
+  const visibleLinks = NAV_LINKS.filter(isLinkVisible);
 
   const getInitials = (user: User | null) => {
     if (!user) return '?';
@@ -84,21 +139,29 @@ export default function Navbar() {
         </Link>
 
         {/* Desktop Nav */}
-        <div className="hidden md:flex items-center gap-10">
-          {NAV_LINKS.map((link) => (
-            <Link
-              key={link.path}
-              to={link.path}
-              className={`text-[13px] font-semibold tracking-wide transition-all duration-300 hover:text-primary relative group ${
-                location.pathname === link.path ? 'text-primary' : 'text-gray-500'
-              }`}
-            >
-              {link.name}
-              <span className={`absolute -bottom-1.5 left-0 h-0.5 bg-primary transition-all duration-300 ${
-                location.pathname === link.path ? 'w-full' : 'w-0 group-hover:w-full'
-              }`} />
-            </Link>
-          ))}
+        <div className="hidden md:flex items-center gap-8 lg:gap-10">
+          {visibleLinks.map((link) => {
+            const isActive = location.pathname === link.path || 
+              (link.path === '/msa-class-7' && (
+                location.pathname === '/resources/msa-class-7' || 
+                location.pathname === '/practice/msa-class-7'
+              ));
+
+            return (
+              <Link
+                key={link.path}
+                to={link.path}
+                className={`text-[13px] font-semibold tracking-wide transition-all duration-300 hover:text-primary relative group ${
+                  isActive ? 'text-primary' : 'text-gray-500'
+                }`}
+              >
+                {link.name}
+                <span className={`absolute -bottom-1.5 left-0 h-0.5 bg-primary transition-all duration-300 ${
+                  isActive ? 'w-full' : 'w-0 group-hover:w-full'
+                }`} />
+              </Link>
+            );
+          })}
           
           {user ? (
             <div className="flex items-center gap-6">
@@ -166,22 +229,26 @@ export default function Navbar() {
             exit={{ opacity: 0, y: 10, scale: 0.95 }}
             className="absolute top-full left-6 right-6 mt-4 glass rounded-[2rem] p-8 flex flex-col gap-6 md:hidden shadow-2xl"
           >
-            {[
-              { name: 'Home', path: '/' },
-              { name: 'Courses', path: '/courses' },
-              { name: 'About', path: '/about' }
-            ].map((link) => (
-              <Link
-                key={link.path}
-                to={link.path}
-                onClick={() => setIsOpen(false)}
-                className={`text-xl font-bold tracking-tight ${
-                  location.pathname === link.path ? 'text-primary' : 'text-gray-900'
-                }`}
-              >
-                {link.name}
-              </Link>
-            ))}
+            {visibleLinks.map((link) => {
+              const isActive = location.pathname === link.path || 
+                (link.path === '/msa-class-7' && (
+                  location.pathname === '/resources/msa-class-7' || 
+                  location.pathname === '/practice/msa-class-7'
+                ));
+
+              return (
+                <Link
+                  key={link.path}
+                  to={link.path}
+                  onClick={() => setIsOpen(false)}
+                  className={`text-xl font-bold tracking-tight ${
+                    isActive ? 'text-primary' : 'text-gray-900'
+                  }`}
+                >
+                  {link.name}
+                </Link>
+              );
+            })}
 
             <a
               href={CONTACT_INFO.discord}

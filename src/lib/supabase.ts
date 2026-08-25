@@ -15,12 +15,3 @@ export const supabase = createClient(supabaseUrl, supabaseAnonKey, {
     storageKey: 'arabic-learning-auth-token'
   }
 });
-
-// Diagnose connection issues
-if (supabaseUrl && supabaseAnonKey) {
-  fetch(supabaseUrl, { method: 'HEAD', mode: 'no-cors' })
-    .then(() => console.log('Supabase server is reachable.'))
-    .catch(err => {
-      console.error('Supabase server unreachable (Failed to fetch). Check your VITE_SUPABASE_URL or internet connection.', err);
-    });
-}

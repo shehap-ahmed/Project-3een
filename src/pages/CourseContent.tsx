@@ -168,10 +168,30 @@ export default function CourseContent() {
           }
         }
       } catch (err: any) {
-        console.error('Error fetching course content:', err);
-        setFetchError(err.message === 'Failed to fetch' 
-          ? 'Unable to load course content. This project might be offline.' 
-          : err.message);
+        console.warn('Notice in CourseContent fetch:', err);
+        if (isStatic) {
+          setCourse({
+            id: COURSE_DATA.id,
+            title: COURSE_DATA.title,
+            instructor: COURSE_DATA.instructor
+          });
+          const staticLessons = COURSE_DATA.lessons.map(l => ({
+            id: l.id.toString(),
+            title: l.title,
+            description: l.description,
+            video_url: l.videoId,
+            order: l.id
+          }));
+          setLessons(staticLessons);
+          if (staticLessons.length > 0) {
+            setActiveLesson(staticLessons[0]);
+          }
+          setIsEnrolled(true);
+        } else {
+          setFetchError(err.message === 'Failed to fetch' 
+            ? 'Unable to load course content. The database might be offline.' 
+            : err.message);
+        }
       } finally {
         setLoading(false);
       }

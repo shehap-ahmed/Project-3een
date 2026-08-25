@@ -1,11 +1,82 @@
 import { Link } from 'react-router-dom';
-import { CONTACT_INFO } from '../constants';
+import { useState, useEffect } from 'react';
+import { CONTACT_INFO, NAV_LINKS, NavLinkItem } from '../constants';
 import { Instagram, Mail } from 'lucide-react';
 import DiscordIcon from './DiscordIcon';
+import { supabase } from '../lib/supabase';
+import { User } from '@supabase/supabase-js';
 
 import Logo from './Logo';
 
 export default function Footer() {
+  const [user, setUser] = useState<User | null>(null);
+  const [userRole, setUserRole] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchRole = async (currentUser: User | null) => {
+      if (!currentUser?.email) {
+        setUserRole(null);
+        return;
+      }
+      try {
+        const { data, error } = await supabase
+          .from('user')
+          .select('role')
+          .eq('email', currentUser.email.toLowerCase().trim())
+          .maybeSingle();
+
+        if (!error && data?.role) {
+          setUserRole(data.role.toLowerCase().trim());
+        } else if (currentUser.user_metadata?.role) {
+          setUserRole(String(currentUser.user_metadata.role).toLowerCase().trim());
+        } else {
+          setUserRole('student');
+        }
+      } catch {
+        const metaRole = currentUser.user_metadata?.role || 'student';
+        setUserRole(String(metaRole).toLowerCase().trim());
+      }
+    };
+
+    supabase.auth.getUser()
+      .then((res) => {
+        const currentUser = res?.data?.user ?? null;
+        setUser(currentUser);
+        fetchRole(currentUser);
+      })
+      .catch(() => {
+        setUser(null);
+        setUserRole(null);
+      });
+
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      const currentUser = session?.user ?? null;
+      setUser(currentUser);
+      fetchRole(currentUser);
+    });
+
+    return () => {
+      subscription.unsubscribe();
+    };
+  }, []);
+
+  const isLinkVisible = (link: NavLinkItem) => {
+    if (!link.requiresAuth && !link.requiredRole) {
+      return true;
+    }
+    if (!user) {
+      return false;
+    }
+    if (link.requiredRole) {
+      const normalizedCurrentRole = (userRole || '').toLowerCase().trim();
+      const normalizedRequiredRole = link.requiredRole.toLowerCase().trim();
+      return normalizedCurrentRole === normalizedRequiredRole || normalizedCurrentRole === 'admin';
+    }
+    return true;
+  };
+
+  const visibleLinks = NAV_LINKS.filter(isLinkVisible);
+
   return (
     <footer className="bg-surface border-t border-border py-12 transition-colors duration-300">
       <div className="max-w-7xl mx-auto px-6 md:px-12 grid grid-cols-1 md:grid-cols-3 gap-12">
@@ -24,9 +95,13 @@ export default function Footer() {
         <div>
           <h4 className="font-bold text-text-main mb-4">Quick Links</h4>
           <ul className="space-y-2 text-sm text-text-muted">
-            <li><Link to="/" className="hover:text-primary transition-colors">Home</Link></li>
-            <li><Link to="/courses" className="hover:text-primary transition-colors">Courses</Link></li>
-            <li><Link to="/about" className="hover:text-primary transition-colors">About Us</Link></li>
+            {visibleLinks.map((link) => (
+              <li key={link.path}>
+                <Link to={link.path} className="hover:text-primary transition-colors">
+                  {link.name}
+                </Link>
+              </li>
+            ))}
           </ul>
         </div>
 

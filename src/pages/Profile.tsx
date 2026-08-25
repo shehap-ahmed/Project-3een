@@ -10,6 +10,7 @@ export default function Profile() {
   const [loading, setLoading] = useState(true);
   const [updating, setUpdating] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
+  const [userRole, setUserRole] = useState<string>('student');
   const [message, setMessage] = useState<{ type: 'success' | 'error', text: string } | null>(null);
   const [displayName, setDisplayName] = useState('');
   const navigate = useNavigate();
@@ -21,7 +22,7 @@ export default function Profile() {
         setUser(user);
         setDisplayName(user.user_metadata?.display_name || '');
         
-        // Check for admin role
+        // Check for role
         try {
           const { data, error } = await supabase
             .from('user')
@@ -29,11 +30,13 @@ export default function Profile() {
             .eq('email', user.email?.toLowerCase().trim())
             .maybeSingle();
           
-          if (!error && data?.role?.toLowerCase() === 'admin') {
+          const role = data?.role || user.user_metadata?.role || 'student';
+          setUserRole(role);
+          if (!error && role?.toLowerCase() === 'admin') {
             setIsAdmin(true);
           }
         } catch (err) {
-          console.error("Error checking admin role:", err);
+          console.error("Error checking role:", err);
         }
       } else {
         navigate('/login');
@@ -109,8 +112,11 @@ export default function Profile() {
                 )}
               </div>
               <div>
-                <h2 className="text-xl font-bold text-text-main">{displayName || (isAdmin ? 'Administrator' : 'Student')}</h2>
+                <h2 className="text-xl font-bold text-text-main">{displayName || (isAdmin ? 'Administrator' : userRole === 'aeen' ? '3een Member' : 'Student')}</h2>
                 <p className="text-sm text-text-muted">{user.email}</p>
+                <div className="mt-2 inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-primary/10 text-primary uppercase tracking-wider">
+                  Role: {userRole}
+                </div>
               </div>
               <div className="w-full h-px bg-border my-2" />
               <button

@@ -53,8 +53,7 @@ export default function Courses() {
           .eq('is_published', true);
 
         if (coursesError) {
-          console.error("Courses fetch error:", coursesError);
-          // If fetch fails (e.g. RLS), we'll stay with empty list or fallback
+          console.warn("Courses fetch notice (using fallback):", coursesError.message || coursesError);
           setCourses([]);
         } else if (coursesData && coursesData.length > 0) {
           // Fetch all lessons for these courses
@@ -64,7 +63,7 @@ export default function Courses() {
             .select('id, title, order, course_id')
             .in('course_id', courseIds);
 
-          if (lessonsError) console.warn("Lessons fetch error:", lessonsError);
+          if (lessonsError) console.warn("Lessons fetch notice:", lessonsError.message || lessonsError);
 
           // Map lessons to courses
           const mappedCourses = coursesData.map(course => ({
@@ -88,7 +87,7 @@ export default function Courses() {
               .select('course_id')
               .eq('user_id', session.user.id);
             
-            if (enrollError) console.warn("Enrollment fetch error:", enrollError);
+            if (enrollError) console.warn("Enrollment fetch notice:", enrollError.message || enrollError);
             
             const dbEnrollments = enrollData ? enrollData.map(e => String(e.course_id)) : [];
             const localEnrollments = JSON.parse(localStorage.getItem('local_enrollments') || '[]');
@@ -100,13 +99,11 @@ export default function Courses() {
             setEnrollments(localEnrollments.map((id: any) => String(id)));
           }
         } catch (sessionErr: any) {
-          console.warn("Session/Enrollment fetch error (non-critical):", sessionErr);
+          console.warn("Session/Enrollment fetch notice (non-critical):", sessionErr);
         }
       } catch (err: any) {
-        console.error('Critical error in courses effect:', err);
-        setError(err.message === 'Failed to fetch' 
-          ? 'Unable to connect to the database. This usually means the Supabase project is inactive or your internet connection is down.'
-          : `System error: ${err.message || 'Unknown network error'}`);
+        console.warn('Notice in courses effect:', err);
+        setCourses([]);
       } finally {
         setLoading(false);
       }

@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 import { motion } from 'motion/react';
 import { Link, useNavigate } from 'react-router-dom';
 import { supabase } from '../lib/supabase';
@@ -39,47 +39,30 @@ const staggerContainer = {
 
 export default function Home() {
   const navigate = useNavigate();
-  const [widgetData, setWidgetData] = useState<any>(null);
-
-  useEffect(() => {
-    let active = true;
-    fetch('https://discord.com/api/guilds/823889299325714462/widget.json')
-      .then((res) => {
-        if (!res.ok) throw new Error('Failed to load Discord widget');
-        return res.json();
-      })
-      .then((data) => {
-        if (active) {
-          setWidgetData(data);
-        }
-      })
-      .catch((err) => {
-        console.error('Failed to resolve Discord guild status dynamically:', err);
-      });
-    return () => {
-      active = false;
-    };
-  }, []);
 
   useEffect(() => {
     let active = true;
     const checkOAuthRedirect = async () => {
-      if (window.location.hash.includes('access_token=') || window.location.hash.includes('id_token=')) {
-        const { data: { session } } = await supabase.auth.getSession();
-        if (session && active) {
-          navigate('/courses', { replace: true });
-        } else if (active) {
-          const { data: { subscription } } = supabase.auth.onAuthStateChange((event, currentSession) => {
-            if (currentSession && active) {
+      try {
+        if (window.location.hash.includes('access_token=') || window.location.hash.includes('id_token=')) {
+          const { data: { session } } = await supabase.auth.getSession();
+          if (session && active) {
+            navigate('/courses', { replace: true });
+          } else if (active) {
+            const { data: { subscription } } = supabase.auth.onAuthStateChange((event, currentSession) => {
+              if (currentSession && active) {
+                subscription.unsubscribe();
+                navigate('/courses', { replace: true });
+              }
+            });
+            return () => {
+              active = false;
               subscription.unsubscribe();
-              navigate('/courses', { replace: true });
-            }
-          });
-          return () => {
-            active = false;
-            subscription.unsubscribe();
-          };
+            };
+          }
         }
+      } catch (err) {
+        console.warn('OAuth redirect check notice:', err);
       }
     };
     checkOAuthRedirect();

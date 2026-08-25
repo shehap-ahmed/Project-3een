@@ -1,6 +1,14 @@
-export const NAV_LINKS = [
+export interface NavLinkItem {
+  name: string;
+  path: string;
+  requiredRole?: string;
+  requiresAuth?: boolean;
+}
+
+export const NAV_LINKS: NavLinkItem[] = [
   { name: 'Home', path: '/' },
   { name: 'Courses', path: '/courses' },
+  { name: 'Class 7', path: '/msa-class-7', requiredRole: 'aeen', requiresAuth: true },
   { name: 'About', path: '/about' },
 ];
 

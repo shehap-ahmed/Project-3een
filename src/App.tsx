@@ -12,6 +12,7 @@ import ForgotPassword from './pages/ForgotPassword';
 import ResetPassword from './pages/ResetPassword';
 import Admin from './pages/Admin';
 import AuthCallback from './pages/AuthCallback';
+import MsaClass7 from './pages/MsaClass7';
 import ProtectedRoute from './components/ProtectedRoute';
 import ScrollToTop from './components/ScrollToTop';
 
@@ -55,6 +56,30 @@ function AnimatedRoutes() {
           } 
         />
         <Route path="/about" element={<About />} />
+        <Route 
+          path="/resources/msa-class-7" 
+          element={
+            <ProtectedRoute requiredRole="aeen">
+              <MsaClass7 />
+            </ProtectedRoute>
+          } 
+        />
+        <Route 
+          path="/practice/msa-class-7" 
+          element={
+            <ProtectedRoute requiredRole="aeen">
+              <MsaClass7 />
+            </ProtectedRoute>
+          } 
+        />
+        <Route 
+          path="/msa-class-7" 
+          element={
+            <ProtectedRoute requiredRole="aeen">
+              <MsaClass7 />
+            </ProtectedRoute>
+          } 
+        />
         <Route path="/signup" element={<Signup />} />
         <Route path="/login" element={<Login />} />
         <Route path="/auth/callback" element={<AuthCallback />} />
