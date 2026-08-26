@@ -189,9 +189,6 @@ export default function Courses() {
       className="section-padding space-y-12 md:space-y-16 lg:space-y-24 pb-16 md:pb-24 lg:pb-32"
     >
       <motion.div {...fadeInUp} className="text-center space-y-4 md:space-y-6 pt-12 md:pt-0">
-        <div className="inline-block px-4 py-1 bg-primary/5 text-primary rounded-full text-[10px] md:text-[11px] font-bold uppercase tracking-[0.2em]">
-          Curriculum
-        </div>
         <h1 className="text-3xl md:text-5xl lg:text-6xl font-bold text-text-main tracking-tight leading-tight">
           Our <span className="font-serif italic text-primary">Courses</span>
         </h1>
@@ -215,10 +212,6 @@ export default function Courses() {
         >
           <div className="p-6 md:p-12 lg:p-20 space-y-8 lg:space-y-10">
             <div className="space-y-4 md:space-y-6 text-center lg:text-left">
-              <div className="inline-flex items-center gap-2 px-3 py-1 bg-accent/10 text-accent rounded-full text-[10px] font-bold uppercase tracking-widest mx-auto lg:mx-0">
-                <span className="w-1 h-1 bg-accent rounded-full" />
-                Pilot Program
-              </div>
               <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-text-main leading-tight">{COURSE_DATA.title}</h2>
               <div className="flex flex-wrap justify-center lg:justify-start gap-x-6 gap-y-3 text-xs font-semibold text-text-muted">
                 <div className="flex items-center gap-2">

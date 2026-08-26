@@ -275,15 +275,6 @@ export default function About() {
         <div className="absolute bottom-1/4 right-1/4 w-72 h-72 lg:w-96 lg:h-96 bg-accent/5 rounded-full blur-[100px] -z-10 animate-pulse duration-7000" />
 
         <div className="space-y-6 md:space-y-8 max-w-4xl mx-auto relative z-10">
-          <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.6 }}
-            className="inline-block px-4 py-1.5 bg-primary/5 text-primary rounded-full text-[10px] md:text-[11px] font-bold tracking-[0.2em] uppercase border border-primary/10"
-          >
-            About us
-          </motion.div>
-          
           <motion.h1
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
@@ -331,9 +322,6 @@ export default function About() {
         ref={timelineRef}
       >
         <div className="text-center max-w-3xl mx-auto mb-16 md:mb-28 space-y-4">
-          <div className="inline-block px-4 py-1.5 bg-primary/5 text-primary rounded-full text-[10px] md:text-[11px] font-bold tracking-[0.2em] uppercase">
-            Our story
-          </div>
           <h2 className="text-3xl md:text-5xl font-extrabold tracking-tight text-text-main">
             Our timeline
           </h2>
@@ -594,7 +582,6 @@ export default function About() {
                 <div className="space-y-1.5">
                   <div className="flex items-center gap-2">
                     <h4 className="font-bold text-sm text-text-main group-hover:text-primary transition-colors">Fusha is the priority</h4>
-                    <span className="text-[9px] font-mono font-bold tracking-wider bg-primary/5 text-primary px-1.5 py-0.5 rounded-full uppercase">55% Pref</span>
                   </div>
                   <p className="text-xs text-text-muted leading-relaxed font-normal">
                     Modern Standard Arabic (MSA) was by far the most requested starting point from our community.
@@ -616,7 +603,6 @@ export default function About() {
                 <div className="space-y-1.5">
                   <div className="flex items-center gap-2">
                     <h4 className="font-bold text-sm text-text-main group-hover:text-primary transition-colors">Spoken dialect interest</h4>
-                    <span className="text-[9px] font-mono font-bold tracking-wider bg-emerald-500/5 text-emerald-500 px-1.5 py-0.5 rounded-full uppercase">Global</span>
                   </div>
                   <p className="text-xs text-text-muted leading-relaxed font-normal">
                     Students also wanted to learn spoken dialects like Egyptian, Levantine, Moroccan Darija, and Gulf Arabic.
@@ -638,7 +624,6 @@ export default function About() {
                 <div className="space-y-1.5">
                   <div className="flex items-center gap-2">
                     <h4 className="font-bold text-sm text-text-main group-hover:text-primary transition-colors">Lessons need clear structure</h4>
-                    <span className="text-[9px] font-mono font-bold tracking-wider bg-blue-500/5 text-blue-500 px-1.5 py-0.5 rounded-full uppercase">Cohesion</span>
                   </div>
                   <p className="text-xs text-text-muted leading-relaxed font-normal">
                     Everyone wanted structured lessons and path lists rather than just picking up scattered vocabulary notes.
@@ -660,7 +645,6 @@ export default function About() {
                 <div className="space-y-1.5">
                   <div className="flex items-center gap-2">
                     <h4 className="font-bold text-sm text-text-main group-hover:text-primary transition-colors">Ready for a real commitment</h4>
-                    <span className="text-[9px] font-mono font-bold tracking-wider bg-indigo-500/5 text-indigo-500 px-1.5 py-0.5 rounded-full uppercase">74% Pref</span>
                   </div>
                   <p className="text-xs text-text-muted leading-relaxed font-normal">
                     A huge majority preferred step-by-step courses spread over weeks rather than quick, light overviews.
@@ -682,7 +666,6 @@ export default function About() {
                 <div className="space-y-1.5">
                   <div className="flex items-center gap-2">
                     <h4 className="font-bold text-sm text-text-main group-hover:text-primary transition-colors">Happy to help out</h4>
-                    <span className="text-[9px] font-mono font-bold tracking-wider bg-pink-500/5 text-pink-500 px-1.5 py-0.5 rounded-full uppercase">50% Intent</span>
                   </div>
                   <p className="text-xs text-text-muted leading-relaxed font-normal">
                     Many students said they’d love to help support the project as helper group moderators, worksheets list checkers, or audio reviewers.
@@ -749,9 +732,6 @@ export default function About() {
           
           {/* Header */}
           <div className="text-center space-y-4 max-w-2xl mx-auto">
-            <div className="inline-block px-4 py-1.5 bg-primary/5 text-primary border border-primary/10 rounded-full text-[10px] md:text-[11px] font-bold tracking-[0.2em] uppercase">
-              How we operate
-            </div>
             <h2 className="text-3xl md:text-5xl font-black tracking-tight text-text-main">
               Our educational model
             </h2>
@@ -1140,9 +1120,6 @@ export default function About() {
           
           {/* Header */}
           <div className="text-center space-y-3 max-w-2xl mx-auto">
-            <div className="inline-block px-4 py-1.5 bg-primary/5 text-primary border border-primary/10 rounded-full text-[10px] md:text-[11px] font-bold tracking-[0.2em] uppercase">
-              The Team
-            </div>
             <h2 className="text-3xl md:text-5xl font-black tracking-tight text-text-main">
               Meet the Team
             </h2>
@@ -1461,16 +1438,6 @@ export default function About() {
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--color-primary)/0.03,_transparent)] pointer-events-none" />
         
         <div className="section-padding text-center relative z-10 max-w-4xl mx-auto space-y-6 md:space-y-8">
-          <motion.div
-            initial={{ opacity: 0, scale: 0.8 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5 }}
-            className="w-12 h-12 bg-primary/10 text-primary border border-primary/20 rounded-2xl flex items-center justify-center mx-auto shadow-sm"
-          >
-            <Sparkles size={24} className="animate-pulse" />
-          </motion.div>
-
           {/* Centered statement matching exact text requested */}
           <motion.h2
             initial={{ opacity: 0, y: 20 }}

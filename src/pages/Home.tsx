@@ -5,12 +5,9 @@ import { supabase } from '../lib/supabase';
 import { 
   ArrowRight, 
   HelpCircle, 
-  Compass, 
   BarChart3, 
   Layers, 
   Users, 
-  Heart, 
-  Sparkles,
   BookOpen,
   ArrowUpRight,
   TrendingDown,
@@ -18,7 +15,6 @@ import {
   Lock
 } from 'lucide-react';
 import { CONTACT_INFO } from '../constants';
-import HomeNav from '../components/HomeNav';
 
 const fadeInUp = {
   initial: { opacity: 0, y: 35 },
@@ -73,27 +69,9 @@ export default function Home() {
 
   return (
     <div className="relative overflow-hidden bg-background text-text-main pb-24 md:pb-36 space-y-24 md:space-y-36 lg:space-y-48">
-      {/* BACKGROUND GRAPHICS */}
-      <div className="absolute inset-x-0 top-0 h-[1000px] pointer-events-none -z-10 overflow-hidden">
-        <div className="absolute top-[-20%] left-1/2 -translate-x-1/2 w-[1200px] h-[700px] bg-gradient-to-b from-primary/10 via-accent/5 to-transparent rounded-full blur-[130px] opacity-70" />
-        <div className="absolute top-[400px] right-[-10%] w-[500px] h-[500px] bg-primary/5 rounded-full blur-[120px] opacity-40" />
-        <div className="absolute top-[800px] left-[-10%] w-[600px] h-[600px] bg-accent/5 rounded-full blur-[150px] opacity-30" />
-      </div>
-
       {/* 1. HERO GATEWAY INTRO */}
       <section id="hero-section" className="relative min-h-[85vh] lg:min-h-[90vh] flex flex-col items-center justify-center section-padding text-center">
         <div className="space-y-8 max-w-5xl">
-          {/* Tagline */}
-          <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.8 }}
-            className="inline-flex items-center gap-2 px-4.5 py-2 bg-primary/5 dark:bg-primary/10 border border-primary/10 dark:border-primary/20 rounded-full text-xs font-bold uppercase tracking-wider text-primary dark:text-emerald-400"
-          >
-            <Sparkles size={14} className="animate-pulse" />
-            Learn Arabic with a community
-          </motion.div>
-
           {/* Heading */}
           <motion.h1
             initial={{ opacity: 0, y: 40 }}
@@ -233,10 +211,6 @@ export default function Home() {
       <section id="story-section" className="section-padding">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
           <motion.div {...fadeInUp} className="lg:col-span-7 space-y-6 md:space-y-8">
-            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 bg-accent/5 border border-accent/10 rounded-full text-[10px] md:text-xs font-bold uppercase tracking-wider text-accent">
-              <Compass size={13} />
-              Our story
-            </div>
             <h2 className="text-3xl md:text-5xl font-black tracking-tight text-text-main">
               From a private study group <br />
               <span className="font-serif italic text-primary dark:text-emerald-500 font-normal">to a global project</span>
@@ -394,10 +368,6 @@ export default function Home() {
           {/* Header */}
           <div className="grid lg:grid-cols-12 gap-8 items-end">
             <motion.div {...fadeInUp} className="lg:col-span-8 space-y-4">
-              <div className="inline-flex items-center gap-2 px-3 py-1 bg-accent/10 rounded-full text-[10px] font-bold uppercase tracking-wider text-accent">
-                <Compass size={13} />
-                Core team
-              </div>
               <h2 className="text-3xl md:text-5xl font-black tracking-tight text-text-main">
                 Who is building this?
               </h2>
@@ -460,10 +430,6 @@ export default function Home() {
 
           {/* Header */}
           <div className="max-w-3xl mx-auto space-y-4 relative z-10">
-            <div className="inline-flex items-center gap-2 px-3 py-1 bg-white/5 rounded-full text-[10px] font-bold uppercase tracking-wider text-emerald-400">
-              <Heart size={13} fill="currentColor" />
-              Want to help us?
-            </div>
             <h2 className="text-3xl md:text-5xl lg:text-6xl font-black text-white tracking-tight leading-none">
               Help us build Project 3een
             </h2>
@@ -498,9 +464,6 @@ export default function Home() {
           </div>
         </motion.div>
       </section>
-
-      {/* Dynamic Nav Map */}
-      <HomeNav />
     </div>
   );
 }
