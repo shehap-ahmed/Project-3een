@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { 
   Volume2, 
@@ -8,10 +8,13 @@ import {
   Layers,
   ArrowRight,
   ArrowLeft,
-  Lock
+  Lock,
+  ShieldCheck
 } from 'lucide-react';
 import { MSA_CLASS_7_DATA, SECTIONS_META } from '../data/msaClass7Data';
 import { getAudioByKey } from '../data/msaClass7Audio';
+import { supabase } from '../lib/supabase';
+import { User } from '@supabase/supabase-js';
 
 export default function MsaClass7() {
   const [currentSection, setCurrentSection] = useState<number>(1);
@@ -21,13 +24,62 @@ export default function MsaClass7() {
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
   const [showSectionSelector, setShowSectionSelector] = useState<boolean>(false);
   const [visitedSections, setVisitedSections] = useState<Set<number>>(new Set([1]));
+  const [userRole, setUserRole] = useState<string | null>(null);
 
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
-  // Total sections and lock configuration
+  const fetchRole = useCallback(async (currentUser: User | null) => {
+    if (!currentUser?.email) {
+      setUserRole(null);
+      return;
+    }
+
+    try {
+      const { data, error } = await supabase
+        .from('user')
+        .select('role')
+        .eq('email', currentUser.email.toLowerCase().trim())
+        .maybeSingle();
+
+      if (!error && data?.role) {
+        setUserRole(data.role.toLowerCase().trim());
+      } else if (currentUser.user_metadata?.role) {
+        setUserRole(String(currentUser.user_metadata.role).toLowerCase().trim());
+      } else {
+        setUserRole('student');
+      }
+    } catch {
+      const metaRole = currentUser.user_metadata?.role || 'student';
+      setUserRole(String(metaRole).toLowerCase().trim());
+    }
+  }, []);
+
+  useEffect(() => {
+    // Check initial user and role
+    supabase.auth.getUser()
+      .then((res) => {
+        const currentUser = res?.data?.user ?? null;
+        fetchRole(currentUser);
+      })
+      .catch(() => {
+        setUserRole(null);
+      });
+
+    // Listen for auth state updates
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      fetchRole(session?.user ?? null);
+    });
+
+    return () => {
+      subscription.unsubscribe();
+    };
+  }, [fetchRole]);
+
+  // Total sections and role-based lock configuration
   const totalSections = SECTIONS_META.length;
-  const LOCKED_FROM_SECTION = 5; // Lock from page/section 5 (included) to 24
-  const isSectionLocked = (secId: number) => secId >= LOCKED_FROM_SECTION;
+  const isAdmin = userRole === 'admin';
+  const LOCKED_FROM_SECTION = isAdmin ? 999 : 5; // Admin has all 24 pages unlocked
+  const isSectionLocked = (secId: number) => !isAdmin && secId >= LOCKED_FROM_SECTION;
   const isCurrentLocked = isSectionLocked(currentSection);
   
   // Filter questions for the active section (5 per section)
@@ -182,7 +234,12 @@ export default function MsaClass7() {
           <div className="flex items-center gap-2.5">
             <div className="flex items-center gap-2">
               <span className="text-xs font-mono text-text-muted">
-                {isCurrentLocked ? (
+                {isAdmin ? (
+                  <span className="text-emerald-400 font-semibold flex items-center gap-1.5 bg-primary/10 border border-primary/20 px-2.5 py-1 rounded-full text-[11px]">
+                    <ShieldCheck size={13} className="text-emerald-400" />
+                    Admin Access • Page <strong className="text-white">{currentSection}</strong> of 24
+                  </span>
+                ) : isCurrentLocked ? (
                   <span className="text-amber-400 font-semibold flex items-center gap-1">
                     <Lock size={12} /> Page {currentSection} (Locked)
                   </span>
@@ -195,7 +252,11 @@ export default function MsaClass7() {
               <div className="w-24 h-2 bg-surface rounded-full overflow-hidden border border-border flex">
                 <div 
                   className="h-full bg-primary transition-all duration-300"
-                  style={{ width: `${Math.min(currentSection, 4) * 25}%` }}
+                  style={{ 
+                    width: isAdmin 
+                      ? `${(currentSection / totalSections) * 100}%` 
+                      : `${Math.min(currentSection, 4) * 25}%` 
+                  }}
                 />
               </div>
             </div>
@@ -252,7 +313,7 @@ export default function MsaClass7() {
                     className="absolute top-full left-0 mt-2 w-72 sm:w-80 bg-surface border border-border rounded-2xl p-3 shadow-2xl z-50 max-h-80 overflow-y-auto space-y-1"
                   >
                     <div className="flex justify-between items-center px-2 py-1 mb-2 border-b border-border/40 text-[11px] font-mono text-text-muted uppercase">
-                      <span>Select Page (1–4 Open, 5–24 Locked)</span>
+                      <span>{isAdmin ? 'Select Page (1–24 Admin Unlocked)' : 'Select Page (1–4 Open, 5–24 Locked)'}</span>
                       <span>5 Q&A / Page</span>
                     </div>
                     <div className="grid grid-cols-1 gap-1">
@@ -649,9 +710,7 @@ export default function MsaClass7() {
               }`}
             >
               <span>
-                {currentSection === 4
-                  ? 'Next (Page 5 - Locked)'
-                  : isSectionLocked(currentSection + 1)
+                {isSectionLocked(currentSection + 1)
                   ? `Next Page ${currentSection + 1} (Locked)`
                   : 'Next Page'}
               </span>
@@ -662,9 +721,9 @@ export default function MsaClass7() {
               )}
             </button>
           ) : (
-            <div className="flex items-center gap-2 px-6 py-3.5 rounded-2xl bg-amber-500/10 border border-amber-500/30 text-amber-400 font-bold text-xs sm:text-sm">
-              <Lock size={16} />
-              <span>Pages 5–24 Locked</span>
+            <div className="flex items-center gap-2 px-6 py-3.5 rounded-2xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 font-bold text-xs sm:text-sm">
+              <ShieldCheck size={16} />
+              <span>Page 24 of 24 (Course Complete)</span>
             </div>
           )}
         </div>
