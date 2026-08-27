@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'motion/react';
 import { supabase } from '../lib/supabase';
+import { getSafeUserRole, checkIsAdmin } from '../lib/authUtils';
 import { User } from '@supabase/supabase-js';
 import { User as UserIcon, Mail, Calendar, Shield, LogOut, Save, AlertCircle } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
@@ -22,22 +23,9 @@ export default function Profile() {
         setUser(user);
         setDisplayName(user.user_metadata?.display_name || '');
         
-        // Check for role
-        try {
-          const { data, error } = await supabase
-            .from('user')
-            .select('role')
-            .eq('email', user.email?.toLowerCase().trim())
-            .maybeSingle();
-          
-          const role = data?.role || user.user_metadata?.role || 'student';
-          setUserRole(role);
-          if (!error && role?.toLowerCase() === 'admin') {
-            setIsAdmin(true);
-          }
-        } catch (err) {
-          console.error("Error checking role:", err);
-        }
+        const role = await getSafeUserRole(user);
+        setUserRole(role);
+        setIsAdmin(checkIsAdmin(role));
       } else {
         navigate('/login');
       }

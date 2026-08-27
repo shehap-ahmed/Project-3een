@@ -290,9 +290,113 @@ export const MSA_CLASS_7_DATA: QAItem[] = [
     answerAudio: "/audio/msa-class-7/a25.mp3",
   },
 
-  // SECTIONS 6 to 24 (Questions 26 - 120 Placeholders)
-  ...Array.from({ length: 95 }, (_, idx) => {
-    const qId = idx + 26;
+  // SECTION 6: Questions 26 - 30
+  {
+    id: 26,
+    sectionId: 6,
+    questionArabic: "هَلِ المَلَابِسُ مُبَلَّلَةٌ؟",
+    questionEnglish: "Are the clothes wet?",
+    questionAudio: "/audio/msa-class-7/q26.mp3",
+    answerArabic: "نَعَمْ، بِسَبَبِ المَطَرِ.",
+    answerEnglish: "Yes, because of the rain.",
+    answerAudio: "/audio/msa-class-7/a26.mp3",
+  },
+  {
+    id: 27,
+    sectionId: 6,
+    questionArabic: "هَلِ السَّرِيرُ مُرِيحٌ؟",
+    questionEnglish: "Is the bed comfortable?",
+    questionAudio: "/audio/msa-class-7/q27.mp3",
+    answerArabic: "جِدّاً، نِمْتُ عَلَيْهِ بِعُمْقٍ.",
+    answerEnglish: "Very, I slept deeply on it.",
+    answerAudio: "/audio/msa-class-7/a27.mp3",
+  },
+  {
+    id: 28,
+    sectionId: 6,
+    questionArabic: "هَلِ الطَّعَامُ مَالِحٌ؟",
+    questionEnglish: "Is the food salty?",
+    questionAudio: "/audio/msa-class-7/q28.mp3",
+    answerArabic: "قَلِيلاً، سَأَزِيدُ المَاءَ.",
+    answerEnglish: "A little, I will increase the water.",
+    answerAudio: "/audio/msa-class-7/a28.mp3",
+  },
+  {
+    id: 29,
+    sectionId: 6,
+    questionArabic: "هَلِ الحَائِطُ نَظِيفٌ؟",
+    questionEnglish: "Is the wall clean?",
+    questionAudio: "/audio/msa-class-7/q29.mp3",
+    answerArabic: "نَعَمْ، قُمْنَا بِطِلَائِهِ.",
+    answerEnglish: "Yes, we painted it.",
+    answerAudio: "/audio/msa-class-7/a29.mp3",
+  },
+  {
+    id: 30,
+    sectionId: 6,
+    questionArabic: "هَلِ الشُّبَّاكُ مَفْتُوحٌ؟",
+    questionEnglish: "Is the window open?",
+    questionAudio: "/audio/msa-class-7/q30.mp3",
+    answerArabic: "لَا، أَغْلَقْتُهُ الآنَ.",
+    answerEnglish: "No, I closed it now.",
+    answerAudio: "/audio/msa-class-7/a30.mp3",
+  },
+
+  // SECTION 7: Questions 31 - 35
+  {
+    id: 31,
+    sectionId: 7,
+    questionArabic: "هَلْ تُجِيدُ السِّبَاحَةَ؟",
+    questionEnglish: "Are you good at swimming?",
+    questionAudio: "/audio/msa-class-7/q31.mp3",
+    answerArabic: "نَعَمْ، تَعَلَّمْتُهَا مُنْذُ الصِّغَرِ.",
+    answerEnglish: "Yes, I learned it since childhood.",
+    answerAudio: "/audio/msa-class-7/a31.mp3",
+  },
+  {
+    id: 32,
+    sectionId: 7,
+    questionArabic: "مَا هِيَ مَوْهِبَتُكَ؟",
+    questionEnglish: "What is your talent?",
+    questionAudio: "/audio/msa-class-7/q32.mp3",
+    answerArabic: "مَوْهِبَتِي هِيَ العَزْفُ.",
+    answerEnglish: "My talent is playing music.",
+    answerAudio: "/audio/msa-class-7/a32.mp3",
+  },
+  {
+    id: 33,
+    sectionId: 7,
+    questionArabic: "هَلْ تُحِبُّ التَّصْوِيرَ؟",
+    questionEnglish: "Do you like photography?",
+    questionAudio: "/audio/msa-class-7/q33.mp3",
+    answerArabic: "نَعَمْ، أُحِبُّ صُوَرَ الطَّبِيعَةِ.",
+    answerEnglish: "Yes, I like nature photos.",
+    answerAudio: "/audio/msa-class-7/a33.mp3",
+  },
+  {
+    id: 34,
+    sectionId: 7,
+    questionArabic: "أَيَّ رِيَاضَةٍ تُمَارِسُ؟",
+    questionEnglish: "What sport do you practice?",
+    questionAudio: "/audio/msa-class-7/q34.mp3",
+    answerArabic: "أُمَارِسُ كُرَةَ القَدَمِ.",
+    answerEnglish: "I practice football.",
+    answerAudio: "/audio/msa-class-7/a34.mp3",
+  },
+  {
+    id: 35,
+    sectionId: 7,
+    questionArabic: "هَلْ تُشَاهِدُ الأَفْلَامَ؟",
+    questionEnglish: "Do you watch movies?",
+    questionAudio: "/audio/msa-class-7/q35.mp3",
+    answerArabic: "نَعَمْ، أُفَضِّلُ الأَفْلَامَ القَصِيرَةَ.",
+    answerEnglish: "Yes, I prefer short movies.",
+    answerAudio: "/audio/msa-class-7/a35.mp3",
+  },
+
+  // SECTIONS 8 to 24 (Questions 36 - 120 Placeholders)
+  ...Array.from({ length: 85 }, (_, idx) => {
+    const qId = idx + 36;
     const secId = Math.floor((qId - 1) / 5) + 1;
     return {
       id: qId,

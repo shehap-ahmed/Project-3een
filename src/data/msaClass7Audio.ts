@@ -82,6 +82,42 @@ export const MSA_CLASS_7_AUDIO_MAP: Record<string, string> = {
   'a19': '/audio/msa-class-7/a19.mp3',
   'q20': '/audio/msa-class-7/q20.mp3',
   'a20': '/audio/msa-class-7/a20.mp3',
+
+  // Page 5 (Questions 21 - 25)
+  'q21': '/audio/msa-class-7/q21.mp3',
+  'a21': '/audio/msa-class-7/a21.mp3',
+  'q22': '/audio/msa-class-7/q22.mp3',
+  'a22': '/audio/msa-class-7/a22.mp3',
+  'q23': '/audio/msa-class-7/q23.mp3',
+  'a23': '/audio/msa-class-7/a23.mp3',
+  'q24': '/audio/msa-class-7/q24.mp3',
+  'a24': '/audio/msa-class-7/a24.mp3',
+  'q25': '/audio/msa-class-7/q25.mp3',
+  'a25': '/audio/msa-class-7/a25.mp3',
+
+  // Page 6 (Questions 26 - 30)
+  'q26': '/audio/msa-class-7/q26.mp3',
+  'a26': '/audio/msa-class-7/a26.mp3',
+  'q27': '/audio/msa-class-7/q27.mp3',
+  'a27': '/audio/msa-class-7/a27.mp3',
+  'q28': '/audio/msa-class-7/q28.mp3',
+  'a28': '/audio/msa-class-7/a28.mp3',
+  'q29': '/audio/msa-class-7/q29.mp3',
+  'a29': '/audio/msa-class-7/a29.mp3',
+  'q30': '/audio/msa-class-7/q30.mp3',
+  'a30': '/audio/msa-class-7/a30.mp3',
+
+  // Page 7 (Questions 31 - 35)
+  'q31': '/audio/msa-class-7/q31.mp3',
+  'a31': '/audio/msa-class-7/a31.mp3',
+  'q32': '/audio/msa-class-7/q32.mp3',
+  'a32': '/audio/msa-class-7/a32.mp3',
+  'q33': '/audio/msa-class-7/q33.mp3',
+  'a33': '/audio/msa-class-7/a33.mp3',
+  'q34': '/audio/msa-class-7/q34.mp3',
+  'a34': '/audio/msa-class-7/a34.mp3',
+  'q35': '/audio/msa-class-7/q35.mp3',
+  'a35': '/audio/msa-class-7/a35.mp3',
 };
 
 /**

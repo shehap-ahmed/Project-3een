@@ -5,6 +5,7 @@ import { Menu, X, LogOut, LogIn } from 'lucide-react';
 import DiscordIcon from './DiscordIcon';
 import { NAV_LINKS, CONTACT_INFO, NavLinkItem } from '../constants';
 import { supabase } from '../lib/supabase';
+import { getSafeUserRole } from '../lib/authUtils';
 import { User } from '@supabase/supabase-js';
 
 import Logo from './Logo';
@@ -17,29 +18,12 @@ export default function Navbar() {
   const location = useLocation();
 
   const fetchRole = useCallback(async (currentUser: User | null) => {
-    if (!currentUser?.email) {
+    if (!currentUser) {
       setUserRole(null);
       return;
     }
-
-    try {
-      const { data, error } = await supabase
-        .from('user')
-        .select('role')
-        .eq('email', currentUser.email.toLowerCase().trim())
-        .maybeSingle();
-
-      if (!error && data?.role) {
-        setUserRole(data.role.toLowerCase().trim());
-      } else if (currentUser.user_metadata?.role) {
-        setUserRole(String(currentUser.user_metadata.role).toLowerCase().trim());
-      } else {
-        setUserRole('student');
-      }
-    } catch {
-      const metaRole = currentUser.user_metadata?.role || 'student';
-      setUserRole(String(metaRole).toLowerCase().trim());
-    }
+    const role = await getSafeUserRole(currentUser);
+    setUserRole(role);
   }, []);
 
   useEffect(() => {
