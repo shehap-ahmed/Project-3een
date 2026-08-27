@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Navigate, useLocation, useNavigate } from 'react-router-dom';
 import { supabase } from '../lib/supabase';
-import { getSafeUserRole } from '../lib/authUtils';
+import { getSafeUserRole, clearCachedRole } from '../lib/authUtils';
 import { Loader2, Lock, ArrowRight } from 'lucide-react';
 
 interface ProtectedRouteProps {
@@ -172,6 +172,7 @@ export default function ProtectedRoute({ children, requireAdmin = false, require
             </button>
             <button 
               onClick={async () => {
+                if (userEmail) clearCachedRole(userEmail);
                 await supabase.auth.signOut();
                 navigate('/login', { state: { from: location } });
               }}

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'motion/react';
 import { supabase } from '../lib/supabase';
-import { getSafeUserRole, checkIsAdmin } from '../lib/authUtils';
+import { getSafeUserRole, checkIsAdmin, clearCachedRole } from '../lib/authUtils';
 import { User } from '@supabase/supabase-js';
 import { User as UserIcon, Mail, Calendar, Shield, LogOut, Save, AlertCircle } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
@@ -54,6 +54,7 @@ export default function Profile() {
   };
 
   const handleLogout = async () => {
+    if (user?.email) clearCachedRole(user.email);
     await supabase.auth.signOut();
     navigate('/');
   };

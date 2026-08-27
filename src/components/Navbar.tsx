@@ -5,7 +5,7 @@ import { Menu, X, LogOut, LogIn } from 'lucide-react';
 import DiscordIcon from './DiscordIcon';
 import { NAV_LINKS, CONTACT_INFO, NavLinkItem } from '../constants';
 import { supabase } from '../lib/supabase';
-import { getSafeUserRole } from '../lib/authUtils';
+import { getSafeUserRole, clearCachedRole } from '../lib/authUtils';
 import { User } from '@supabase/supabase-js';
 
 import Logo from './Logo';
@@ -88,6 +88,7 @@ export default function Navbar() {
   };
 
   const handleLogout = async () => {
+    if (user?.email) clearCachedRole(user.email);
     await supabase.auth.signOut();
     setIsOpen(false);
     navigate('/');
