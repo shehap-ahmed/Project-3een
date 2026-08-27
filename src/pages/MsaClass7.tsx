@@ -26,7 +26,7 @@ export default function MsaClass7() {
 
   // Total sections and lock configuration
   const totalSections = SECTIONS_META.length;
-  const LOCKED_FROM_SECTION = 3; // Lock from page/section 3 (included) to 24
+  const LOCKED_FROM_SECTION = 5; // Lock from page/section 5 (included) to 24
   const isSectionLocked = (secId: number) => secId >= LOCKED_FROM_SECTION;
   const isCurrentLocked = isSectionLocked(currentSection);
   
@@ -252,7 +252,7 @@ export default function MsaClass7() {
                     className="absolute top-full left-0 mt-2 w-72 sm:w-80 bg-surface border border-border rounded-2xl p-3 shadow-2xl z-50 max-h-80 overflow-y-auto space-y-1"
                   >
                     <div className="flex justify-between items-center px-2 py-1 mb-2 border-b border-border/40 text-[11px] font-mono text-text-muted uppercase">
-                      <span>Select Page (1–2 Open, 3–24 Locked)</span>
+                      <span>Select Page (1–4 Open, 5–24 Locked)</span>
                       <span>5 Q&A / Page</span>
                     </div>
                     <div className="grid grid-cols-1 gap-1">
@@ -378,17 +378,17 @@ export default function MsaClass7() {
                   هذا القسم مقفل حالياً — تابع تدريبات الصفحات المتاحة
                 </p>
                 <p className="text-xs sm:text-sm text-text-muted leading-relaxed">
-                  Pages 3 through 24 (Questions 11–120) are locked. You can practice and listen to all questions & answers on the 2 unlocked pages (Questions 1 to 10).
+                  Pages 5 through 24 (Questions 21–120) are locked. You can practice and listen to all questions & answers on the 4 unlocked pages (Questions 1 to 20).
                 </p>
               </div>
 
               {/* Unlocked pages shortcuts */}
               <div className="pt-2">
                 <p className="text-xs font-mono uppercase tracking-wider text-text-muted mb-3">
-                  Unlocked & Active Pages (1–2)
+                  Unlocked & Active Pages (1–4)
                 </p>
-                <div className="grid grid-cols-2 gap-3 max-w-md mx-auto">
-                  {[1, 2].map((secId) => {
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 max-w-xl mx-auto">
+                  {[1, 2, 3, 4].map((secId) => {
                     const meta = SECTIONS_META[secId - 1];
                     return (
                       <button
@@ -418,11 +418,11 @@ export default function MsaClass7() {
 
               <div className="pt-3 flex flex-wrap justify-center gap-3">
                 <button
-                  onClick={() => setCurrentSection(2)}
+                  onClick={() => setCurrentSection(4)}
                   className="px-6 py-3 rounded-xl bg-primary hover:bg-primary/90 text-white font-bold text-xs sm:text-sm transition-all shadow-md flex items-center gap-2"
                 >
                   <ArrowLeft size={16} />
-                  <span>Return to Page 2 (Questions 6–10)</span>
+                  <span>Return to Page 4 (Questions 16–20)</span>
                 </button>
                 <button
                   onClick={() => setCurrentSection(1)}
@@ -649,8 +649,8 @@ export default function MsaClass7() {
               }`}
             >
               <span>
-                {currentSection === 2
-                  ? 'Next (Page 3 - Locked)'
+                {currentSection === 4
+                  ? 'Next (Page 5 - Locked)'
                   : isSectionLocked(currentSection + 1)
                   ? `Next Page ${currentSection + 1} (Locked)`
                   : 'Next Page'}
@@ -664,7 +664,7 @@ export default function MsaClass7() {
           ) : (
             <div className="flex items-center gap-2 px-6 py-3.5 rounded-2xl bg-amber-500/10 border border-amber-500/30 text-amber-400 font-bold text-xs sm:text-sm">
               <Lock size={16} />
-              <span>Pages 3–24 Locked</span>
+              <span>Pages 5–24 Locked</span>
             </div>
           )}
         </div>
