@@ -62,8 +62,14 @@ export default function MsaClass7() {
   // Total sections and role-based lock configuration
   const totalSections = SECTIONS_META.length;
   const isAdmin = userRole === 'admin';
-  const LOCKED_FROM_SECTION = isAdmin ? 999 : 5; // Admin has all 24 pages unlocked
-  const isSectionLocked = (secId: number) => !isAdmin && secId >= LOCKED_FROM_SECTION;
+  const isAeen = userRole === 'aeen';
+  
+  // Unlocked pages:
+  // Admin: all 24 pages unlocked
+  // Aeen: Pages 1 through 6 unlocked (Pages 5 and 6 opened)
+  // Standard / guest: Pages 1 through 4 unlocked
+  const maxUnlockedSection = isAdmin ? 24 : isAeen ? 6 : 4;
+  const isSectionLocked = (secId: number) => secId > maxUnlockedSection;
   const isCurrentLocked = isSectionLocked(currentSection);
   
   // Filter questions for the active section (5 per section)
@@ -223,6 +229,17 @@ export default function MsaClass7() {
                     <ShieldCheck size={13} className="text-emerald-400" />
                     Admin Access • Page <strong className="text-white">{currentSection}</strong> of 24
                   </span>
+                ) : isAeen ? (
+                  isCurrentLocked ? (
+                    <span className="text-amber-400 font-semibold flex items-center gap-1">
+                      <Lock size={12} /> Page {currentSection} (Locked)
+                    </span>
+                  ) : (
+                    <span className="text-emerald-400 font-semibold flex items-center gap-1.5 bg-primary/10 border border-primary/20 px-2.5 py-1 rounded-full text-[11px]">
+                      <Sparkles size={12} className="text-emerald-400" />
+                      3een Access • Page <strong className="text-white">{currentSection}</strong> of 6 Unlocked
+                    </span>
+                  )
                 ) : isCurrentLocked ? (
                   <span className="text-amber-400 font-semibold flex items-center gap-1">
                     <Lock size={12} /> Page {currentSection} (Locked)
@@ -239,6 +256,8 @@ export default function MsaClass7() {
                   style={{ 
                     width: isAdmin 
                       ? `${(currentSection / totalSections) * 100}%` 
+                      : isAeen
+                      ? `${(Math.min(currentSection, 6) / 6) * 100}%`
                       : `${Math.min(currentSection, 4) * 25}%` 
                   }}
                 />
@@ -297,7 +316,7 @@ export default function MsaClass7() {
                     className="absolute top-full left-0 mt-2 w-72 sm:w-80 bg-surface border border-border rounded-2xl p-3 shadow-2xl z-50 max-h-80 overflow-y-auto space-y-1"
                   >
                     <div className="flex justify-between items-center px-2 py-1 mb-2 border-b border-border/40 text-[11px] font-mono text-text-muted uppercase">
-                      <span>{isAdmin ? 'Select Page (1–24 Admin Unlocked)' : 'Select Page (1–4 Open, 5–24 Locked)'}</span>
+                      <span>{isAdmin ? 'Select Page (1–24 Admin Unlocked)' : isAeen ? 'Select Page (1–6 3een Unlocked, 7–24 Locked)' : 'Select Page (1–4 Open, 5–24 Locked)'}</span>
                       <span>5 Q&A / Page</span>
                     </div>
                     <div className="grid grid-cols-1 gap-1">
@@ -423,17 +442,19 @@ export default function MsaClass7() {
                   هذا القسم مقفل حالياً — تابع تدريبات الصفحات المتاحة
                 </p>
                 <p className="text-xs sm:text-sm text-text-muted leading-relaxed">
-                  Pages 5 through 24 (Questions 21–120) are locked. You can practice and listen to all questions & answers on the 4 unlocked pages (Questions 1 to 20).
+                  {isAeen
+                    ? `Pages 7 through 24 (Questions 31–120) are locked. You can practice and listen to all questions & answers on the 6 unlocked pages (Questions 1 to 30).`
+                    : `Pages 5 through 24 (Questions 21–120) are locked. You can practice and listen to all questions & answers on the 4 unlocked pages (Questions 1 to 20).`}
                 </p>
               </div>
 
               {/* Unlocked pages shortcuts */}
               <div className="pt-2">
                 <p className="text-xs font-mono uppercase tracking-wider text-text-muted mb-3">
-                  Unlocked & Active Pages (1–4)
+                  Unlocked & Active Pages (1–{maxUnlockedSection})
                 </p>
-                <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 max-w-xl mx-auto">
-                  {[1, 2, 3, 4].map((secId) => {
+                <div className={`grid gap-3 max-w-2xl mx-auto ${isAeen ? 'grid-cols-2 sm:grid-cols-3 md:grid-cols-6' : 'grid-cols-2 sm:grid-cols-4'}`}>
+                  {Array.from({ length: maxUnlockedSection }, (_, i) => i + 1).map((secId) => {
                     const meta = SECTIONS_META[secId - 1];
                     return (
                       <button
@@ -463,11 +484,11 @@ export default function MsaClass7() {
 
               <div className="pt-3 flex flex-wrap justify-center gap-3">
                 <button
-                  onClick={() => setCurrentSection(4)}
+                  onClick={() => setCurrentSection(maxUnlockedSection)}
                   className="px-6 py-3 rounded-xl bg-primary hover:bg-primary/90 text-white font-bold text-xs sm:text-sm transition-all shadow-md flex items-center gap-2"
                 >
                   <ArrowLeft size={16} />
-                  <span>Return to Page 4 (Questions 16–20)</span>
+                  <span>Return to Page {maxUnlockedSection} (Questions {(maxUnlockedSection - 1) * 5 + 1}–{maxUnlockedSection * 5})</span>
                 </button>
                 <button
                   onClick={() => setCurrentSection(1)}
