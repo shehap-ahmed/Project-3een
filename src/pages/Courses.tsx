@@ -1,9 +1,10 @@
 import { motion } from 'motion/react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { COURSE_DATA } from '../constants';
-import { User, Layers, Users, CheckCircle2, ArrowRight, Globe, BookOpen, Loader2, AlertCircle, Lock } from 'lucide-react';
+import { User, Layers, Users, CheckCircle2, ArrowRight, Globe, BookOpen, Loader2, AlertCircle, Lock, ShieldCheck, Sparkles } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import { supabase } from '../lib/supabase';
+import { getSafeUserRole, checkIsAdmin } from '../lib/authUtils';
 
 const fadeInUp = {
   initial: { opacity: 0, y: 30 },
@@ -38,9 +39,11 @@ export default function Courses() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [enrollingId, setEnrollingId] = useState<string | null>(null);
+  const [isAdmin, setIsAdmin] = useState(false);
+  const [userRole, setUserRole] = useState<string | null>(null);
 
   useEffect(() => {
-    const fetchCourses = async () => {
+    const fetchCoursesAndRole = async () => {
       console.log("Courses: fetchCourses started");
       try {
         setLoading(true);
@@ -77,11 +80,15 @@ export default function Courses() {
           setCourses([]);
         }
 
-        // 2. Separately fetch session and enrollments
+        // 2. Separately fetch session, role, and enrollments
         try {
           const { data: { session } } = await supabase.auth.getSession();
           if (session?.user) {
-            console.log("Fetching enrollments for user:", session.user.id);
+            console.log("Fetching role & enrollments for user:", session.user.id);
+            const role = await getSafeUserRole(session.user);
+            setUserRole(role);
+            setIsAdmin(checkIsAdmin(role));
+
             const { data: enrollData, error: enrollError } = await supabase
               .from('enrollments')
               .select('course_id')
@@ -94,6 +101,8 @@ export default function Courses() {
             const castedLocal = localEnrollments.map((id: any) => String(id));
             setEnrollments([...new Set([...dbEnrollments, ...castedLocal])]);
           } else {
+            setUserRole(null);
+            setIsAdmin(false);
             // Fallback to local enrollments for guests
             const localEnrollments = JSON.parse(localStorage.getItem('local_enrollments') || '[]');
             setEnrollments(localEnrollments.map((id: any) => String(id)));
@@ -109,7 +118,7 @@ export default function Courses() {
       }
     };
 
-    fetchCourses();
+    fetchCoursesAndRole();
   }, []);
 
   const handleEnroll = async (courseIdOrSlug: string, slug?: string) => {
@@ -244,18 +253,40 @@ export default function Courses() {
             </div>
 
             <div className="pt-4 space-y-4">
-              <div className="flex items-center gap-3 p-4 rounded-xl bg-accent/10 border border-accent/20 text-text-main text-xs md:text-sm font-medium">
-                <Lock size={16} className="text-accent shrink-0" />
-                <span>This course will be available after the live course launches.</span>
-              </div>
-              
-              <button 
-                disabled
-                className="w-full py-4 md:py-5 flex items-center justify-center gap-2 bg-text-muted/10 text-text-muted/50 font-bold rounded-full border border-border/80 cursor-not-allowed text-sm uppercase tracking-wider"
-              >
-                <Lock size={16} />
-                <span>Locked</span>
-              </button>
+              {isAdmin ? (
+                <>
+                  <div className="flex items-center gap-3 p-4 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-text-main text-xs md:text-sm font-medium">
+                    <ShieldCheck size={18} className="text-emerald-500 shrink-0" />
+                    <div>
+                      <span className="font-bold text-emerald-500 block sm:inline mr-1">Admin Access Unlocked:</span>
+                      <span className="text-text-muted">You have exclusive admin access to test and view the full MSA Beginner Pilot course.</span>
+                    </div>
+                  </div>
+                  
+                  <Link
+                    to={`/course/${COURSE_DATA.id}`}
+                    className="btn-premium w-full py-4 md:py-5 flex items-center justify-center gap-2 text-sm uppercase tracking-wider group shadow-lg shadow-primary/20"
+                  >
+                    <span>Start Pilot Course</span>
+                    <ArrowRight size={16} className="transition-transform group-hover:translate-x-1" />
+                  </Link>
+                </>
+              ) : (
+                <>
+                  <div className="flex items-center gap-3 p-4 rounded-xl bg-accent/10 border border-accent/20 text-text-main text-xs md:text-sm font-medium">
+                    <Lock size={16} className="text-accent shrink-0" />
+                    <span>This course is in pilot testing and currently unlocked for administrator accounts only.</span>
+                  </div>
+                  
+                  <button 
+                    disabled
+                    className="w-full py-4 md:py-5 flex items-center justify-center gap-2 bg-text-muted/10 text-text-muted/50 font-bold rounded-full border border-border/80 cursor-not-allowed text-sm uppercase tracking-wider"
+                  >
+                    <Lock size={16} />
+                    <span>Locked (Admin Only)</span>
+                  </button>
+                </>
+              )}
             </div>
           </div>
 
