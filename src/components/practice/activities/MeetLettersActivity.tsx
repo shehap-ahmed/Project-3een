@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { ArabicLetter, LetterGroup } from '../../../types/practice';
-import { playAudio } from '../../../utils/audioPlayer';
+import { playArabicAudio, stopAudio } from '../../../utils/audioPlayer';
 import { Volume2, ChevronLeft, ChevronRight, Check } from 'lucide-react';
 
 interface MeetLettersActivityProps {
@@ -32,27 +32,38 @@ export const MeetLettersActivity: React.FC<MeetLettersActivityProps> = ({
 
   // Play letter pronunciation
   const handlePlayLetterAudio = () => {
-    if (currentLetter.audio) {
-      setIsPlayingAudio(true);
-      playAudio(currentLetter.audio);
-      setTimeout(() => setIsPlayingAudio(false), 800);
-    }
+    if (!currentLetter.audio) return;
+    setIsPlayingAudio(true);
+    playArabicAudio(
+      currentLetter.audio,
+      currentLetter.arabic || currentLetter.name,
+      () => setIsPlayingAudio(true),
+      () => setIsPlayingAudio(false)
+    );
   };
 
   // Play word example pronunciation
-  const handlePlayWordAudio = (audioUrl?: string, wordKey?: string) => {
+  const handlePlayWordAudio = (audioUrl?: string, wordArabic?: string, wordKey?: string) => {
     if (!audioUrl) return;
     if (wordKey) setPlayingWordId(wordKey);
-    playAudio(audioUrl);
-    setTimeout(() => setPlayingWordId(null), 1000);
+    playArabicAudio(
+      audioUrl,
+      wordArabic,
+      () => {
+        if (wordKey) setPlayingWordId(wordKey);
+      },
+      () => {
+        setPlayingWordId(null);
+      }
+    );
   };
 
-  // Auto-play letter audio on letter switch
+  // Stop audio on unmount; do not auto-play on initial load
   useEffect(() => {
-    if (currentLetter.audio) {
-      playAudio(currentLetter.audio);
-    }
-  }, [currentLetter.id]);
+    return () => {
+      stopAudio();
+    };
+  }, []);
 
   const handleNext = () => {
     if (!isLastLetterInGroup) {
@@ -82,6 +93,15 @@ export const MeetLettersActivity: React.FC<MeetLettersActivityProps> = ({
 
   const handleSelectLetter = (idx: number) => {
     setCurrentLetterIndex(idx);
+    const targetLetter = currentGroup.letters[idx];
+    if (targetLetter) {
+      playArabicAudio(
+        targetLetter.audio,
+        targetLetter.arabic || targetLetter.name,
+        () => setIsPlayingAudio(true),
+        () => setIsPlayingAudio(false)
+      );
+    }
   };
 
   // Render Arabic word connected naturally
@@ -223,7 +243,7 @@ export const MeetLettersActivity: React.FC<MeetLettersActivityProps> = ({
                 return (
                   <button
                     key={idx}
-                    onClick={() => handlePlayWordAudio(example.audio, wordKey)}
+                    onClick={() => handlePlayWordAudio(example.audio, example.word, wordKey)}
                     className="p-3.5 rounded-xl bg-background/80 border border-border/60 hover:border-primary/50 text-center transition-all flex flex-col items-center justify-between group cursor-pointer"
                     title={`Listen to ${example.word}`}
                   >

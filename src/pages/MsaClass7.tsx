@@ -108,37 +108,7 @@ export default function MsaClass7() {
     setActiveAudioKey(null);
   };
 
-  const speakArabicFallback = (text: string, rawKey: string) => {
-    if (typeof window !== 'undefined' && 'speechSynthesis' in window) {
-      window.speechSynthesis.cancel();
-      const utterance = new SpeechSynthesisUtterance(text);
-      utterance.lang = 'ar-SA';
-      utterance.rate = 0.85;
-
-      const voices = window.speechSynthesis.getVoices();
-      const arabicVoice = voices.find(v => v.lang.startsWith('ar'));
-      if (arabicVoice) utterance.voice = arabicVoice;
-
-      setActiveAudioKey(rawKey);
-      setIsPlaying(true);
-
-      utterance.onend = () => {
-        setIsPlaying(false);
-        setActiveAudioKey(null);
-      };
-      utterance.onerror = () => {
-        setIsPlaying(false);
-        setActiveAudioKey(null);
-      };
-
-      window.speechSynthesis.speak(utterance);
-    } else {
-      setIsPlaying(false);
-      setActiveAudioKey(null);
-    }
-  };
-
-  const handlePlayAudio = async (rawKey: string, audioPath?: string, arabicText?: string) => {
+  const handlePlayAudio = async (rawKey: string, audioPath?: string, _arabicText?: string) => {
     // If user clicks the currently playing item, toggle pause/stop
     if (activeAudioKey === rawKey && isPlaying) {
       stopAudio();
@@ -150,9 +120,6 @@ export default function MsaClass7() {
     const targetAudioPath = audioPath || getAudioByKey(rawKey);
 
     if (!targetAudioPath || targetAudioPath.trim() === '') {
-      if (arabicText) {
-        speakArabicFallback(arabicText, rawKey);
-      }
       return;
     }
 
@@ -168,22 +135,14 @@ export default function MsaClass7() {
       };
 
       audio.onerror = () => {
-        if (arabicText) {
-          speakArabicFallback(arabicText, rawKey);
-        } else {
-          setIsPlaying(false);
-          setActiveAudioKey(null);
-        }
+        setIsPlaying(false);
+        setActiveAudioKey(null);
       };
 
       await audio.play();
     } catch (e) {
-      if (arabicText) {
-        speakArabicFallback(arabicText, rawKey);
-      } else {
-        setIsPlaying(false);
-        setActiveAudioKey(null);
-      }
+      setIsPlaying(false);
+      setActiveAudioKey(null);
     }
   };
 

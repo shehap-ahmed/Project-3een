@@ -17,7 +17,9 @@ export const playAudio = (
   }
 
   try {
-    const audio = new Audio(audioUrl);
+    const safeUrl = encodeURI(decodeURI(audioUrl));
+    const audio = new Audio(safeUrl);
+    audio.preload = 'auto';
     currentAudio = audio;
 
     const handleEnded = () => {
@@ -91,48 +93,16 @@ export const stopAudio = () => {
 };
 
 /**
- * Plays Arabic audio via file URL if provided/valid, or falls back seamlessly
- * to browser Arabic SpeechSynthesis (ar-SA) for real-time diacritics pronunciation.
+ * Plays Arabic audio via file URL only.
+ * Artificial sound / AI SpeechSynthesis fallback is completely disabled.
  */
 export const playArabicAudio = (
   audioUrl?: string,
-  arabicText?: string,
+  _arabicText?: string,
   onStart?: () => void,
   onEnd?: () => void
 ): (() => void) => {
   stopAudio();
-
-  const playTTS = () => {
-    if (!arabicText || typeof window === 'undefined' || !('speechSynthesis' in window)) {
-      if (onEnd) onEnd();
-      return () => {};
-    }
-
-    try {
-      const utterance = new SpeechSynthesisUtterance(arabicText);
-      utterance.lang = 'ar-SA';
-      utterance.rate = 0.8;
-      utterance.pitch = 1.0;
-
-      utterance.onstart = () => {
-        if (onStart) onStart();
-      };
-      utterance.onend = () => {
-        if (onEnd) onEnd();
-      };
-      utterance.onerror = () => {
-        if (onEnd) onEnd();
-      };
-
-      window.speechSynthesis.speak(utterance);
-      return () => {
-        window.speechSynthesis.cancel();
-      };
-    } catch (e) {
-      if (onEnd) onEnd();
-      return () => {};
-    }
-  };
 
   if (audioUrl && audioUrl.trim() !== '') {
     return playAudio(
@@ -140,12 +110,14 @@ export const playArabicAudio = (
       onStart,
       onEnd,
       () => {
-        // Audio file failed to load / 404 -> fallback to TTS
-        playTTS();
+        // Audio file failed to load / 404 - artificial sound is disabled
+        if (onEnd) onEnd();
       }
     );
   }
 
-  return playTTS();
+  // No audio file provided - do not generate artificial sound
+  if (onEnd) onEnd();
+  return () => {};
 };
 

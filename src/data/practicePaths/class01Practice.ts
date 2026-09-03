@@ -27,7 +27,7 @@ export const class01PracticePath: PracticePathData = {
                 arabic: 'ا',
                 name: 'Alif',
                 transliteration: 'ā / a',
-                audio: '/audio/practice/c1/letters/alif.mp3',
+                audio: '/audio/practice/c1/ا.mp3',
                 isolated: 'ا',
                 initial: 'ا',
                 medial: 'ـا',
@@ -40,7 +40,6 @@ export const class01PracticePath: PracticePathData = {
                     word: 'أَسَد',
                     transliteration: 'Asad',
                     meaning: 'Lion',
-                    audio: '/audio/practice/c1/words/asad.mp3',
                     targetLetter: 'أ'
                   },
                   {
@@ -49,7 +48,7 @@ export const class01PracticePath: PracticePathData = {
                     word: 'فَأْر',
                     transliteration: 'Faʼr',
                     meaning: 'Mouse',
-                    audio: '/audio/practice/c1/words/far.mp3',
+                    audio: '/audio/practice/c1/mouse.mp3',
                     targetLetter: 'أ'
                   },
                   {
@@ -58,7 +57,7 @@ export const class01PracticePath: PracticePathData = {
                     word: 'عَصَا',
                     transliteration: 'ʻAṣā',
                     meaning: 'Stick',
-                    audio: '/audio/practice/c1/words/asa.mp3',
+                    audio: '/audio/practice/c1/stick.mp3',
                     targetLetter: 'ا'
                   }
                 ]
@@ -68,7 +67,7 @@ export const class01PracticePath: PracticePathData = {
                 arabic: 'ب',
                 name: 'Bāʼ',
                 transliteration: 'b',
-                audio: '/audio/practice/c1/letters/baa.mp3',
+                audio: '/audio/practice/c1/ب.mp3',
                 isolated: 'ب',
                 initial: 'بـ',
                 medial: 'ـبـ',
@@ -80,7 +79,7 @@ export const class01PracticePath: PracticePathData = {
                     word: 'بَاب',
                     transliteration: 'Bāb',
                     meaning: 'Door',
-                    audio: '/audio/practice/c1/words/bab.mp3',
+                    audio: '/audio/practice/c1/door.mp3',
                     targetLetter: 'ب'
                   },
                   {
@@ -89,7 +88,7 @@ export const class01PracticePath: PracticePathData = {
                     word: 'خُبْز',
                     transliteration: 'Khubz',
                     meaning: 'Bread',
-                    audio: '/audio/practice/c1/words/khubz.mp3',
+                    audio: '/audio/practice/c1/bread.mp3',
                     targetLetter: 'ب'
                   },
                   {
@@ -98,7 +97,7 @@ export const class01PracticePath: PracticePathData = {
                     word: 'كِتَاب',
                     transliteration: 'Kitāb',
                     meaning: 'Book',
-                    audio: '/audio/practice/c1/words/kitab.mp3',
+                    audio: '/audio/practice/c1/book.mp3',
                     targetLetter: 'ب'
                   }
                 ]
@@ -108,7 +107,7 @@ export const class01PracticePath: PracticePathData = {
                 arabic: 'ت',
                 name: 'Tāʼ',
                 transliteration: 't',
-                audio: '/audio/practice/c1/letters/taa.mp3',
+                audio: '/audio/practice/c1/ت.mp3',
                 isolated: 'ت',
                 initial: 'تـ',
                 medial: 'ـتـ',
@@ -120,7 +119,7 @@ export const class01PracticePath: PracticePathData = {
                     word: 'تُفَّاح',
                     transliteration: 'Tuffāḥ',
                     meaning: 'Apple',
-                    audio: '/audio/practice/c1/words/tuffah.mp3',
+                    audio: '/audio/practice/c1/apple.mp3',
                     targetLetter: 'ت'
                   },
                   {
@@ -129,7 +128,7 @@ export const class01PracticePath: PracticePathData = {
                     word: 'كِتَاب',
                     transliteration: 'Kitāb',
                     meaning: 'Book',
-                    audio: '/audio/practice/c1/words/kitab.mp3',
+                    audio: '/audio/practice/c1/book.mp3',
                     targetLetter: 'ت'
                   },
                   {
@@ -138,7 +137,7 @@ export const class01PracticePath: PracticePathData = {
                     word: 'بَيْت',
                     transliteration: 'Bayt',
                     meaning: 'House',
-                    audio: '/audio/practice/c1/words/bayt.mp3',
+                    audio: '/audio/practice/c1/house.mp3',
                     targetLetter: 'ت'
                   }
                 ]
@@ -148,7 +147,7 @@ export const class01PracticePath: PracticePathData = {
                 arabic: 'ث',
                 name: 'Thāʼ',
                 transliteration: 'th',
-                audio: '/audio/practice/c1/letters/thaa.mp3',
+                audio: '/audio/practice/c1/ث.mp3',
                 isolated: 'ث',
                 initial: 'ثـ',
                 medial: 'ـثـ',
@@ -160,7 +159,7 @@ export const class01PracticePath: PracticePathData = {
                     word: 'ثَعْلَب',
                     transliteration: 'Thaʻlab',
                     meaning: 'Fox',
-                    audio: '/audio/practice/c1/words/thalab.mp3',
+                    audio: '/audio/practice/c1/fox.mp3',
                     targetLetter: 'ث'
                   },
                   {
@@ -169,7 +168,7 @@ export const class01PracticePath: PracticePathData = {
                     word: 'مِثَال',
                     transliteration: 'Mithāl',
                     meaning: 'Example',
-                    audio: '/audio/practice/c1/words/mithal.mp3',
+                    audio: '/audio/practice/c1/example.mp3',
                     targetLetter: 'ث'
                   },
                   {
@@ -178,7 +177,7 @@ export const class01PracticePath: PracticePathData = {
                     word: 'مُثَلَّث',
                     transliteration: 'Muthallath',
                     meaning: 'Triangle',
-                    audio: '/audio/practice/c1/words/muthallath.mp3',
+                    audio: '/audio/practice/c1/tringle.mp3',
                     targetLetter: 'ث'
                   }
                 ]
@@ -194,7 +193,7 @@ export const class01PracticePath: PracticePathData = {
                 arabic: 'ج',
                 name: 'Jīm',
                 transliteration: 'j',
-                audio: '/audio/practice/c1/letters/jeem.mp3',
+                audio: '/audio/practice/c1/ج.mp3',
                 isolated: 'ج',
                 initial: 'جـ',
                 medial: 'ـجـ',
@@ -206,7 +205,7 @@ export const class01PracticePath: PracticePathData = {
                     word: 'جَمَل',
                     transliteration: 'Jamal',
                     meaning: 'Camel',
-                    audio: '/audio/practice/c1/words/jamal.mp3',
+                    audio: '/audio/practice/c1/camel.mp3',
                     targetLetter: 'ج'
                   },
                   {
@@ -215,7 +214,7 @@ export const class01PracticePath: PracticePathData = {
                     word: 'شَجَرَة',
                     transliteration: 'Shajarah',
                     meaning: 'Tree',
-                    audio: '/audio/practice/c1/words/shajarah.mp3',
+                    audio: '/audio/practice/c1/tree.mp3',
                     targetLetter: 'ج'
                   },
                   {
@@ -224,7 +223,7 @@ export const class01PracticePath: PracticePathData = {
                     word: 'ثَلْج',
                     transliteration: 'Thalj',
                     meaning: 'Snow / Ice',
-                    audio: '/audio/practice/c1/words/thalj.mp3',
+                    audio: '/audio/practice/c1/snow.mp3',
                     targetLetter: 'ج'
                   }
                 ]
@@ -234,7 +233,7 @@ export const class01PracticePath: PracticePathData = {
                 arabic: 'ح',
                 name: 'Ḥāʼ',
                 transliteration: 'ḥ',
-                audio: '/audio/practice/c1/letters/haa.mp3',
+                audio: '/audio/practice/c1/ح.mp3',
                 isolated: 'ح',
                 initial: 'حـ',
                 medial: 'ـحـ',
@@ -246,7 +245,7 @@ export const class01PracticePath: PracticePathData = {
                     word: 'حَلِيب',
                     transliteration: 'Ḥalīb',
                     meaning: 'Milk',
-                    audio: '/audio/practice/c1/words/halib.mp3',
+                    audio: '/audio/practice/c1/milk.mp3',
                     targetLetter: 'ح'
                   },
                   {
@@ -255,7 +254,6 @@ export const class01PracticePath: PracticePathData = {
                     word: 'بَحْر',
                     transliteration: 'Baḥr',
                     meaning: 'Sea',
-                    audio: '/audio/practice/c1/words/bahr.mp3',
                     targetLetter: 'ح'
                   },
                   {
@@ -264,7 +262,7 @@ export const class01PracticePath: PracticePathData = {
                     word: 'لَوْح',
                     transliteration: 'Lawḥ',
                     meaning: 'Board',
-                    audio: '/audio/practice/c1/words/lawh.mp3',
+                    audio: '/audio/practice/c1/board.mp3',
                     targetLetter: 'ح'
                   }
                 ]
@@ -274,7 +272,7 @@ export const class01PracticePath: PracticePathData = {
                 arabic: 'خ',
                 name: 'Khāʼ',
                 transliteration: 'kh',
-                audio: '/audio/practice/c1/letters/khaa.mp3',
+                audio: '/audio/practice/c1/خ.mp3',
                 isolated: 'خ',
                 initial: 'خـ',
                 medial: 'ـخـ',
@@ -286,7 +284,7 @@ export const class01PracticePath: PracticePathData = {
                     word: 'خَاتَم',
                     transliteration: 'Khātam',
                     meaning: 'Ring',
-                    audio: '/audio/practice/c1/words/khatam.mp3',
+                    audio: '/audio/practice/c1/ring.mp3',
                     targetLetter: 'خ'
                   },
                   {
@@ -295,7 +293,6 @@ export const class01PracticePath: PracticePathData = {
                     word: 'نَخْلَة',
                     transliteration: 'Nakhlah',
                     meaning: 'Palm Tree',
-                    audio: '/audio/practice/c1/words/nakhlah.mp3',
                     targetLetter: 'خ'
                   },
                   {
@@ -304,7 +301,7 @@ export const class01PracticePath: PracticePathData = {
                     word: 'مَطْبَخ',
                     transliteration: 'Maṭbakh',
                     meaning: 'Kitchen',
-                    audio: '/audio/practice/c1/words/matbakh.mp3',
+                    audio: '/audio/practice/c1/kitchen.mp3',
                     targetLetter: 'خ'
                   }
                 ]
@@ -314,7 +311,7 @@ export const class01PracticePath: PracticePathData = {
                 arabic: 'د',
                 name: 'Dāl',
                 transliteration: 'd',
-                audio: '/audio/practice/c1/letters/daal.mp3',
+                audio: '/audio/practice/c1/د.mp3',
                 isolated: 'د',
                 initial: 'د',
                 medial: 'ـد',
@@ -327,7 +324,7 @@ export const class01PracticePath: PracticePathData = {
                     word: 'دَرْس',
                     transliteration: 'Dars',
                     meaning: 'Lesson',
-                    audio: '/audio/practice/c1/words/dars.mp3',
+                    audio: '/audio/practice/c1/lesson.mp3',
                     targetLetter: 'د'
                   },
                   {
@@ -336,7 +333,7 @@ export const class01PracticePath: PracticePathData = {
                     word: 'هُدْهُد',
                     transliteration: 'Hudhud',
                     meaning: 'Hoopoe bird',
-                    audio: '/audio/practice/c1/words/hudhud.mp3',
+                    audio: '/audio/practice/c1/hoopoe.mp3',
                     targetLetter: 'د'
                   },
                   {
@@ -345,7 +342,7 @@ export const class01PracticePath: PracticePathData = {
                     word: 'وَلَد',
                     transliteration: 'Walad',
                     meaning: 'Boy',
-                    audio: '/audio/practice/c1/words/walad.mp3',
+                    audio: '/audio/practice/c1/boy.mp3',
                     targetLetter: 'د'
                   }
                 ]
@@ -355,7 +352,7 @@ export const class01PracticePath: PracticePathData = {
                 arabic: 'ر',
                 name: 'Rāʼ',
                 transliteration: 'r',
-                audio: '/audio/practice/c1/letters/raa.mp3',
+                audio: '/audio/practice/c1/ر.mp3',
                 isolated: 'ر',
                 initial: 'ر',
                 medial: 'ـر',
@@ -368,7 +365,7 @@ export const class01PracticePath: PracticePathData = {
                     word: 'رَجُل',
                     transliteration: 'Rajul',
                     meaning: 'Man',
-                    audio: '/audio/practice/c1/words/rajul.mp3',
+                    audio: '/audio/practice/c1/man.mp3',
                     targetLetter: 'ر'
                   },
                   {
@@ -377,7 +374,7 @@ export const class01PracticePath: PracticePathData = {
                     word: 'وَرْدَة',
                     transliteration: 'Wardah',
                     meaning: 'Rose / Flower',
-                    audio: '/audio/practice/c1/words/wardah.mp3',
+                    audio: '/audio/practice/c1/flower.mp3',
                     targetLetter: 'ر'
                   },
                   {
@@ -386,7 +383,7 @@ export const class01PracticePath: PracticePathData = {
                     word: 'قَمَر',
                     transliteration: 'Qamar',
                     meaning: 'Moon',
-                    audio: '/audio/practice/c1/words/qamar.mp3',
+                    audio: '/audio/practice/c1/moon.mp3',
                     targetLetter: 'ر'
                   }
                 ]
@@ -402,7 +399,7 @@ export const class01PracticePath: PracticePathData = {
                 arabic: 'ذ',
                 name: 'Dhāl',
                 transliteration: 'dh',
-                audio: '/audio/practice/c1/letters/dhaal.mp3',
+                audio: '/audio/practice/c1/ذ.mp3',
                 isolated: 'ذ',
                 initial: 'ذ',
                 medial: 'ـذ',
@@ -415,7 +412,7 @@ export const class01PracticePath: PracticePathData = {
                     word: 'ذُرَة',
                     transliteration: 'Dhurah',
                     meaning: 'Corn',
-                    audio: '/audio/practice/c1/words/dhurah.mp3',
+                    audio: '/audio/practice/c1/corn.mp3',
                     targetLetter: 'ذ'
                   },
                   {
@@ -424,7 +421,7 @@ export const class01PracticePath: PracticePathData = {
                     word: 'جِذْر',
                     transliteration: 'Jidhr',
                     meaning: 'Root',
-                    audio: '/audio/practice/c1/words/jidhr.mp3',
+                    audio: '/audio/practice/c1/root.mp3',
                     targetLetter: 'ذ'
                   },
                   {
@@ -433,7 +430,7 @@ export const class01PracticePath: PracticePathData = {
                     word: 'أُسْتَاذ',
                     transliteration: 'Ustādh',
                     meaning: 'Teacher / Professor',
-                    audio: '/audio/practice/c1/words/ustadh.mp3',
+                    audio: '/audio/practice/c1/Professor.mp3',
                     targetLetter: 'ذ'
                   }
                 ]
@@ -443,7 +440,7 @@ export const class01PracticePath: PracticePathData = {
                 arabic: 'ز',
                 name: 'Zāy',
                 transliteration: 'z',
-                audio: '/audio/practice/c1/letters/zay.mp3',
+                audio: '/audio/practice/c1/ز.mp3',
                 isolated: 'ز',
                 initial: 'ز',
                 medial: 'ـز',
@@ -456,7 +453,7 @@ export const class01PracticePath: PracticePathData = {
                     word: 'زَيْتُون',
                     transliteration: 'Zaytūn',
                     meaning: 'Olives',
-                    audio: '/audio/practice/c1/words/zaytun.mp3',
+                    audio: '/audio/practice/c1/olives.mp3',
                     targetLetter: 'ز'
                   },
                   {
@@ -465,7 +462,7 @@ export const class01PracticePath: PracticePathData = {
                     word: 'مَوْزَة',
                     transliteration: 'Mawzah',
                     meaning: 'Banana',
-                    audio: '/audio/practice/c1/words/mawzah.mp3',
+                    audio: '/audio/practice/c1/banana.mp3',
                     targetLetter: 'ز'
                   },
                   {
@@ -474,7 +471,7 @@ export const class01PracticePath: PracticePathData = {
                     word: 'كَنْز',
                     transliteration: 'Kanz',
                     meaning: 'Treasure',
-                    audio: '/audio/practice/c1/words/kanz.mp3',
+                    audio: '/audio/practice/c1/treasure.mp3',
                     targetLetter: 'ز'
                   }
                 ]
@@ -484,7 +481,7 @@ export const class01PracticePath: PracticePathData = {
                 arabic: 'س',
                 name: 'Sīn',
                 transliteration: 's',
-                audio: '/audio/practice/c1/letters/seen.mp3',
+                audio: '/audio/practice/c1/س.mp3',
                 isolated: 'س',
                 initial: 'سـ',
                 medial: 'ـسـ',
@@ -496,7 +493,7 @@ export const class01PracticePath: PracticePathData = {
                     word: 'سَمَكَة',
                     transliteration: 'Samakah',
                     meaning: 'Fish',
-                    audio: '/audio/practice/c1/words/samakah.mp3',
+                    audio: '/audio/practice/c1/fish.mp3',
                     targetLetter: 'س'
                   },
                   {
@@ -505,7 +502,6 @@ export const class01PracticePath: PracticePathData = {
                     word: 'مَسْجِد',
                     transliteration: 'Masjid',
                     meaning: 'Mosque',
-                    audio: '/audio/practice/c1/words/masjid.mp3',
                     targetLetter: 'س'
                   },
                   {
@@ -514,7 +510,7 @@ export const class01PracticePath: PracticePathData = {
                     word: 'شَمْس',
                     transliteration: 'Shams',
                     meaning: 'Sun',
-                    audio: '/audio/practice/c1/words/shams.mp3',
+                    audio: '/audio/practice/c1/sun.mp3',
                     targetLetter: 'س'
                   }
                 ]
@@ -524,7 +520,7 @@ export const class01PracticePath: PracticePathData = {
                 arabic: 'ش',
                 name: 'Shīn',
                 transliteration: 'sh',
-                audio: '/audio/practice/c1/letters/sheen.mp3',
+                audio: '/audio/practice/c1/ش.mp3',
                 isolated: 'ش',
                 initial: 'شـ',
                 medial: 'ـشـ',
@@ -536,7 +532,7 @@ export const class01PracticePath: PracticePathData = {
                     word: 'شَمْس',
                     transliteration: 'Shams',
                     meaning: 'Sun',
-                    audio: '/audio/practice/c1/words/shams.mp3',
+                    audio: '/audio/practice/c1/sun.mp3',
                     targetLetter: 'ش'
                   },
                   {
@@ -545,7 +541,7 @@ export const class01PracticePath: PracticePathData = {
                     word: 'مِشْمِش',
                     transliteration: 'Mishmish',
                     meaning: 'Apricot',
-                    audio: '/audio/practice/c1/words/mishmish.mp3',
+                    audio: '/audio/practice/c1/apricot.mp3',
                     targetLetter: 'ش'
                   },
                   {
@@ -554,7 +550,6 @@ export const class01PracticePath: PracticePathData = {
                     word: 'عُشّ',
                     transliteration: 'ʻUshsh',
                     meaning: 'Nest',
-                    audio: '/audio/practice/c1/words/ush.mp3',
                     targetLetter: 'ش'
                   }
                 ]
@@ -564,7 +559,7 @@ export const class01PracticePath: PracticePathData = {
                 arabic: 'ص',
                 name: 'Ṣād',
                 transliteration: 'ṣ',
-                audio: '/audio/practice/c1/letters/saad.mp3',
+                audio: '/audio/practice/c1/ص.mp3',
                 isolated: 'ص',
                 initial: 'صـ',
                 medial: 'ـصـ',
@@ -576,7 +571,7 @@ export const class01PracticePath: PracticePathData = {
                     word: 'صَقْر',
                     transliteration: 'Ṣaqr',
                     meaning: 'Falcon',
-                    audio: '/audio/practice/c1/words/saqr.mp3',
+                    audio: '/audio/practice/c1/falcon.mp3',
                     targetLetter: 'ص'
                   },
                   {
@@ -585,7 +580,7 @@ export const class01PracticePath: PracticePathData = {
                     word: 'عَصِير',
                     transliteration: 'ʻAṣīr',
                     meaning: 'Juice',
-                    audio: '/audio/practice/c1/words/asir.mp3',
+                    audio: '/audio/practice/c1/juice.mp3',
                     targetLetter: 'ص'
                   },
                   {
@@ -594,7 +589,7 @@ export const class01PracticePath: PracticePathData = {
                     word: 'قَفَص',
                     transliteration: 'Qafaṣ',
                     meaning: 'Cage',
-                    audio: '/audio/practice/c1/words/qafas.mp3',
+                    audio: '/audio/practice/c1/cage.mp3',
                     targetLetter: 'ص'
                   }
                 ]
@@ -610,7 +605,7 @@ export const class01PracticePath: PracticePathData = {
                 arabic: 'ض',
                 name: 'Ḍād',
                 transliteration: 'ḍ',
-                audio: '/audio/practice/c1/letters/daad.mp3',
+                audio: '/audio/practice/c1/ض.mp3',
                 isolated: 'ض',
                 initial: 'ضـ',
                 medial: 'ـضـ',
@@ -622,7 +617,7 @@ export const class01PracticePath: PracticePathData = {
                     word: 'ضَوْء',
                     transliteration: 'Ḍawʼ',
                     meaning: 'Light',
-                    audio: '/audio/practice/c1/words/daw.mp3',
+                    audio: '/audio/practice/c1/light.mp3',
                     targetLetter: 'ض'
                   },
                   {
@@ -631,7 +626,7 @@ export const class01PracticePath: PracticePathData = {
                     word: 'خُضَار',
                     transliteration: 'Khuḍār',
                     meaning: 'Vegetables',
-                    audio: '/audio/practice/c1/words/khudar.mp3',
+                    audio: '/audio/practice/c1/vegetables.mp3',
                     targetLetter: 'ض'
                   },
                   {
@@ -640,7 +635,7 @@ export const class01PracticePath: PracticePathData = {
                     word: 'أَرْض',
                     transliteration: 'Arḍ',
                     meaning: 'Earth / Land',
-                    audio: '/audio/practice/c1/words/ard.mp3',
+                    audio: '/audio/practice/c1/land.mp3',
                     targetLetter: 'ض'
                   }
                 ]
@@ -650,7 +645,7 @@ export const class01PracticePath: PracticePathData = {
                 arabic: 'ط',
                 name: 'Ṭāʼ',
                 transliteration: 'ṭ',
-                audio: '/audio/practice/c1/letters/taa_emphatic.mp3',
+                audio: '/audio/practice/c1/ط.mp3',
                 isolated: 'ط',
                 initial: 'طـ',
                 medial: 'ـطـ',
@@ -662,7 +657,7 @@ export const class01PracticePath: PracticePathData = {
                     word: 'طَيْر',
                     transliteration: 'Ṭayr',
                     meaning: 'Bird',
-                    audio: '/audio/practice/c1/words/tayr.mp3',
+                    audio: '/audio/practice/c1/bird.mp3',
                     targetLetter: 'ط'
                   },
                   {
@@ -671,7 +666,7 @@ export const class01PracticePath: PracticePathData = {
                     word: 'مَطَر',
                     transliteration: 'Maṭar',
                     meaning: 'Rain',
-                    audio: '/audio/practice/c1/words/matar.mp3',
+                    audio: '/audio/practice/c1/rain.mp3',
                     targetLetter: 'ط'
                   },
                   {
@@ -680,7 +675,7 @@ export const class01PracticePath: PracticePathData = {
                     word: 'قِطّ',
                     transliteration: 'Qiṭṭ',
                     meaning: 'Cat',
-                    audio: '/audio/practice/c1/words/qitt.mp3',
+                    audio: '/audio/practice/c1/cat.mp3',
                     targetLetter: 'ط'
                   }
                 ]
@@ -690,7 +685,7 @@ export const class01PracticePath: PracticePathData = {
                 arabic: 'ظ',
                 name: 'Ẓāʼ',
                 transliteration: 'ẓ',
-                audio: '/audio/practice/c1/letters/zaa_emphatic.mp3',
+                audio: '/audio/practice/c1/ظ.mp3',
                 isolated: 'ظ',
                 initial: 'ظـ',
                 medial: 'ـظـ',
@@ -702,7 +697,7 @@ export const class01PracticePath: PracticePathData = {
                     word: 'ظَبْي',
                     transliteration: 'Ẓaby',
                     meaning: 'Gazelle',
-                    audio: '/audio/practice/c1/words/zaby.mp3',
+                    audio: '/audio/practice/c1/gazelle.mp3',
                     targetLetter: 'ظ'
                   },
                   {
@@ -711,7 +706,7 @@ export const class01PracticePath: PracticePathData = {
                     word: 'نَظَّارَة',
                     transliteration: 'Naẓẓārah',
                     meaning: 'Glasses',
-                    audio: '/audio/practice/c1/words/nazzarah.mp3',
+                    audio: '/audio/practice/c1/glasses.mp3',
                     targetLetter: 'ظ'
                   },
                   {
@@ -720,7 +715,7 @@ export const class01PracticePath: PracticePathData = {
                     word: 'حَظّ',
                     transliteration: 'Ḥaẓẓ',
                     meaning: 'Luck / Fortune',
-                    audio: '/audio/practice/c1/words/hazz.mp3',
+                    audio: '/audio/practice/c1/luck.mp3',
                     targetLetter: 'ظ'
                   }
                 ]
@@ -730,7 +725,6 @@ export const class01PracticePath: PracticePathData = {
                 arabic: 'ع',
                 name: 'ʻAyn',
                 transliteration: 'ʻ',
-                audio: '/audio/practice/c1/letters/ayn.mp3',
                 isolated: 'ع',
                 initial: 'عـ',
                 medial: 'ـعـ',
@@ -742,7 +736,7 @@ export const class01PracticePath: PracticePathData = {
                     word: 'عَيْن',
                     transliteration: 'ʻAyn',
                     meaning: 'Eye',
-                    audio: '/audio/practice/c1/words/ayn.mp3',
+                    audio: '/audio/practice/c1/eye.mp3',
                     targetLetter: 'ع'
                   },
                   {
@@ -751,7 +745,7 @@ export const class01PracticePath: PracticePathData = {
                     word: 'مُعَلِّم',
                     transliteration: 'Muʻallim',
                     meaning: 'Teacher',
-                    audio: '/audio/practice/c1/words/muallim.mp3',
+                    audio: '/audio/practice/c1/teacher.mp3',
                     targetLetter: 'ع'
                   },
                   {
@@ -760,7 +754,7 @@ export const class01PracticePath: PracticePathData = {
                     word: 'شَارِع',
                     transliteration: 'Shāriʻ',
                     meaning: 'Street',
-                    audio: '/audio/practice/c1/words/shari.mp3',
+                    audio: '/audio/practice/c1/street.mp3',
                     targetLetter: 'ع'
                   }
                 ]
@@ -770,7 +764,6 @@ export const class01PracticePath: PracticePathData = {
                 arabic: 'غ',
                 name: 'Ghayn',
                 transliteration: 'gh',
-                audio: '/audio/practice/c1/letters/ghayn.mp3',
                 isolated: 'غ',
                 initial: 'غـ',
                 medial: 'ـغـ',
@@ -782,7 +775,7 @@ export const class01PracticePath: PracticePathData = {
                     word: 'غَابَة',
                     transliteration: 'Ghābah',
                     meaning: 'Forest',
-                    audio: '/audio/practice/c1/words/ghabah.mp3',
+                    audio: '/audio/practice/c1/forest.mp3',
                     targetLetter: 'غ'
                   },
                   {
@@ -791,7 +784,7 @@ export const class01PracticePath: PracticePathData = {
                     word: 'بَبَّغَاء',
                     transliteration: 'Babbaghāʼ',
                     meaning: 'Parrot',
-                    audio: '/audio/practice/c1/words/babbagha.mp3',
+                    audio: '/audio/practice/c1/parrot.mp3',
                     targetLetter: 'غ'
                   },
                   {
@@ -800,7 +793,7 @@ export const class01PracticePath: PracticePathData = {
                     word: 'صَمْغ',
                     transliteration: 'Ṣamgh',
                     meaning: 'Glue',
-                    audio: '/audio/practice/c1/words/samgh.mp3',
+                    audio: '/audio/practice/c1/glue.mp3',
                     targetLetter: 'غ'
                   }
                 ]
@@ -816,7 +809,7 @@ export const class01PracticePath: PracticePathData = {
                 arabic: 'ف',
                 name: 'Fāʼ',
                 transliteration: 'f',
-                audio: '/audio/practice/c1/letters/faa.mp3',
+                audio: '/audio/practice/c1/ف.mp3',
                 isolated: 'ف',
                 initial: 'فـ',
                 medial: 'ـفـ',
@@ -828,7 +821,7 @@ export const class01PracticePath: PracticePathData = {
                     word: 'فَم',
                     transliteration: 'Fam',
                     meaning: 'Mouth',
-                    audio: '/audio/practice/c1/words/fam.mp3',
+                    audio: '/audio/practice/c1/mouth.mp3',
                     targetLetter: 'ف'
                   },
                   {
@@ -837,7 +830,7 @@ export const class01PracticePath: PracticePathData = {
                     word: 'دَفْتَر',
                     transliteration: 'Daftar',
                     meaning: 'Notebook',
-                    audio: '/audio/practice/c1/words/daftar.mp3',
+                    audio: '/audio/practice/c1/notebook.mp3',
                     targetLetter: 'ف'
                   },
                   {
@@ -846,7 +839,7 @@ export const class01PracticePath: PracticePathData = {
                     word: 'سَيْف',
                     transliteration: 'Sayf',
                     meaning: 'Sword',
-                    audio: '/audio/practice/c1/words/sayf.mp3',
+                    audio: '/audio/practice/c1/sword.mp3',
                     targetLetter: 'ف'
                   }
                 ]
@@ -856,7 +849,7 @@ export const class01PracticePath: PracticePathData = {
                 arabic: 'ق',
                 name: 'Qāf',
                 transliteration: 'q',
-                audio: '/audio/practice/c1/letters/qaaf.mp3',
+                audio: '/audio/practice/c1/ق.mp3',
                 isolated: 'ق',
                 initial: 'قـ',
                 medial: 'ـقـ',
@@ -868,7 +861,7 @@ export const class01PracticePath: PracticePathData = {
                     word: 'قَلَم',
                     transliteration: 'Qalam',
                     meaning: 'Pen / Pencil',
-                    audio: '/audio/practice/c1/words/qalam.mp3',
+                    audio: '/audio/practice/c1/pen.mp3',
                     targetLetter: 'ق'
                   },
                   {
@@ -877,7 +870,7 @@ export const class01PracticePath: PracticePathData = {
                     word: 'بَقَرَة',
                     transliteration: 'Baqarah',
                     meaning: 'Cow',
-                    audio: '/audio/practice/c1/words/baqarah.mp3',
+                    audio: '/audio/practice/c1/cow.mp3',
                     targetLetter: 'ق'
                   },
                   {
@@ -886,7 +879,7 @@ export const class01PracticePath: PracticePathData = {
                     word: 'سُوق',
                     transliteration: 'Sūq',
                     meaning: 'Market',
-                    audio: '/audio/practice/c1/words/suq.mp3',
+                    audio: '/audio/practice/c1/market.mp3',
                     targetLetter: 'ق'
                   }
                 ]
@@ -896,7 +889,7 @@ export const class01PracticePath: PracticePathData = {
                 arabic: 'ك',
                 name: 'Kāf',
                 transliteration: 'k',
-                audio: '/audio/practice/c1/letters/kaaf.mp3',
+                audio: '/audio/practice/c1/ك.mp3',
                 isolated: 'ك',
                 initial: 'كـ',
                 medial: 'ـكـ',
@@ -908,7 +901,7 @@ export const class01PracticePath: PracticePathData = {
                     word: 'كِتَاب',
                     transliteration: 'Kitāb',
                     meaning: 'Book',
-                    audio: '/audio/practice/c1/words/kitab.mp3',
+                    audio: '/audio/practice/c1/book.mp3',
                     targetLetter: 'ك'
                   },
                   {
@@ -917,7 +910,7 @@ export const class01PracticePath: PracticePathData = {
                     word: 'مَكْتَب',
                     transliteration: 'Maktab',
                     meaning: 'Desk / Office',
-                    audio: '/audio/practice/c1/words/maktab.mp3',
+                    audio: '/audio/practice/c1/office.mp3',
                     targetLetter: 'ك'
                   },
                   {
@@ -926,7 +919,7 @@ export const class01PracticePath: PracticePathData = {
                     word: 'مَلِك',
                     transliteration: 'Malik',
                     meaning: 'King',
-                    audio: '/audio/practice/c1/words/malik.mp3',
+                    audio: '/audio/practice/c1/king.mp3',
                     targetLetter: 'ك'
                   }
                 ]
@@ -936,7 +929,7 @@ export const class01PracticePath: PracticePathData = {
                 arabic: 'ل',
                 name: 'Lām',
                 transliteration: 'l',
-                audio: '/audio/practice/c1/letters/laam.mp3',
+                audio: '/audio/practice/c1/ل.mp3',
                 isolated: 'ل',
                 initial: 'لـ',
                 medial: 'ـلـ',
@@ -948,7 +941,7 @@ export const class01PracticePath: PracticePathData = {
                     word: 'لَيْمُون',
                     transliteration: 'Laymūn',
                     meaning: 'Lemon',
-                    audio: '/audio/practice/c1/words/laymun.mp3',
+                    audio: '/audio/practice/c1/lemon.mp3',
                     targetLetter: 'ل'
                   },
                   {
@@ -957,7 +950,7 @@ export const class01PracticePath: PracticePathData = {
                     word: 'قَلَم',
                     transliteration: 'Qalam',
                     meaning: 'Pen',
-                    audio: '/audio/practice/c1/words/qalam.mp3',
+                    audio: '/audio/practice/c1/pen.mp3',
                     targetLetter: 'ل'
                   },
                   {
@@ -966,7 +959,7 @@ export const class01PracticePath: PracticePathData = {
                     word: 'جَمَل',
                     transliteration: 'Jamal',
                     meaning: 'Camel',
-                    audio: '/audio/practice/c1/words/jamal.mp3',
+                    audio: '/audio/practice/c1/camel.mp3',
                     targetLetter: 'ل'
                   }
                 ]
@@ -976,7 +969,7 @@ export const class01PracticePath: PracticePathData = {
                 arabic: 'م',
                 name: 'Mīm',
                 transliteration: 'm',
-                audio: '/audio/practice/c1/letters/meem.mp3',
+                audio: '/audio/practice/c1/م.mp3',
                 isolated: 'م',
                 initial: 'مـ',
                 medial: 'ـمـ',
@@ -988,7 +981,7 @@ export const class01PracticePath: PracticePathData = {
                     word: 'مَاء',
                     transliteration: 'Māʼ',
                     meaning: 'Water',
-                    audio: '/audio/practice/c1/words/ma.mp3',
+                    audio: '/audio/practice/c1/water.mp3',
                     targetLetter: 'م'
                   },
                   {
@@ -997,7 +990,7 @@ export const class01PracticePath: PracticePathData = {
                     word: 'قَمَر',
                     transliteration: 'Qamar',
                     meaning: 'Moon',
-                    audio: '/audio/practice/c1/words/qamar.mp3',
+                    audio: '/audio/practice/c1/moon.mp3',
                     targetLetter: 'م'
                   },
                   {
@@ -1006,7 +999,7 @@ export const class01PracticePath: PracticePathData = {
                     word: 'غَنَم',
                     transliteration: 'Ghanam',
                     meaning: 'Sheep',
-                    audio: '/audio/practice/c1/words/ghanam.mp3',
+                    audio: '/audio/practice/c1/sheep.mp3',
                     targetLetter: 'م'
                   }
                 ]
@@ -1022,7 +1015,7 @@ export const class01PracticePath: PracticePathData = {
                 arabic: 'ن',
                 name: 'Nūn',
                 transliteration: 'n',
-                audio: '/audio/practice/c1/letters/noon.mp3',
+                audio: '/audio/practice/c1/ن.mp3',
                 isolated: 'ن',
                 initial: 'نـ',
                 medial: 'ـنـ',
@@ -1034,7 +1027,7 @@ export const class01PracticePath: PracticePathData = {
                     word: 'نَجْم',
                     transliteration: 'Najm',
                     meaning: 'Star',
-                    audio: '/audio/practice/c1/words/najm.mp3',
+                    audio: '/audio/practice/c1/star.mp3',
                     targetLetter: 'ن'
                   },
                   {
@@ -1043,7 +1036,7 @@ export const class01PracticePath: PracticePathData = {
                     word: 'عِنَب',
                     transliteration: 'ʻInab',
                     meaning: 'Grapes',
-                    audio: '/audio/practice/c1/words/inab.mp3',
+                    audio: '/audio/practice/c1/grapes.mp3',
                     targetLetter: 'ن'
                   },
                   {
@@ -1052,7 +1045,7 @@ export const class01PracticePath: PracticePathData = {
                     word: 'عَيْن',
                     transliteration: 'ʻAyn',
                     meaning: 'Eye',
-                    audio: '/audio/practice/c1/words/ayn.mp3',
+                    audio: '/audio/practice/c1/eye.mp3',
                     targetLetter: 'ن'
                   }
                 ]
@@ -1062,7 +1055,6 @@ export const class01PracticePath: PracticePathData = {
                 arabic: 'ه',
                 name: 'Hāʼ',
                 transliteration: 'h',
-                audio: '/audio/practice/c1/letters/haa_soft.mp3',
                 isolated: 'ه',
                 initial: 'هـ',
                 medial: 'ـهـ',
@@ -1074,7 +1066,7 @@ export const class01PracticePath: PracticePathData = {
                     word: 'هَرَم',
                     transliteration: 'Haram',
                     meaning: 'Pyramid',
-                    audio: '/audio/practice/c1/words/haram.mp3',
+                    audio: '/audio/practice/c1/pyramid.mp3',
                     targetLetter: 'ه'
                   },
                   {
@@ -1083,7 +1075,7 @@ export const class01PracticePath: PracticePathData = {
                     word: 'نَهْر',
                     transliteration: 'Nahr',
                     meaning: 'River',
-                    audio: '/audio/practice/c1/words/nahr.mp3',
+                    audio: '/audio/practice/c1/river.mp3',
                     targetLetter: 'ه'
                   },
                   {
@@ -1092,7 +1084,7 @@ export const class01PracticePath: PracticePathData = {
                     word: 'وَجْه',
                     transliteration: 'Wajh',
                     meaning: 'Face',
-                    audio: '/audio/practice/c1/words/wajh.mp3',
+                    audio: '/audio/practice/c1/face.mp3',
                     targetLetter: 'ه'
                   }
                 ]
@@ -1102,7 +1094,7 @@ export const class01PracticePath: PracticePathData = {
                 arabic: 'و',
                 name: 'Wāw',
                 transliteration: 'w / ū',
-                audio: '/audio/practice/c1/letters/waw.mp3',
+                audio: '/audio/practice/c1/و.mp3',
                 isolated: 'و',
                 initial: 'و',
                 medial: 'ـو',
@@ -1115,7 +1107,7 @@ export const class01PracticePath: PracticePathData = {
                     word: 'وَرْدَة',
                     transliteration: 'Wardah',
                     meaning: 'Rose',
-                    audio: '/audio/practice/c1/words/wardah.mp3',
+                    audio: '/audio/practice/c1/flower.mp3',
                     targetLetter: 'و'
                   },
                   {
@@ -1124,7 +1116,7 @@ export const class01PracticePath: PracticePathData = {
                     word: 'طَاوُوس',
                     transliteration: 'Ṭāwūs',
                     meaning: 'Peacock',
-                    audio: '/audio/practice/c1/words/tawus.mp3',
+                    audio: '/audio/practice/c1/peacock.mp3',
                     targetLetter: 'و'
                   },
                   {
@@ -1133,7 +1125,7 @@ export const class01PracticePath: PracticePathData = {
                     word: 'دَلْو',
                     transliteration: 'Dalw',
                     meaning: 'Bucket',
-                    audio: '/audio/practice/c1/words/dalw.mp3',
+                    audio: '/audio/practice/c1/bucket.mp3',
                     targetLetter: 'و'
                   }
                 ]
@@ -1143,7 +1135,7 @@ export const class01PracticePath: PracticePathData = {
                 arabic: 'ي',
                 name: 'Yāʼ',
                 transliteration: 'y / ī',
-                audio: '/audio/practice/c1/letters/yaa.mp3',
+                audio: '/audio/practice/c1/ي.mp3',
                 isolated: 'ي',
                 initial: 'يـ',
                 medial: 'ـيـ',
@@ -1155,7 +1147,7 @@ export const class01PracticePath: PracticePathData = {
                     word: 'يَد',
                     transliteration: 'Yad',
                     meaning: 'Hand',
-                    audio: '/audio/practice/c1/words/yad.mp3',
+                    audio: '/audio/practice/c1/hand.mp3',
                     targetLetter: 'ي'
                   },
                   {
@@ -1164,7 +1156,7 @@ export const class01PracticePath: PracticePathData = {
                     word: 'بَيْت',
                     transliteration: 'Bayt',
                     meaning: 'House',
-                    audio: '/audio/practice/c1/words/bayt.mp3',
+                    audio: '/audio/practice/c1/house.mp3',
                     targetLetter: 'ي'
                   },
                   {
@@ -1173,7 +1165,7 @@ export const class01PracticePath: PracticePathData = {
                     word: 'كُرْسِيّ',
                     transliteration: 'Kursī',
                     meaning: 'Chair',
-                    audio: '/audio/practice/c1/words/kursi.mp3',
+                    audio: '/audio/practice/c1/chair.mp3',
                     targetLetter: 'ي'
                   }
                 ]
