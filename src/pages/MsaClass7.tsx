@@ -65,10 +65,9 @@ export default function MsaClass7() {
   const isAeen = userRole === 'aeen';
   
   // Unlocked pages:
-  // Admin: all 24 pages unlocked
-  // Aeen: Pages 1 through 6 unlocked (Pages 5 and 6 opened)
+  // Admin & 3een: all 24 pages unlocked (Questions 1 to 120 fully active)
   // Standard / guest: Pages 1 through 4 unlocked
-  const maxUnlockedSection = isAdmin ? 24 : isAeen ? 6 : 4;
+  const maxUnlockedSection = isAdmin || isAeen ? 24 : 4;
   const isSectionLocked = (secId: number) => secId > maxUnlockedSection;
   const isCurrentLocked = isSectionLocked(currentSection);
   
@@ -196,7 +195,7 @@ export default function MsaClass7() {
                   ) : (
                     <span className="text-emerald-400 font-semibold flex items-center gap-1.5 bg-primary/10 border border-primary/20 px-2.5 py-1 rounded-full text-[11px]">
                       <Sparkles size={12} className="text-emerald-400" />
-                      3een Access • Page <strong className="text-white">{currentSection}</strong> of 6 Unlocked
+                      3een Access • Page <strong className="text-white">{currentSection}</strong> of 24
                     </span>
                   )
                 ) : isCurrentLocked ? (
@@ -213,10 +212,8 @@ export default function MsaClass7() {
                 <div 
                   className="h-full bg-primary transition-all duration-300"
                   style={{ 
-                    width: isAdmin 
+                    width: isAdmin || isAeen
                       ? `${(currentSection / totalSections) * 100}%` 
-                      : isAeen
-                      ? `${(Math.min(currentSection, 6) / 6) * 100}%`
                       : `${Math.min(currentSection, 4) * 25}%` 
                   }}
                 />
@@ -275,7 +272,7 @@ export default function MsaClass7() {
                     className="absolute top-full left-0 mt-2 w-72 sm:w-80 bg-surface border border-border rounded-2xl p-3 shadow-2xl z-50 max-h-80 overflow-y-auto space-y-1"
                   >
                     <div className="flex justify-between items-center px-2 py-1 mb-2 border-b border-border/40 text-[11px] font-mono text-text-muted uppercase">
-                      <span>{isAdmin ? 'Select Page (1–24 Admin Unlocked)' : isAeen ? 'Select Page (1–6 3een Unlocked, 7–24 Locked)' : 'Select Page (1–4 Open, 5–24 Locked)'}</span>
+                      <span>{isAdmin || isAeen ? 'Select Page (1–24 All Unlocked)' : 'Select Page (1–4 Open, 5–24 Locked)'}</span>
                       <span>5 Q&A / Page</span>
                     </div>
                     <div className="grid grid-cols-1 gap-1">
@@ -401,9 +398,7 @@ export default function MsaClass7() {
                   هذا القسم مقفل حالياً — تابع تدريبات الصفحات المتاحة
                 </p>
                 <p className="text-xs sm:text-sm text-text-muted leading-relaxed">
-                  {isAeen
-                    ? `Pages 7 through 24 (Questions 31–120) are locked. You can practice and listen to all questions & answers on the 6 unlocked pages (Questions 1 to 30).`
-                    : `Pages 5 through 24 (Questions 21–120) are locked. You can practice and listen to all questions & answers on the 4 unlocked pages (Questions 1 to 20).`}
+                  Pages 5 through 24 (Questions 21–120) are locked for guest users. You can practice and listen to all questions & answers on the 4 preview pages (Questions 1 to 20).
                 </p>
               </div>
 
