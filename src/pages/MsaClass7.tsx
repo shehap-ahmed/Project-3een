@@ -8,7 +8,6 @@ import {
   Layers,
   ArrowRight,
   ArrowLeft,
-  Lock,
   ShieldCheck
 } from 'lucide-react';
 import { MSA_CLASS_7_DATA, SECTIONS_META } from '../data/msaClass7Data';
@@ -62,14 +61,12 @@ export default function MsaClass7() {
   // Total sections and role-based lock configuration
   const totalSections = SECTIONS_META.length;
   const isAdmin = userRole === 'admin';
-  const isAeen = userRole === 'aeen';
+  const isAeen = userRole === 'aeen' || userRole === '3een';
   
-  // Unlocked pages:
-  // Admin & 3een: all 24 pages unlocked (Questions 1 to 120 fully active)
-  // Standard / guest: Pages 1 through 4 unlocked
-  const maxUnlockedSection = isAdmin || isAeen ? 24 : 4;
-  const isSectionLocked = (secId: number) => secId > maxUnlockedSection;
-  const isCurrentLocked = isSectionLocked(currentSection);
+  // All 24 sections are fully open and unlocked for role: aeen (and admin)
+  const maxUnlockedSection = 24;
+  const isSectionLocked = (_secId: number) => false;
+  const isCurrentLocked = false;
   
   // Filter questions for the active section (5 per section)
   const currentQuestions = MSA_CLASS_7_DATA.filter(
@@ -187,34 +184,18 @@ export default function MsaClass7() {
                     <ShieldCheck size={13} className="text-emerald-400" />
                     Admin Access • Page <strong className="text-white">{currentSection}</strong> of 24
                   </span>
-                ) : isAeen ? (
-                  isCurrentLocked ? (
-                    <span className="text-amber-400 font-semibold flex items-center gap-1">
-                      <Lock size={12} /> Page {currentSection} (Locked)
-                    </span>
-                  ) : (
-                    <span className="text-emerald-400 font-semibold flex items-center gap-1.5 bg-primary/10 border border-primary/20 px-2.5 py-1 rounded-full text-[11px]">
-                      <Sparkles size={12} className="text-emerald-400" />
-                      3een Access • Page <strong className="text-white">{currentSection}</strong> of 24
-                    </span>
-                  )
-                ) : isCurrentLocked ? (
-                  <span className="text-amber-400 font-semibold flex items-center gap-1">
-                    <Lock size={12} /> Page {currentSection} (Locked)
-                  </span>
                 ) : (
-                  <>
-                    Page <strong className="text-text-main">{currentSection}</strong> of 4 Unlocked
-                  </>
+                  <span className="text-emerald-400 font-semibold flex items-center gap-1.5 bg-primary/10 border border-primary/20 px-2.5 py-1 rounded-full text-[11px]">
+                    <Sparkles size={12} className="text-emerald-400" />
+                    3een Access • Page <strong className="text-white">{currentSection}</strong> of 24
+                  </span>
                 )}
               </span>
               <div className="w-24 h-2 bg-surface rounded-full overflow-hidden border border-border flex">
                 <div 
                   className="h-full bg-primary transition-all duration-300"
                   style={{ 
-                    width: isAdmin || isAeen
-                      ? `${(currentSection / totalSections) * 100}%` 
-                      : `${Math.min(currentSection, 4) * 25}%` 
+                    width: `${(currentSection / totalSections) * 100}%` 
                   }}
                 />
               </div>
@@ -272,13 +253,12 @@ export default function MsaClass7() {
                     className="absolute top-full left-0 mt-2 w-72 sm:w-80 bg-surface border border-border rounded-2xl p-3 shadow-2xl z-50 max-h-80 overflow-y-auto space-y-1"
                   >
                     <div className="flex justify-between items-center px-2 py-1 mb-2 border-b border-border/40 text-[11px] font-mono text-text-muted uppercase">
-                      <span>{isAdmin || isAeen ? 'Select Page (1–24 All Unlocked)' : 'Select Page (1–4 Open, 5–24 Locked)'}</span>
+                      <span>Select Page (Pages 1–24 • All Open)</span>
                       <span>5 Q&A / Page</span>
                     </div>
                     <div className="grid grid-cols-1 gap-1">
                       {SECTIONS_META.map((meta) => {
                         const isCurrent = meta.id === currentSection;
-                        const locked = isSectionLocked(meta.id);
                         return (
                           <button
                             key={meta.id}
@@ -288,36 +268,21 @@ export default function MsaClass7() {
                             }}
                             className={`flex items-center justify-between px-3 py-2 rounded-xl text-xs transition-all ${
                               isCurrent
-                                ? locked
-                                  ? 'bg-amber-500/20 border border-amber-500/40 text-amber-300 font-bold shadow-sm'
-                                  : 'bg-primary text-white font-bold shadow-sm'
-                                : locked
-                                ? 'hover:bg-amber-500/5 text-text-muted hover:text-amber-300'
+                                ? 'bg-primary text-white font-bold shadow-sm'
                                 : 'hover:bg-background/80 text-text-main'
                             }`}
                           >
                             <div className="flex items-center gap-2.5">
                               <span className={`w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-mono ${
                                 isCurrent 
-                                  ? locked 
-                                    ? 'bg-amber-500/30 text-amber-300' 
-                                    : 'bg-white/20 text-white' 
-                                  : locked
-                                  ? 'bg-amber-500/10 text-amber-400/70 border border-amber-500/20'
+                                  ? 'bg-white/20 text-white' 
                                   : 'bg-surface border border-border text-text-muted'
                               }`}>
-                                {locked ? <Lock size={10} /> : meta.id}
+                                {meta.id}
                               </span>
-                              <span className="flex items-center gap-1.5">
-                                <span>{meta.title}</span>
-                                {locked && (
-                                  <span className="text-[9px] font-mono px-1.5 py-0.2 rounded bg-amber-500/10 text-amber-400 border border-amber-500/20">
-                                    Locked
-                                  </span>
-                                )}
-                              </span>
+                              <span>{meta.title}</span>
                             </div>
-                            <span className={`text-[10px] font-mono ${isCurrent ? (locked ? 'text-amber-300' : 'text-white/80') : 'text-text-muted'}`}>
+                            <span className={`text-[10px] font-mono ${isCurrent ? 'text-white/80' : 'text-text-muted'}`}>
                               {meta.questionRange}
                             </span>
                           </button>
@@ -367,100 +332,17 @@ export default function MsaClass7() {
         </div>
       </div>
 
-      {/* Main Section Content: 5 Interactive Q&A Cards OR Locked Screen */}
+      {/* Main Section Content: 5 Interactive Q&A Cards (All 24 Pages Unlocked) */}
       <div className="space-y-6">
         <AnimatePresence mode="wait">
-          {isCurrentLocked ? (
-            <motion.div
-              key={`locked-${currentSection}`}
-              initial={{ opacity: 0, scale: 0.97 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.97 }}
-              transition={{ duration: 0.25 }}
-              className="bg-surface rounded-3xl border border-amber-500/30 p-8 sm:p-12 text-center shadow-xl space-y-6 relative overflow-hidden"
-            >
-              {/* Subtle background glow */}
-              <div className="absolute top-0 right-0 w-64 h-64 bg-amber-500/5 rounded-full blur-3xl pointer-events-none" />
-              <div className="absolute bottom-0 left-0 w-64 h-64 bg-primary/5 rounded-full blur-3xl pointer-events-none" />
-
-              <div className="w-20 h-20 rounded-3xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-center mx-auto text-amber-400 shadow-inner">
-                <Lock size={38} className="animate-pulse" />
-              </div>
-
-              <div className="space-y-2 max-w-lg mx-auto">
-                <div className="inline-flex items-center gap-1.5 px-3 py-1 bg-amber-500/10 border border-amber-500/20 text-amber-400 rounded-full text-xs font-mono font-semibold">
-                  <Lock size={12} /> Page {currentSection} of 24 Locked
-                </div>
-                <h2 className="text-2xl sm:text-3xl font-extrabold text-text-main">
-                  {currentMeta.title} is Locked
-                </h2>
-                <p className="text-lg font-serif text-amber-400 font-bold" dir="rtl">
-                  هذا القسم مقفل حالياً — تابع تدريبات الصفحات المتاحة
-                </p>
-                <p className="text-xs sm:text-sm text-text-muted leading-relaxed">
-                  Pages 5 through 24 (Questions 21–120) are locked for guest users. You can practice and listen to all questions & answers on the 4 preview pages (Questions 1 to 20).
-                </p>
-              </div>
-
-              {/* Unlocked pages shortcuts */}
-              <div className="pt-2">
-                <p className="text-xs font-mono uppercase tracking-wider text-text-muted mb-3">
-                  Unlocked & Active Pages (1–{maxUnlockedSection})
-                </p>
-                <div className={`grid gap-3 max-w-2xl mx-auto ${isAeen ? 'grid-cols-2 sm:grid-cols-3 md:grid-cols-6' : 'grid-cols-2 sm:grid-cols-4'}`}>
-                  {Array.from({ length: maxUnlockedSection }, (_, i) => i + 1).map((secId) => {
-                    const meta = SECTIONS_META[secId - 1];
-                    return (
-                      <button
-                        key={secId}
-                        onClick={() => setCurrentSection(secId)}
-                        className="p-3.5 rounded-2xl bg-background border border-border hover:border-primary hover:bg-primary/5 transition-all text-left group shadow-sm"
-                      >
-                        <div className="flex items-center justify-between mb-1.5">
-                          <span className="w-6 h-6 rounded-lg bg-primary/10 text-primary font-mono text-xs font-bold flex items-center justify-center">
-                            {secId}
-                          </span>
-                          <span className="text-[10px] text-emerald-400 font-mono font-semibold">
-                            ✓ Open
-                          </span>
-                        </div>
-                        <div className="text-xs font-bold text-text-main group-hover:text-primary transition-colors truncate">
-                          {meta.title}
-                        </div>
-                        <div className="text-[10px] text-text-muted font-mono">
-                          {meta.questionRange}
-                        </div>
-                      </button>
-                    );
-                  })}
-                </div>
-              </div>
-
-              <div className="pt-3 flex flex-wrap justify-center gap-3">
-                <button
-                  onClick={() => setCurrentSection(maxUnlockedSection)}
-                  className="px-6 py-3 rounded-xl bg-primary hover:bg-primary/90 text-white font-bold text-xs sm:text-sm transition-all shadow-md flex items-center gap-2"
-                >
-                  <ArrowLeft size={16} />
-                  <span>Return to Page {maxUnlockedSection} (Questions {(maxUnlockedSection - 1) * 5 + 1}–{maxUnlockedSection * 5})</span>
-                </button>
-                <button
-                  onClick={() => setCurrentSection(1)}
-                  className="px-6 py-3 rounded-xl bg-background border border-border hover:border-text-muted text-text-main font-semibold text-xs sm:text-sm transition-all"
-                >
-                  Go to Page 1 (Q1–5)
-                </button>
-              </div>
-            </motion.div>
-          ) : (
-            <motion.div
-              key={currentSection}
-              initial={{ opacity: 0, y: 15 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -15 }}
-              transition={{ duration: 0.25, ease: 'easeOut' }}
-              className="space-y-6"
-            >
+          <motion.div
+            key={currentSection}
+            initial={{ opacity: 0, y: 15 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -15 }}
+            transition={{ duration: 0.25, ease: 'easeOut' }}
+            className="space-y-6"
+          >
               {currentQuestions.map((qa, index) => {
                 const qKey = `q${qa.id}`;
                 const aKey = `a${qa.id}`;
@@ -623,7 +505,6 @@ export default function MsaClass7() {
                 );
               })}
             </motion.div>
-          )}
         </AnimatePresence>
       </div>
 
@@ -648,36 +529,20 @@ export default function MsaClass7() {
           {/* Center Progress Pill */}
           <div className="flex items-center gap-2 text-xs font-mono text-text-muted">
             <span>Page</span>
-            <span className={`px-2.5 py-1 rounded-lg border font-bold ${
-              isCurrentLocked 
-                ? 'bg-amber-500/10 border-amber-500/30 text-amber-400'
-                : 'bg-surface border-border text-text-main'
-            }`}>
+            <span className="px-2.5 py-1 rounded-lg border font-bold bg-surface border-border text-text-main">
               {currentSection} / {totalSections}
             </span>
-            <span>{isCurrentLocked ? '(Locked)' : `(${currentMeta.questionRange})`}</span>
+            <span>({currentMeta.questionRange})</span>
           </div>
 
           {/* Next Section Button */}
           {currentSection < totalSections ? (
             <button
               onClick={handleNextSection}
-              className={`w-full sm:w-auto flex items-center justify-center gap-2 px-7 py-3.5 rounded-2xl font-bold text-xs sm:text-sm transition-all duration-200 active:scale-98 ${
-                isSectionLocked(currentSection + 1)
-                  ? 'bg-amber-500/20 hover:bg-amber-500/30 border border-amber-500/40 text-amber-300'
-                  : 'bg-primary hover:bg-primary/90 text-white shadow-[0_0_20px_rgba(0,104,55,0.3)] hover:shadow-[0_0_25px_rgba(0,104,55,0.5)]'
-              }`}
+              className="w-full sm:w-auto flex items-center justify-center gap-2 px-7 py-3.5 rounded-2xl font-bold text-xs sm:text-sm transition-all duration-200 active:scale-98 bg-primary hover:bg-primary/90 text-white shadow-[0_0_20px_rgba(0,104,55,0.3)] hover:shadow-[0_0_25px_rgba(0,104,55,0.5)]"
             >
-              <span>
-                {isSectionLocked(currentSection + 1)
-                  ? `Next Page ${currentSection + 1} (Locked)`
-                  : 'Next Page'}
-              </span>
-              {isSectionLocked(currentSection + 1) ? (
-                <Lock size={15} />
-              ) : (
-                <ArrowRight size={16} />
-              )}
+              <span>Next Page</span>
+              <ArrowRight size={16} />
             </button>
           ) : (
             <div className="flex items-center gap-2 px-6 py-3.5 rounded-2xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 font-bold text-xs sm:text-sm">
@@ -693,26 +558,20 @@ export default function MsaClass7() {
           {SECTIONS_META.map((meta) => {
             const isCurrent = meta.id === currentSection;
             const isVisited = visitedSections.has(meta.id);
-            const locked = isSectionLocked(meta.id);
             return (
               <button
                 key={meta.id}
                 onClick={() => setCurrentSection(meta.id)}
                 className={`min-w-[28px] h-7 px-1 rounded-lg text-xs font-mono font-bold transition-all flex items-center justify-center gap-0.5 ${
                   isCurrent
-                    ? locked
-                      ? 'bg-amber-500/30 border border-amber-500/60 text-amber-300 shadow-md scale-105'
-                      : 'bg-primary text-white shadow-md scale-105'
-                    : locked
-                    ? 'bg-surface/30 border border-border/30 text-text-muted/50 hover:border-amber-500/40 hover:text-amber-300'
+                    ? 'bg-primary text-white shadow-md scale-105'
                     : isVisited
                     ? 'bg-surface border border-emerald-500/30 text-emerald-400 hover:border-emerald-500/60'
                     : 'bg-surface/60 border border-border/50 text-text-muted hover:text-text-main hover:border-border'
                 }`}
-                title={locked ? `${meta.title} (Locked)` : `${meta.title} (${meta.questionRange})`}
+                title={`${meta.title} (${meta.questionRange})`}
               >
                 <span>{meta.id}</span>
-                {locked && <Lock size={9} className="opacity-70" />}
               </button>
             );
           })}
