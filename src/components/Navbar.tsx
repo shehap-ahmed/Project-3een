@@ -100,6 +100,7 @@ export default function Navbar() {
 
   return (
     <nav
+      aria-label="Main navigation"
       className={`fixed top-6 left-0 right-0 z-50 transition-all duration-500 px-6`}
     >
       <div 
@@ -152,6 +153,7 @@ export default function Navbar() {
             <div className="flex items-center gap-6">
               <Link
                 to="/profile"
+                aria-label="User profile"
                 className={`flex items-center justify-center w-10 h-10 rounded-full bg-primary text-white font-bold text-sm transition-all hover:scale-105 active:scale-95 shadow-lg shadow-primary/20 ${
                   location.pathname === '/profile' ? 'ring-2 ring-primary ring-offset-2' : ''
                 }`}
@@ -189,6 +191,7 @@ export default function Navbar() {
           {user && (
             <Link
               to="/profile"
+              aria-label="User profile"
               className={`flex items-center justify-center w-8 h-8 rounded-full bg-primary text-white font-bold text-[10px] transition-all active:scale-95 shadow-lg shadow-primary/20 ${
                 location.pathname === '/profile' ? 'ring-2 ring-primary ring-offset-2' : ''
               }`}
@@ -199,6 +202,8 @@ export default function Navbar() {
           <button
             className="text-text-main p-1"
             onClick={() => setIsOpen(!isOpen)}
+            aria-label={isOpen ? 'Close navigation menu' : 'Open navigation menu'}
+            aria-expanded={isOpen}
           >
             {isOpen ? <X size={20} /> : <Menu size={20} />}
           </button>

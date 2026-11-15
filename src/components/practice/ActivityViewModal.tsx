@@ -2,7 +2,9 @@ import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { PracticeActivity } from '../../types/practice';
 import { MeetLettersActivity } from './activities/MeetLettersActivity';
+import { MeetPronounsActivity } from './activities/MeetPronounsActivity';
 import { HarakatIntroActivity } from './activities/HarakatIntroActivity';
+import { PronounsAdjectivesActivity } from './activities/PronounsAdjectivesActivity';
 import { HearRecognizeActivity } from './activities/HearRecognizeActivity';
 import { FinalChallengeActivity } from './activities/FinalChallengeActivity';
 import { ArrowLeft, CheckCircle2, ArrowRight, Sparkles, X, Check } from 'lucide-react';
@@ -57,9 +59,26 @@ export const ActivityViewModal: React.FC<ActivityViewModalProps> = ({
             isCompleted={isCurrentCompleted}
           />
         );
+      case 'meet-pronouns':
+        return (
+          <MeetPronounsActivity
+            groups={activity.data.groups}
+            onComplete={handleActivityCompleted}
+            isCompleted={isCurrentCompleted}
+            itemLabel={activity.data.itemLabel}
+          />
+        );
       case 'harakat':
         return (
           <HarakatIntroActivity
+            data={activity.data}
+            onComplete={handleActivityCompleted}
+            isCompleted={isCurrentCompleted}
+          />
+        );
+      case 'pronouns-adjectives':
+        return (
+          <PronounsAdjectivesActivity
             data={activity.data}
             onComplete={handleActivityCompleted}
             isCompleted={isCurrentCompleted}

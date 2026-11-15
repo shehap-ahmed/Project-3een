@@ -4,6 +4,7 @@ import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { supabase } from '../lib/supabase';
 import { ArrowRight, Mail, Lock, User, AlertCircle, Loader2 } from 'lucide-react';
 import DiscordIcon from '../components/DiscordIcon';
+import SEO from '../components/SEO';
 
 export default function Signup() {
   const [name, setName] = useState('');
@@ -167,6 +168,12 @@ export default function Signup() {
       exit={{ opacity: 0 }}
       className="min-h-[80vh] flex items-center justify-center section-padding"
     >
+      <SEO
+        title="Create Account – Project 3een"
+        description="Create a Project 3een learner account to join Arabic beginner courses and track your progress."
+        noindex={true}
+        nofollow={false}
+      />
       <div className="w-full max-w-md space-y-8">
         <div className="text-center space-y-2">
           <h1 className="text-4xl font-bold tracking-tight text-text-main">Join Project 3een</h1>

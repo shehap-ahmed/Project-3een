@@ -123,10 +123,12 @@ export const PracticePathSection: React.FC<PracticePathSectionProps> = ({
 
     switch (type) {
       case 'meet-letters':
+      case 'meet-pronouns':
         return <BookOpen size={18} className="text-primary" />;
       case 'letter-connections':
         return <Layers size={18} className="text-primary" />;
       case 'harakat':
+      case 'pronouns-adjectives':
         return <Sparkles size={18} className="text-primary" />;
       case 'hear-recognize':
         return <Volume2 size={18} className="text-primary" />;

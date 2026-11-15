@@ -83,15 +83,19 @@ export const FinalChallengeActivity: React.FC<FinalChallengeActivityProps> = ({
     const hasPassed = scorePercentage >= 75;
 
     // Compute category breakdown
-    const categories = ['letters', 'harakat', 'listening', 'connections'] as const;
     const categoryLabels: Record<string, string> = {
       letters: 'Arabic Letters',
       harakat: 'Harakat (Short Vowels)',
       listening: 'Listening Comprehension',
       connections: 'Letter Connections',
+      pronouns: 'Pronouns Recognition',
+      agreement: 'Pronouns & Adjectives Agreement',
+      masculine_feminine: 'Masculine vs Feminine',
+      completion: 'Sentence Completion',
     };
 
-    const breakdown = categories.map((cat) => {
+    const presentCategories = Array.from(new Set(answers.map((a) => a.category))) as string[];
+    const breakdown = presentCategories.map((cat) => {
       const catAnswers = answers.filter((a) => a.category === cat);
       if (catAnswers.length === 0) return null;
       const catCorrect = catAnswers.filter((a) => a.isCorrect).length;

@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { supabase } from '../lib/supabase';
 import { Lock, AlertCircle, CheckCircle2, Save } from 'lucide-react';
 import Logo from '../components/Logo';
+import SEO from '../components/SEO';
 
 export default function ResetPassword() {
   const [password, setPassword] = useState('');
@@ -74,6 +75,12 @@ export default function ResetPassword() {
 
   return (
     <div className="min-h-screen bg-background flex items-center justify-center p-6">
+      <SEO
+        title="Set New Password – Project 3een"
+        description="Set a new password for your Project 3een account."
+        noindex={true}
+        nofollow={true}
+      />
       <motion.div 
         {...fadeInUp}
         className="w-full max-w-md space-y-8"

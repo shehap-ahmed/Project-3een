@@ -1,0 +1,19 @@
+User-agent: *
+Allow: /
+Allow: /courses
+Allow: /about
+
+Disallow: /admin
+Disallow: /profile
+Disallow: /course-content
+Disallow: /course/
+Disallow: /resources/
+Disallow: /practice/
+Disallow: /msa-class-7
+Disallow: /auth/
+Disallow: /login
+Disallow: /signup
+Disallow: /forgot-password
+Disallow: /reset-password
+
+Sitemap: https://project-3een.vercel.app/sitemap.xml

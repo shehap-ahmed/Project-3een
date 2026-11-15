@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { supabase } from '../lib/supabase';
 import { Loader2, AlertCircle } from 'lucide-react';
+import SEO from '../components/SEO';
 
 export default function AuthCallback() {
   const navigate = useNavigate();
@@ -108,6 +109,12 @@ export default function AuthCallback() {
 
   return (
     <div className="min-h-[70vh] flex flex-col items-center justify-center section-padding text-center">
+      <SEO
+        title="Completing Sign In – Project 3een"
+        description="Completing authentication for Project 3een."
+        noindex={true}
+        nofollow={true}
+      />
       <div className="max-w-md w-full p-8 bg-surface border border-border rounded-[2.5rem] shadow-xl space-y-6">
         {error ? (
           <>

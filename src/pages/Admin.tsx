@@ -17,6 +17,7 @@ import {
   ChevronRight
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import SEO from '../components/SEO';
 
 const fadeInUp = {
   initial: { opacity: 0, y: 20 },
@@ -196,6 +197,12 @@ export default function Admin() {
       animate={{ opacity: 1 }}
       className="min-h-screen bg-background py-8 md:py-12 px-4 sm:px-6 lg:px-8"
     >
+      <SEO
+        title="Admin Dashboard – Project 3een"
+        description="Private administrative dashboard for Project 3een."
+        noindex={true}
+        nofollow={true}
+      />
       <div className="max-w-4xl mx-auto space-y-8 md:space-y-12">
         {/* Header */}
         <div className="flex items-center justify-between">

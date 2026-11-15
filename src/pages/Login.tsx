@@ -4,6 +4,7 @@ import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { supabase } from '../lib/supabase';
 import { ArrowRight, Mail, Lock, AlertCircle, Loader2 } from 'lucide-react';
 import DiscordIcon from '../components/DiscordIcon';
+import SEO from '../components/SEO';
 
 export default function Login() {
   const [email, setEmail] = useState('');
@@ -155,6 +156,12 @@ export default function Login() {
       exit={{ opacity: 0 }}
       className="min-h-[80vh] flex items-center justify-center section-padding"
     >
+      <SEO
+        title="Sign In – Project 3een"
+        description="Sign in to your Project 3een account to access your Arabic courses and learning progress."
+        noindex={true}
+        nofollow={false}
+      />
       <div className="w-full max-w-md space-y-8">
         <div className="text-center space-y-2">
           <h1 className="text-4xl font-bold tracking-tight text-text-main">Welcome Back</h1>

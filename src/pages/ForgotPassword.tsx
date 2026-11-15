@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import { supabase } from '../lib/supabase';
 import { Mail, ArrowLeft, AlertCircle, CheckCircle2, Timer } from 'lucide-react';
 import Logo from '../components/Logo';
+import SEO from '../components/SEO';
 
 export default function ForgotPassword() {
   const [email, setEmail] = useState('');
@@ -76,6 +77,12 @@ export default function ForgotPassword() {
 
   return (
     <div className="min-h-screen bg-background flex items-center justify-center p-6">
+      <SEO
+        title="Reset Password – Project 3een"
+        description="Request a password reset link for your Project 3een account."
+        noindex={true}
+        nofollow={true}
+      />
       <motion.div 
         {...fadeInUp}
         className="w-full max-w-md space-y-8"

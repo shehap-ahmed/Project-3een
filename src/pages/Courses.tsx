@@ -5,6 +5,7 @@ import { User, Layers, Users, CheckCircle2, ArrowRight, Globe, BookOpen, Loader2
 import { useState, useEffect } from 'react';
 import { supabase } from '../lib/supabase';
 import { getSafeUserRole, checkIsAdmin } from '../lib/authUtils';
+import SEO, { getSiteOrigin } from '../components/SEO';
 
 const fadeInUp = {
   initial: { opacity: 0, y: 30 },
@@ -188,6 +189,92 @@ export default function Courses() {
     }
   };
 
+  const origin = getSiteOrigin();
+  const dynamicCourseSchemas = courses.map((course) => ({
+    '@type': 'Course',
+    name: course.title,
+    description: course.description,
+    educationalLevel: 'Beginner',
+    inLanguage: ['en', 'ar'],
+    provider: {
+      '@type': 'EducationalOrganization',
+      name: 'Project 3een',
+      url: `${origin}/`,
+    },
+    ...(course.instructor
+      ? {
+          instructor: {
+            '@type': 'Person',
+            name: course.instructor,
+          },
+        }
+      : {}),
+    url: `${origin}/courses`,
+  }));
+
+  const coursesStructuredData = [
+    {
+      '@type': 'CollectionPage',
+      '@id': `${origin}/courses#webpage`,
+      url: `${origin}/courses`,
+      name: 'Online Arabic Courses for Beginners – Project 3een',
+      description:
+        'Browse online Arabic courses for beginners at Project 3een. Learn Modern Standard Arabic letters, harakat, grammar, and conversation with guided lessons.',
+      inLanguage: 'en',
+      isPartOf: { '@id': `${origin}/#website` },
+    },
+    {
+      '@type': 'BreadcrumbList',
+      itemListElement: [
+        {
+          '@type': 'ListItem',
+          position: 1,
+          name: 'Home',
+          item: `${origin}/`,
+        },
+        {
+          '@type': 'ListItem',
+          position: 2,
+          name: 'Courses',
+          item: `${origin}/courses`,
+        },
+      ],
+    },
+    {
+      '@type': 'ItemList',
+      name: 'Project 3een Arabic Courses',
+      itemListElement: [
+        {
+          '@type': 'ListItem',
+          position: 1,
+          item: {
+            '@type': 'Course',
+            name: COURSE_DATA.title,
+            description:
+              'Structured Modern Standard Arabic course for complete beginners covering Arabic letters, harakat, pronouns, sentence types, verb types, and gender.',
+            educationalLevel: 'Beginner',
+            inLanguage: ['en', 'ar'],
+            provider: {
+              '@type': 'EducationalOrganization',
+              name: 'Project 3een',
+              url: `${origin}/`,
+            },
+            instructor: {
+              '@type': 'Person',
+              name: COURSE_DATA.instructor,
+            },
+            url: `${origin}/courses`,
+          },
+        },
+        ...dynamicCourseSchemas.map((courseSchema, idx) => ({
+          '@type': 'ListItem',
+          position: idx + 2,
+          item: courseSchema,
+        })),
+      ],
+    },
+  ];
+
   return (
     <motion.div
       key={location.pathname}
@@ -197,12 +284,19 @@ export default function Courses() {
       transition={{ duration: 0.6 }}
       className="section-padding space-y-12 md:space-y-16 lg:space-y-24 pb-16 md:pb-24 lg:pb-32"
     >
+      <SEO
+        title="Online Arabic Courses for Beginners – Project 3een"
+        description="Browse online Arabic courses for beginners at Project 3een. Learn Modern Standard Arabic letters, harakat, grammar, and conversation with guided lessons."
+        keywords="online Arabic courses, Arabic for beginners, Modern Standard Arabic, MSA beginner course, Arabic grammar lessons, Project 3een"
+        canonicalPath="/courses"
+        structuredData={coursesStructuredData}
+      />
       <motion.div {...fadeInUp} className="text-center space-y-4 md:space-y-6 pt-12 md:pt-0">
         <h1 className="text-3xl md:text-5xl lg:text-6xl font-bold text-text-main tracking-tight leading-tight">
           Our <span className="font-serif italic text-primary">Courses</span>
         </h1>
         <p className="text-text-muted max-w-xl mx-auto text-base md:text-lg px-4 md:px-0">
-          Step-by-step lessons designed to help you start reading and speaking Arabic.
+          Step-by-step online Arabic courses for beginners, covering Modern Standard Arabic reading, grammar, and speaking.
         </p>
       </motion.div>
 
@@ -320,7 +414,7 @@ export default function Courses() {
         ) : error ? (
           <div className="text-center py-20 bg-red-50 dark:bg-red-900/10 rounded-[2.5rem] border border-red-200 dark:border-red-900/20">
             <AlertCircle className="mx-auto text-red-500 mb-4" size={48} />
-            <h3 className="text-xl font-bold text-red-600 dark:text-red-400">Connection Error</h3>
+            <h2 className="text-xl font-bold text-red-600 dark:text-red-400">Connection Error</h2>
             <p className="text-red-500/80 mt-2 max-w-md mx-auto">{error}</p>
             <button 
               onClick={() => window.location.reload()}
@@ -332,7 +426,7 @@ export default function Courses() {
         ) : courses.length === 0 ? (
           <div className="text-center py-20 bg-surface rounded-[2.5rem] border border-border border-dashed">
             <BookOpen className="mx-auto text-text-muted mb-4" size={48} />
-            <h3 className="text-xl font-bold text-text-main">No courses available yet</h3>
+            <h2 className="text-xl font-bold text-text-main">No courses available yet</h2>
             <p className="text-text-muted mt-2">Check back soon for new Arabic learning content.</p>
           </div>
         ) : (
@@ -354,9 +448,9 @@ export default function Courses() {
                   </div>
                   
                   <div className="space-y-2">
-                    <h3 className="text-xl font-bold text-text-main group-hover:text-primary transition-colors line-clamp-2">
+                    <h2 className="text-xl font-bold text-text-main group-hover:text-primary transition-colors line-clamp-2">
                       {course.title}
-                    </h3>
+                    </h2>
                     <div className="flex items-center gap-2 text-xs font-medium text-text-muted">
                       <User size={14} className="text-primary/60" />
                       {course.instructor}
@@ -370,7 +464,7 @@ export default function Courses() {
                   {/* What You Will Learn Section */}
                   {course.lessons && course.lessons.length > 0 && (
                     <div className="pt-4 space-y-3">
-                      <h4 className="font-bold text-text-main uppercase text-[10px] tracking-widest opacity-60">What you'll learn:</h4>
+                      <h3 className="font-bold text-text-main uppercase text-[10px] tracking-widest opacity-60">What you'll learn:</h3>
                       <div className="grid grid-cols-1 gap-2">
                         {course.lessons.slice(0, 6).map((lesson) => (
                           <div key={lesson.id} className="flex items-center gap-2 text-[11px] font-medium text-text-main opacity-80">

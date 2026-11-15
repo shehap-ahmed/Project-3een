@@ -1,9 +1,10 @@
 import { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence, useScroll, useTransform, useSpring } from 'motion/react';
-import { useLocation } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import AboutNav from '../components/AboutNav';
 import { CONTACT_INFO } from '../constants';
 import DiscordIcon from '../components/DiscordIcon';
+import SEO, { getSiteOrigin } from '../components/SEO';
 import { 
   Globe, 
   MessageSquare, 
@@ -258,6 +259,51 @@ export default function About() {
     if (originalIdx !== -1) setCurrTeamIdx(originalIdx);
   };
 
+  const origin = getSiteOrigin();
+  const aboutStructuredData = [
+    {
+      '@type': 'AboutPage',
+      '@id': `${origin}/about#webpage`,
+      url: `${origin}/about`,
+      name: 'About Project 3een – Our Arabic Learning Community',
+      description:
+        'Discover how Project 3een grew into a global Arabic learning community offering structured Modern Standard Arabic courses, live practice, and peer support.',
+      inLanguage: 'en',
+      isPartOf: { '@id': `${origin}/#website` },
+      about: { '@id': `${origin}/#organization` },
+    },
+    {
+      '@type': 'BreadcrumbList',
+      itemListElement: [
+        {
+          '@type': 'ListItem',
+          position: 1,
+          name: 'Home',
+          item: `${origin}/`,
+        },
+        {
+          '@type': 'ListItem',
+          position: 2,
+          name: 'About',
+          item: `${origin}/about`,
+        },
+      ],
+    },
+    {
+      '@type': 'EducationalOrganization',
+      '@id': `${origin}/#organization`,
+      name: 'Project 3een',
+      alternateName: 'Learn Arabic – Project 3een',
+      url: `${origin}/`,
+      logo: `${origin}/learnarabic-logo_1.png`,
+      email: CONTACT_INFO.email,
+      foundingDate: '2021',
+      sameAs: [CONTACT_INFO.discord, CONTACT_INFO.instagram],
+      description:
+        'Making Arabic learning structured, accessible, and community-driven with Modern Standard Arabic courses for beginners and active Discord practice.',
+    },
+  ];
+
   return (
     <motion.div
       key={location.pathname}
@@ -267,6 +313,13 @@ export default function About() {
       transition={{ duration: 0.6 }}
       className="pb-16 md:pb-24 lg:pb-32 space-y-0 relative"
     >
+      <SEO
+        title="About Project 3een – Our Arabic Learning Community"
+        description="Discover how Project 3een grew into a global Arabic learning community offering structured Modern Standard Arabic courses, live practice, and peer support."
+        keywords="Project 3een, Arabic learning community, Modern Standard Arabic, Arabic for beginners, online Arabic courses, Learn Arabic Discord"
+        canonicalPath="/about"
+        structuredData={aboutStructuredData}
+      />
       <AboutNav />
       {/* SECTION 1: HERO SECTION */}
       <section id="hero-section" className="relative min-h-[85vh] md:min-h-[90vh] flex flex-col items-center justify-center section-padding text-center overflow-hidden">
@@ -1053,7 +1106,7 @@ export default function About() {
                   <div className="p-6 border border-border/40 bg-[#0C1221]/45 rounded-2.5xl text-left flex flex-col justify-between min-h-[230px]">
                     <div className="space-y-3">
                       <span className="text-[10px] font-mono font-bold text-slate-400 uppercase">LIMITATION</span>
-                      <h4 className="font-black text-base text-text-main">apps like duolingo</h4>
+                      <h3 className="font-black text-base text-text-main">apps like duolingo</h3>
                       <p className="text-xs text-text-muted leading-relaxed font-sans font-normal leading-[1.6]">
                         structured , no community
                       </p>
@@ -1069,7 +1122,7 @@ export default function About() {
                     <div className="absolute top-0 right-0 w-24 h-24 bg-primary/10 rounded-full blur-2xl pointer-events-none" />
                     <div className="space-y-3 relative z-10">
                       <span className="text-[10px] font-mono font-bold text-primary uppercase">THE ECOSYSTEM</span>
-                      <h4 className="font-black text-base text-primary">project 3een</h4>
+                      <h3 className="font-black text-base text-primary">project 3een</h3>
                       <p className="text-xs text-text-main leading-relaxed font-sans font-normal leading-[1.6]">
                         structured + community
                       </p>
@@ -1084,7 +1137,7 @@ export default function About() {
                   <div className="p-6 border border-border/40 bg-[#0C1221]/45 rounded-2.5xl text-left flex flex-col justify-between min-h-[230px]">
                     <div className="space-y-3">
                       <span className="text-[10px] font-mono font-bold text-slate-400 uppercase">LIMITATION</span>
-                      <h4 className="font-black text-base text-text-main">discord servers</h4>
+                      <h3 className="font-black text-base text-text-main">discord servers</h3>
                       <p className="text-xs text-text-muted leading-relaxed font-sans font-normal leading-[1.6]">
                         community , no structure
                       </p>
@@ -1358,13 +1411,13 @@ export default function About() {
                                 </a>
                               )}
                               {currentMember.id === "horus" && (
-                                <a
-                                  href="/courses"
+                                <Link
+                                  to="/courses"
                                   className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold transition-all border ${currentCfg.buttonColor}`}
                                 >
                                   Platform Courses
                                   <ArrowRight size={13} />
-                                </a>
+                                </Link>
                               )}
                               {currentMember.id === "jelly" && (
                                 <a
@@ -1376,13 +1429,13 @@ export default function About() {
                                 </a>
                               )}
                               {currentMember.id === "angelo" && (
-                                <a
-                                  href="/courses"
+                                <Link
+                                  to="/courses"
                                   className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold transition-all border ${currentCfg.buttonColor}`}
                                 >
                                   Start Course
                                   <ArrowRight size={13} />
-                                </a>
+                                </Link>
                               )}
                               {currentMember.id === "falcon" && (
                                 <a

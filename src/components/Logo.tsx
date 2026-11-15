@@ -10,6 +10,9 @@ export default function Logo({ className = "w-10 h-10" }: { className?: string }
       <img 
         src={logoImg} 
         alt="Project 3een Logo" 
+        width={500}
+        height={500}
+        decoding="async"
         className="w-full h-full object-contain"
         referrerPolicy="no-referrer"
         onError={(e) => {

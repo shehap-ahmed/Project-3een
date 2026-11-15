@@ -5,6 +5,7 @@ import { getSafeUserRole, checkIsAdmin, clearCachedRole } from '../lib/authUtils
 import { User } from '@supabase/supabase-js';
 import { User as UserIcon, Mail, Calendar, Shield, LogOut, Save, AlertCircle } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import SEO from '../components/SEO';
 
 export default function Profile() {
   const [user, setUser] = useState<User | null>(null);
@@ -77,6 +78,12 @@ export default function Profile() {
 
   return (
     <div className="min-h-screen bg-background py-8 md:py-12 px-4 md:px-6">
+      <SEO
+        title="Your Profile – Project 3een"
+        description="Manage your Project 3een learner account and profile settings."
+        noindex={true}
+        nofollow={true}
+      />
       <div className="max-w-4xl mx-auto space-y-6 md:space-y-8">
         {/* Header */}
         <motion.div {...fadeInUp} className="space-y-2">

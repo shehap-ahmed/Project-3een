@@ -1,10 +1,11 @@
 import { motion, AnimatePresence } from 'motion/react';
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef, useMemo } from 'react';
 import { COURSE_DATA } from '../constants';
 import { 
   Play, 
   CheckCircle2, 
   ChevronRight, 
+  ChevronDown,
   ArrowLeft, 
   Check, 
   Sparkles, 
@@ -30,6 +31,7 @@ import { PracticePathSection } from '../components/practice/PracticePathSection'
 import { ActivityViewModal } from '../components/practice/ActivityViewModal';
 import { HearRecognizeActivity } from '../components/practice/activities/HearRecognizeActivity';
 import { FinalChallengeActivity } from '../components/practice/activities/FinalChallengeActivity';
+import SEO from '../components/SEO';
 
 const fadeInUp = {
   initial: { opacity: 0, y: 30 },
@@ -83,6 +85,7 @@ export default function CourseContent() {
   
   const [showSuccess, setShowSuccess] = useState(false);
   const [isLessonListOpen, setIsLessonListOpen] = useState(false);
+  const [isCourseContentOpen, setIsCourseContentOpen] = useState(true);
   const [lockedNotice, setLockedNotice] = useState<string | null>(null);
 
   const isStatic = (!manualCourseId && !urlId) || manualCourseId === COURSE_DATA.id || urlId === COURSE_DATA.id;
@@ -278,6 +281,48 @@ export default function CourseContent() {
       setCompletedActivities(actsMap);
     }
   }, [currentCourseId, lessons, effectiveCourseSlug]);
+
+  // Total items and completed items across videos + standalone exercises
+  const { totalItemsCount, completedItemsCount } = useMemo(() => {
+    let total = 0;
+    let completed = 0;
+
+    lessons.forEach((l) => {
+      total += 1;
+      if (completedVideos.includes(l.id)) {
+        completed += 1;
+      }
+
+      const lPath = getPracticePathForLesson(effectiveCourseSlug, l.order || l.id);
+      if (lPath && lPath.activities.length >= 4) {
+        const hear = lPath.activities.find((a) => a.type === 'hear-recognize');
+        const final = lPath.activities.find((a) => a.type === 'final-challenge');
+        if (hear) {
+          total += 1;
+          if ((completedActivities[l.id] || []).includes(hear.id)) {
+            completed += 1;
+          }
+        }
+        if (final) {
+          total += 1;
+          if ((completedActivities[l.id] || []).includes(final.id)) {
+            completed += 1;
+          }
+        }
+      }
+    });
+
+    return { totalItemsCount: total, completedItemsCount: completed };
+  }, [lessons, completedVideos, completedActivities, effectiveCourseSlug]);
+
+  // Auto-scroll ref for current active item in Course Content sidebar
+  const desktopActiveItemRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    if (desktopActiveItemRef.current) {
+      desktopActiveItemRef.current.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+    }
+  }, [activeLesson?.id, selectedActivity?.id]);
 
   const handleLockedClick = (message: string) => {
     setLockedNotice(message);
@@ -524,29 +569,28 @@ export default function CourseContent() {
     : null;
 
   // Next Step / Button Progression Calculation
-  const isArabicLettersDone = lessonActsCompleted.includes('c1-a1');
-  const isHarakatDone = lessonActsCompleted.includes('c1-a2');
-  const isHearDone = lessonActsCompleted.includes('c1-a3');
-  const isFinalDone = lessonActsCompleted.includes('c1-a4');
-
   const getNextActionState = () => {
     if (!activeLesson) return null;
 
-    if (activeLesson.order === 1) {
-      if (!isArabicLettersDone) {
-        const act = allActivities.find((a) => a.id === 'c1-a1');
+    if (allActivities.length >= 4) {
+      const a1 = allActivities[0];
+      const a2 = allActivities[1];
+      const a3 = allActivities[2];
+      const isA1Done = lessonActsCompleted.includes(a1.id);
+      const isA2Done = lessonActsCompleted.includes(a2.id);
+
+      if (!isA1Done) {
         return {
           type: 'activity' as const,
-          activity: act,
-          label: !isVideoDone ? 'Start Practice: Meet the Arabic Letters' : 'Next: Meet the Arabic Letters',
+          activity: a1,
+          label: !isVideoDone ? `Start Practice: ${a1.shortTitle || a1.title}` : `Next: ${a1.shortTitle || a1.title}`,
         };
       }
-      if (!isHarakatDone) {
-        const act = allActivities.find((a) => a.id === 'c1-a2');
+      if (!isA2Done) {
         return {
           type: 'activity' as const,
-          activity: act,
-          label: 'Next: Harakat',
+          activity: a2,
+          label: `Next: ${a2.shortTitle || a2.title}`,
         };
       }
       if (!isVideoDone) {
@@ -555,13 +599,12 @@ export default function CourseContent() {
           label: 'Mark Video as Watched',
         };
       }
-      // Both practice activities and video are finished for Arabic Letters & Harakat -> Next is Hear & Recognize
-      const hearAct = allActivities.find((a) => a.id === 'c1-a3');
-      if (hearAct) {
+      // Both practice activities and video are finished -> Next is Hear & Recognize
+      if (a3) {
         return {
           type: 'activity' as const,
-          activity: hearAct,
-          label: 'Next Lesson: Hear & Recognize',
+          activity: a3,
+          label: `Next Lesson: ${a3.shortTitle || a3.title}`,
         };
       }
     }
@@ -603,6 +646,12 @@ export default function CourseContent() {
       transition={{ duration: 0.4 }}
       className="section-padding space-y-6 md:space-y-10 pb-16 md:pb-24 lg:pb-32"
     >
+      <SEO
+        title={`${course?.title || 'Course Lessons'} – Project 3een`}
+        description="Private enrolled course lessons and interactive practice on Project 3een."
+        noindex={true}
+        nofollow={true}
+      />
       {/* Locked Notice Floating Toast */}
       <AnimatePresence>
         {lockedNotice && (
@@ -714,7 +763,7 @@ export default function CourseContent() {
                   </div>
                </div>
             </div>
-          ) : selectedActivity && (selectedActivity.id === 'c1-a3' || selectedActivity.id === 'c1-a4') && activeLesson ? (
+          ) : selectedActivity && (selectedActivity.type === 'hear-recognize' || selectedActivity.type === 'final-challenge') && activeLesson ? (
             <div className="space-y-6 md:space-y-8">
               {/* Dedicated Activity Interactive Container */}
               <div className="bg-surface p-4 sm:p-6 md:p-8 rounded-2xl md:rounded-3xl border border-border">
@@ -738,10 +787,10 @@ export default function CourseContent() {
               <div className="flex items-center justify-between gap-4 pt-4 border-t border-border">
                 <button
                   onClick={() => {
-                    if (selectedActivity.id === 'c1-a3') {
-                      setSelectedActivity(null); // Back to Arabic Letters & Harakat
-                    } else if (selectedActivity.id === 'c1-a4') {
-                      const hearAct = allActivities.find((a) => a.id === 'c1-a3');
+                    if (selectedActivity.type === 'hear-recognize') {
+                      setSelectedActivity(null); // Back to lesson video & inline practice
+                    } else if (selectedActivity.type === 'final-challenge') {
+                      const hearAct = allActivities.find((a) => a.type === 'hear-recognize');
                       if (hearAct) setSelectedActivity(hearAct);
                     }
                   }}
@@ -749,22 +798,22 @@ export default function CourseContent() {
                 >
                   <ArrowLeft size={16} />
                   <span>
-                    {selectedActivity.id === 'c1-a3' ? 'Previous: Arabic Letters & Harakat' : 'Previous: Hear & Recognize'}
+                    {selectedActivity.type === 'hear-recognize' ? `Previous: ${activeLesson.title}` : 'Previous: Hear & Recognize'}
                   </span>
                 </button>
 
-                {selectedActivity.id === 'c1-a3' ? (
+                {selectedActivity.type === 'hear-recognize' ? (
                   <button
                     onClick={() => {
-                      if (lessonActsCompleted.includes('c1-a3') || isAdmin) {
-                        const finalAct = allActivities.find((a) => a.id === 'c1-a4');
+                      if (lessonActsCompleted.includes(selectedActivity.id) || isAdmin) {
+                        const finalAct = allActivities.find((a) => a.type === 'final-challenge');
                         if (finalAct) setSelectedActivity(finalAct);
                       } else {
                         handleLockedClick("Complete Hear & Recognize to unlock the Final Challenge.");
                       }
                     }}
                     className={`btn-premium px-6 py-3 text-xs sm:text-sm flex items-center gap-2 ${
-                      !lessonActsCompleted.includes('c1-a3') && !isAdmin ? 'opacity-50 cursor-not-allowed' : ''
+                      !lessonActsCompleted.includes(selectedActivity.id) && !isAdmin ? 'opacity-50 cursor-not-allowed' : ''
                     }`}
                   >
                     <span>Next: Final Challenge</span>
@@ -773,20 +822,21 @@ export default function CourseContent() {
                 ) : (
                   <button
                     onClick={() => {
-                      if (lessonActsCompleted.includes('c1-a4') || isAdmin) {
+                      if (lessonActsCompleted.includes(selectedActivity.id) || isAdmin) {
                         setSelectedActivity(null);
-                        if (lessons.length > 1) {
-                          handleSelectLesson(lessons[1]);
+                        const activeIdx = lessons.findIndex((l) => l.id === activeLesson.id);
+                        if (activeIdx >= 0 && activeIdx < lessons.length - 1) {
+                          handleSelectLesson(lessons[activeIdx + 1]);
                         }
                       } else {
-                        handleLockedClick("Pass the Final Challenge with 75%+ score to unlock Pronouns.");
+                        handleLockedClick(`Pass the Final Challenge with 75%+ score to unlock ${nextLesson ? nextLesson.title : 'the next lesson'}.`);
                       }
                     }}
                     className={`btn-premium px-6 py-3 text-xs sm:text-sm flex items-center gap-2 ${
-                      !lessonActsCompleted.includes('c1-a4') && !isAdmin ? 'opacity-50 cursor-not-allowed' : ''
+                      !lessonActsCompleted.includes(selectedActivity.id) && !isAdmin ? 'opacity-50 cursor-not-allowed' : ''
                     }`}
                   >
-                    <span>Next Lesson: Pronouns</span>
+                    <span>{nextLesson ? `Next Lesson: ${nextLesson.title}` : 'Course Completed ✓'}</span>
                     <ArrowRight size={16} />
                   </button>
                 )}
@@ -934,217 +984,285 @@ export default function CourseContent() {
                 initial={{ height: 0, opacity: 0 }}
                 animate={{ height: 'auto', opacity: 1 }}
                 exit={{ height: 0, opacity: 0 }}
-                className="lg:hidden overflow-hidden space-y-1 bg-surface rounded-2xl border border-border p-2 mt-2"
+                className="lg:hidden overflow-hidden bg-surface rounded-2xl border border-border mt-2 flex flex-col"
               >
-                {lessons.map((lesson, index) => {
-                  const isSelected = activeLesson?.id === lesson.id;
-                  const isVideoCompleted = completedVideos.includes(lesson.id);
-                  const lesson1FinalDone = (completedActivities[lessons[0]?.id] || []).includes('c1-a4');
-                  const lesson1VideoDone = completedVideos.includes(lessons[0]?.id);
-                  const isLocked = !isAdmin && (
-                    index === 0 ? false :
-                    index === 1 ? (!lesson1FinalDone || !lesson1VideoDone) :
-                    !completedLessons.includes(lessons[index - 1]?.id)
-                  );
+                {/* Mobile Drawer Head with counter and progress */}
+                <div className="p-3.5 border-b border-border flex items-center justify-between flex-none">
+                  <div className="flex items-center gap-2 text-sm font-semibold text-text-main">
+                    <BookOpen size={16} className="text-text-muted stroke-[1.8]" />
+                    <span>Lessons &amp; Activities</span>
+                  </div>
+                  <span className="text-xs text-text-muted font-normal">
+                    {completedItemsCount}/{totalItemsCount}
+                  </span>
+                </div>
 
-                  // Progression states for Lesson 1 exercises
-                  const isArabicLettersDone = (completedActivities[lesson.id] || []).includes('c1-a1');
-                  const isHarakatDone = (completedActivities[lesson.id] || []).includes('c1-a2');
-                  const isHearUnlocked = isArabicLettersDone && isHarakatDone;
-                  const isHearDone = (completedActivities[lesson.id] || []).includes('c1-a3');
-                  const isHearSelected = selectedActivity?.id === 'c1-a3';
+                {/* Thin Progress Track */}
+                <div className="h-1 bg-surface-hover rounded-full overflow-hidden mx-3.5 mt-2 mb-1 flex-none">
+                  <div 
+                    className="h-full bg-primary rounded-full transition-all duration-500" 
+                    style={{ width: `${(completedItemsCount / (totalItemsCount || 1)) * 100}%` }}
+                  />
+                </div>
 
-                  const isFinalUnlocked = isHearDone;
-                  const isFinalDone = (completedActivities[lesson.id] || []).includes('c1-a4');
-                  const isFinalSelected = selectedActivity?.id === 'c1-a4';
+                <div 
+                  className="p-2 space-y-0.5 max-h-[440px] overflow-y-auto course-content-scroll"
+                  style={{
+                    scrollbarWidth: 'thin',
+                    scrollbarColor: 'var(--color-border, var(--border, #26292d)) transparent',
+                  }}
+                >
+                  {lessons.map((lesson, index) => {
+                    const isSelected = activeLesson?.id === lesson.id;
+                    const isVideoCompleted = completedVideos.includes(lesson.id);
+                    const lesson1FinalDone = (completedActivities[lessons[0]?.id] || []).includes('c1-a4');
+                    const lesson1VideoDone = completedVideos.includes(lessons[0]?.id);
+                    const lesson2FinalDone = (completedActivities[lessons[1]?.id] || []).includes('c2-a4');
+                    const lesson2VideoDone = completedVideos.includes(lessons[1]?.id);
 
-                  const isVideoActive = isSelected && !selectedActivity;
+                    const isLocked = !isAdmin && (
+                      index === 0 ? false :
+                      index === 1 ? (!lesson1FinalDone || !lesson1VideoDone) :
+                      index === 2 ? (!lesson2FinalDone || !lesson2VideoDone) :
+                      !completedLessons.includes(lessons[index - 1]?.id)
+                    );
 
-                  return (
-                    <div key={lesson.id} className="space-y-0.5">
-                      {/* Video Lesson Row */}
-                      <div
-                        onClick={() => {
-                          if (!isLocked) {
-                            handleSelectLesson(lesson);
-                            setIsLessonListOpen(false);
-                          } else {
-                            handleLockedClick(
-                              index === 1
-                                ? "Pass the Final Challenge with 75%+ score to unlock Pronouns."
-                                : "Complete previous lessons to unlock."
-                            );
-                          }
-                        }}
-                        className={`w-full py-2 px-2.5 rounded-[10px] transition-all text-left flex items-center gap-3 ${
-                          isLocked
-                            ? 'opacity-45 cursor-not-allowed'
-                            : isVideoActive
-                            ? 'bg-primary/10 text-text-main cursor-pointer'
-                            : 'hover:bg-surface-hover/60 text-text-muted hover:text-text-main cursor-pointer'
-                        }`}
-                      >
-                        {/* Video Single-stroke Line Icon in 32px Square */}
-                        <div className={`w-8 h-8 rounded-[9px] flex items-center justify-center shrink-0 transition-colors ${
-                          isVideoCompleted
-                            ? 'bg-primary/20 text-primary'
-                            : isVideoActive
-                            ? 'bg-primary text-black font-semibold'
-                            : isLocked
-                            ? 'bg-surface-hover text-text-muted opacity-45'
-                            : 'bg-surface-hover text-text-muted'
-                        }`}>
-                          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                            <polygon points="6 3 20 12 6 21 6 3"/>
-                          </svg>
-                        </div>
+                    // Progression states for standalone exercises (Lesson 1, Lesson 2, etc.)
+                    const lessonPath = getPracticePathForLesson(effectiveCourseSlug, lesson.order || lesson.id);
+                    const hasStandalone = !!lessonPath && lessonPath.activities.length >= 4;
+                    const hearAct = hasStandalone ? lessonPath.activities.find(a => a.type === 'hear-recognize') : null;
+                    const finalAct = hasStandalone ? lessonPath.activities.find(a => a.type === 'final-challenge') : null;
 
-                        <div className="flex-1 min-w-0">
-                          <div className={`text-sm leading-snug truncate ${
-                            isVideoActive ? 'text-text-main font-medium' : isLocked ? 'text-text-muted' : 'text-text-main/90 font-medium'
+                    const act1 = hasStandalone ? lessonPath.activities[0] : null;
+                    const act2 = hasStandalone ? lessonPath.activities[1] : null;
+                    const isAct1Done = act1 ? (completedActivities[lesson.id] || []).includes(act1.id) : true;
+                    const isAct2Done = act2 ? (completedActivities[lesson.id] || []).includes(act2.id) : true;
+
+                    const isHearUnlocked = isAct1Done && isAct2Done;
+                    const isHearDone = hearAct ? (completedActivities[lesson.id] || []).includes(hearAct.id) : false;
+                    const isHearSelected = selectedActivity?.id === hearAct?.id;
+
+                    const isFinalUnlocked = isHearDone;
+                    const isFinalDone = finalAct ? (completedActivities[lesson.id] || []).includes(finalAct.id) : false;
+                    const isFinalSelected = selectedActivity?.id === finalAct?.id;
+
+                    const isVideoActive = isSelected && !selectedActivity;
+
+                    return (
+                      <div key={lesson.id} className="mb-1">
+                        {/* Parent (Video) Row */}
+                        <div
+                          onClick={() => {
+                            if (!isLocked) {
+                              handleSelectLesson(lesson);
+                              setIsLessonListOpen(false);
+                            } else {
+                              handleLockedClick(
+                                index === 1
+                                  ? "Pass the Final Challenge with 75%+ score to unlock Pronouns."
+                                  : index === 2
+                                  ? "Pass Lesson 2 Final Challenge with 75%+ score to unlock Sentence Types."
+                                  : "Complete previous lessons to unlock."
+                              );
+                            }
+                          }}
+                          className={`w-full py-2 px-2.5 rounded-[9px] transition-all text-left flex items-center gap-2.5 ${
+                            isLocked
+                              ? 'opacity-45 cursor-not-allowed text-text-muted'
+                              : isVideoActive
+                              ? 'bg-primary/10 border border-primary/20 text-text-main cursor-pointer'
+                              : 'hover:bg-surface-hover/60 text-text-muted hover:text-text-main cursor-pointer'
+                          }`}
+                        >
+                          {/* Video Single-stroke Line Icon in ~28px Square */}
+                          <div className={`w-7 h-7 rounded-[8px] flex items-center justify-center shrink-0 transition-colors ${
+                            isVideoCompleted
+                              ? 'bg-primary/20 text-primary'
+                              : isVideoActive
+                              ? 'bg-primary text-black font-semibold'
+                              : isLocked
+                              ? 'bg-surface-hover text-text-muted opacity-60'
+                              : 'bg-surface-hover text-text-muted'
                           }`}>
-                            {lesson.title}
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                              <polygon points="6 3 20 12 6 21 6 3"/>
+                            </svg>
                           </div>
-                          {isVideoActive && (
-                            <div className="text-xs text-primary mt-0.5 leading-none">
-                              Video · in progress
+
+                          <div className="flex-1 min-w-0">
+                            <div className={`text-[13.5px] leading-snug truncate ${
+                              isVideoActive ? 'text-text-main font-semibold' : isLocked ? 'text-text-muted font-medium' : 'text-text-main/90 font-semibold'
+                            }`}>
+                              {lesson.title}
                             </div>
-                          )}
+                            {isVideoActive && (
+                              <div className="text-[11px] text-primary mt-0.5 leading-none font-medium">
+                                In progress
+                              </div>
+                            )}
+                          </div>
+
+                          {isVideoCompleted ? (
+                            <svg className="w-3.5 h-3.5 text-primary shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.8" strokeLinecap="round" strokeLinejoin="round">
+                              <polyline points="20 6 9 17 4 12"/>
+                            </svg>
+                          ) : isLocked ? (
+                            <Lock size={13} className="text-text-muted shrink-0" />
+                          ) : null}
                         </div>
 
-                        {isVideoCompleted ? (
-                          <svg className="w-4 h-4 text-primary shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round">
-                            <polyline points="20 6 9 17 4 12"/>
-                          </svg>
-                        ) : isLocked ? (
-                          <Lock size={14} className="text-text-muted shrink-0" />
-                        ) : null}
+                        {/* Child rows (exercise, test): indented (~14px) with thin vertical connector line */}
+                        {hasStandalone && hearAct && finalAct && (
+                          <div className="ml-[14px] pl-[14px] border-l-[1.5px] border-border flex flex-col my-1 space-y-0.5">
+                            {/* Child Exercise: Hear & Recognize */}
+                            <div
+                              onClick={() => {
+                                if (isHearUnlocked || isAdmin) {
+                                  setActiveLesson(lesson);
+                                  setSelectedActivity(hearAct);
+                                  setIsLessonListOpen(false);
+                                } else {
+                                  handleLockedClick(`Complete ${act1?.shortTitle || 'Activity 1'} & ${act2?.shortTitle || 'Activity 2'} below the video first.`);
+                                }
+                              }}
+                              className={`w-full py-1.5 px-2 rounded-[7px] transition-all text-left flex items-center gap-2 ${
+                                !isHearUnlocked && !isAdmin
+                                  ? 'opacity-45 cursor-not-allowed text-text-muted'
+                                  : isHearSelected
+                                  ? 'bg-primary/10 border border-primary/20 text-text-main cursor-pointer'
+                                  : 'hover:bg-surface-hover/60 text-text-muted hover:text-text-main cursor-pointer'
+                              }`}
+                            >
+                              {/* Exercise Icon (~19px) */}
+                              <div className={`w-[19px] h-[19px] rounded-[6px] flex items-center justify-center shrink-0 transition-colors ${
+                                isHearDone
+                                  ? 'bg-primary/20 text-primary'
+                                  : isHearSelected
+                                  ? 'bg-primary text-black font-semibold'
+                                  : (!isHearUnlocked && !isAdmin)
+                                  ? 'bg-surface-hover text-text-muted opacity-50'
+                                  : 'bg-surface-hover text-text-muted'
+                              }`}>
+                                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                  <circle cx="12" cy="12" r="9"/>
+                                  <circle cx="12" cy="12" r="4.2"/>
+                                  <circle cx="12" cy="12" r="0.6" fill="currentColor"/>
+                                </svg>
+                              </div>
+
+                              <div className="flex-1 min-w-0">
+                                <span className={`text-[11.5px] font-medium leading-tight truncate block ${
+                                  isHearSelected || isHearDone ? 'text-text-main' : 'text-text-muted'
+                                }`}>
+                                  Hear &amp; Recognize
+                                </span>
+                              </div>
+
+                              {isHearSelected && (
+                                <span className="text-[10px] text-primary leading-none font-medium shrink-0">
+                                  In progress
+                                </span>
+                              )}
+
+                              {isHearDone ? (
+                                <svg className="w-2.5 h-2.5 text-primary shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.8" strokeLinecap="round" strokeLinejoin="round">
+                                  <polyline points="20 6 9 17 4 12"/>
+                                </svg>
+                              ) : (!isHearUnlocked && !isAdmin) ? (
+                                <Lock size={11} className="text-text-muted shrink-0" />
+                              ) : null}
+                            </div>
+
+                            {/* Child Test: Final Challenge */}
+                            <div
+                              onClick={() => {
+                                if (isFinalUnlocked || isAdmin) {
+                                  setActiveLesson(lesson);
+                                  setSelectedActivity(finalAct);
+                                  setIsLessonListOpen(false);
+                                } else {
+                                  handleLockedClick("Complete Hear & Recognize first.");
+                                }
+                              }}
+                              className={`w-full py-1.5 px-2 rounded-[7px] transition-all text-left flex items-center gap-2 ${
+                                !isFinalUnlocked && !isAdmin
+                                  ? 'opacity-45 cursor-not-allowed text-text-muted'
+                                  : isFinalSelected
+                                  ? 'bg-primary/10 border border-primary/20 text-text-main cursor-pointer'
+                                  : 'hover:bg-surface-hover/60 text-text-muted hover:text-text-main cursor-pointer'
+                              }`}
+                            >
+                              {/* Test Icon (~19px) */}
+                              <div className={`w-[19px] h-[19px] rounded-[6px] flex items-center justify-center shrink-0 transition-colors ${
+                                isFinalDone
+                                  ? 'bg-primary/20 text-primary'
+                                  : isFinalSelected
+                                  ? 'bg-primary text-black font-semibold'
+                                  : (!isFinalUnlocked && !isAdmin)
+                                  ? 'bg-surface-hover text-text-muted opacity-50'
+                                  : 'bg-surface-hover text-text-muted'
+                              }`}>
+                                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                  <path d="M12 3l7 3v6c0 4.5-3 7.5-7 9-4-1.5-7-4.5-7-9V6l7-3z"/>
+                                  <polyline points="9 12 11 14 15 10"/>
+                                </svg>
+                              </div>
+
+                              <div className="flex-1 min-w-0">
+                                <span className={`text-[11.5px] font-medium leading-tight truncate block ${
+                                  isFinalSelected || isFinalDone ? 'text-text-main' : 'text-text-muted'
+                                }`}>
+                                  Final Challenge
+                                </span>
+                              </div>
+
+                              {isFinalSelected ? (
+                                <span className="text-[10px] text-primary leading-none font-medium shrink-0">
+                                  75%
+                                </span>
+                              ) : isFinalDone ? (
+                                <span className="text-[10px] text-text-muted leading-none font-normal shrink-0">
+                                  75%
+                                </span>
+                              ) : null}
+
+                              {isFinalDone ? (
+                                <svg className="w-2.5 h-2.5 text-primary shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.8" strokeLinecap="round" strokeLinejoin="round">
+                                  <polyline points="20 6 9 17 4 12"/>
+                                </svg>
+                              ) : (!isFinalUnlocked && !isAdmin) ? (
+                                <Lock size={11} className="text-text-muted shrink-0" />
+                              ) : null}
+                            </div>
+                          </div>
+                        )}
                       </div>
+                    );
+                  })}
+                </div>
 
-                      {/* Standalone Exercises following Lesson 1 */}
-                      {lesson.order === 1 && (
-                        <>
-                          {/* Standalone Lesson 2: Hear & Recognize */}
-                          <div
-                            onClick={() => {
-                              if (isHearUnlocked || isAdmin) {
-                                const act = allActivities.find((a) => a.id === 'c1-a3');
-                                if (act) {
-                                  setActiveLesson(lesson);
-                                  setSelectedActivity(act);
-                                  setIsLessonListOpen(false);
-                                }
-                              } else {
-                                handleLockedClick("Complete Arabic Letters & Harakat below the video first.");
-                              }
-                            }}
-                            className={`w-full py-2 px-2.5 rounded-[10px] transition-all text-left flex items-center gap-3 ${
-                              !isHearUnlocked && !isAdmin
-                                ? 'opacity-45 cursor-not-allowed'
-                                : isHearSelected
-                                ? 'bg-primary/10 text-text-main cursor-pointer'
-                                : 'hover:bg-surface-hover/60 text-text-muted hover:text-text-main cursor-pointer'
-                            }`}
-                          >
-                            {/* Target / Concentric Circles Line Icon */}
-                            <div className={`w-8 h-8 rounded-[9px] flex items-center justify-center shrink-0 transition-colors ${
-                              isHearDone
-                                ? 'bg-primary/20 text-primary'
-                                : isHearSelected
-                                ? 'bg-primary text-black font-semibold'
-                                : (!isHearUnlocked && !isAdmin)
-                                ? 'bg-surface-hover text-text-muted opacity-45'
-                                : 'bg-surface-hover text-text-muted'
-                            }`}>
-                              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                                <circle cx="12" cy="12" r="9"/>
-                                <circle cx="12" cy="12" r="4.2"/>
-                                <circle cx="12" cy="12" r="0.6" fill="currentColor"/>
-                              </svg>
-                            </div>
-
-                            <div className="flex-1 min-w-0">
-                              <div className={`text-sm leading-snug truncate ${
-                                isHearSelected ? 'text-text-main font-medium' : (!isHearUnlocked && !isAdmin) ? 'text-text-muted' : 'text-text-main/90 font-medium'
-                              }`}>
-                                Hear &amp; Recognize
-                              </div>
-                              <div className={`text-xs mt-0.5 leading-none ${isHearSelected ? 'text-primary' : 'text-text-muted'}`}>
-                                {isHearSelected ? 'Exercise · in progress' : 'Exercise'}
-                              </div>
-                            </div>
-
-                            {isHearDone ? (
-                              <svg className="w-4 h-4 text-primary shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round">
-                                <polyline points="20 6 9 17 4 12"/>
-                              </svg>
-                            ) : (!isHearUnlocked && !isAdmin) ? (
-                              <Lock size={14} className="text-text-muted shrink-0" />
-                            ) : null}
-                          </div>
-
-                          {/* Standalone Lesson 3: Final Challenge */}
-                          <div
-                            onClick={() => {
-                              if (isFinalUnlocked || isAdmin) {
-                                const act = allActivities.find((a) => a.id === 'c1-a4');
-                                if (act) {
-                                  setActiveLesson(lesson);
-                                  setSelectedActivity(act);
-                                  setIsLessonListOpen(false);
-                                }
-                              } else {
-                                handleLockedClick("Complete Hear & Recognize first.");
-                              }
-                            }}
-                            className={`w-full py-2 px-2.5 rounded-[10px] transition-all text-left flex items-center gap-3 ${
-                              !isFinalUnlocked && !isAdmin
-                                ? 'opacity-45 cursor-not-allowed'
-                                : isFinalSelected
-                                ? 'bg-primary/10 text-text-main cursor-pointer'
-                                : 'hover:bg-surface-hover/60 text-text-muted hover:text-text-main cursor-pointer'
-                            }`}
-                          >
-                            {/* Shield with checkmark Line Icon */}
-                            <div className={`w-8 h-8 rounded-[9px] flex items-center justify-center shrink-0 transition-colors ${
-                              isFinalDone
-                                ? 'bg-primary/20 text-primary'
-                                : isFinalSelected
-                                ? 'bg-primary text-black font-semibold'
-                                : (!isFinalUnlocked && !isAdmin)
-                                ? 'bg-surface-hover text-text-muted opacity-45'
-                                : 'bg-surface-hover text-text-muted'
-                            }`}>
-                              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                                <path d="M12 3l7 3v6c0 4.5-3 7.5-7 9-4-1.5-7-4.5-7-9V6l7-3z"/>
-                                <polyline points="9 12 11 14 15 10"/>
-                              </svg>
-                            </div>
-
-                            <div className="flex-1 min-w-0">
-                              <div className={`text-sm leading-snug truncate ${
-                                isFinalSelected ? 'text-text-main font-medium' : (!isFinalUnlocked && !isAdmin) ? 'text-text-muted' : 'text-text-main/90 font-medium'
-                              }`}>
-                                Final Challenge
-                              </div>
-                              <div className={`text-xs mt-0.5 leading-none ${isFinalSelected ? 'text-primary' : 'text-text-muted'}`}>
-                                Test · 75% score
-                              </div>
-                            </div>
-
-                            {isFinalDone ? (
-                              <svg className="w-4 h-4 text-primary shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round">
-                                <polyline points="20 6 9 17 4 12"/>
-                              </svg>
-                            ) : (!isFinalUnlocked && !isAdmin) ? (
-                              <Lock size={14} className="text-text-muted shrink-0" />
-                            ) : null}
-                          </div>
-                        </>
-                      )}
-                    </div>
-                  );
-                })}
+                {/* Bottom Legend on Mobile */}
+                <div className="p-2.5 border-t border-border flex items-center justify-between text-[11px] text-text-muted px-4 flex-none">
+                  <span className="flex items-center gap-1.5">
+                    <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <polygon points="6 3 20 12 6 21 6 3"/>
+                    </svg>
+                    Video
+                  </span>
+                  <span className="flex items-center gap-1.5">
+                    <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <circle cx="12" cy="12" r="9"/>
+                      <circle cx="12" cy="12" r="4.2"/>
+                    </svg>
+                    Exercise
+                  </span>
+                  <span className="flex items-center gap-1.5">
+                    <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M12 3l7 3v6c0 4.5-3 7.5-7 9-4-1.5-7-4.5-7-9V6l7-3z"/>
+                    </svg>
+                    Test
+                  </span>
+                </div>
               </motion.div>
             )}
           </AnimatePresence>
@@ -1152,46 +1270,137 @@ export default function CourseContent() {
 
         {/* Right Sidebar: Course Content matching screenshot design */}
         <motion.div {...fadeInUp} transition={{ delay: 0.4 }} className="hidden lg:block space-y-6">
-          <div className="bg-surface rounded-2xl md:rounded-3xl border border-border overflow-hidden shadow-xs transition-colors duration-300">
-            <div className="p-4 sm:p-5 border-b border-border flex items-center justify-between">
+          <div className="bg-surface rounded-2xl md:rounded-3xl border border-border overflow-hidden shadow-xs transition-colors duration-300 flex flex-col max-h-[540px]">
+            {/* Scoped Scrollbar Styling for Course Content */}
+            <style>{`
+              .course-content-scroll {
+                overflow-y: auto;
+                scrollbar-width: thin;
+                scrollbar-color: var(--color-border, var(--border, #26292d)) transparent;
+              }
+              .course-content-scroll::-webkit-scrollbar {
+                width: 5px;
+              }
+              .course-content-scroll::-webkit-scrollbar-track {
+                background: transparent;
+              }
+              .course-content-scroll::-webkit-scrollbar-thumb {
+                background: var(--color-border, var(--border, #26292d));
+                border-radius: 9999px;
+              }
+              .course-content-scroll::-webkit-scrollbar-thumb:hover {
+                background: #363b41;
+              }
+              .course-content-scroll::-webkit-scrollbar-button {
+                display: none;
+                width: 0;
+                height: 0;
+              }
+            `}</style>
+
+            {/* Panel Head */}
+            <div 
+              onClick={() => setIsCourseContentOpen((prev) => !prev)}
+              className="p-4 sm:p-5 flex items-center justify-between flex-none cursor-pointer select-none group"
+              role="button"
+              tabIndex={0}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                  e.preventDefault();
+                  setIsCourseContentOpen((prev) => !prev);
+                }
+              }}
+              aria-expanded={isCourseContentOpen}
+              aria-label="Toggle Course Content sidebar"
+            >
               <div className="flex items-center gap-2.5 text-[15px] font-semibold text-text-main">
-                <BookOpen size={17} className="text-text-muted stroke-[1.8]" />
+                <BookOpen size={17} className="text-text-muted stroke-[1.8] group-hover:text-text-main transition-colors duration-150" />
                 <span>Course Content</span>
               </div>
-              <span className="text-[12.5px] text-text-muted font-normal">
-                {lessons.length + 2} lessons
-              </span>
+              <div className="flex items-center gap-3">
+                <span className="text-[12.5px] text-text-muted font-normal">
+                  {completedItemsCount}/{totalItemsCount}
+                </span>
+                <div 
+                  className="w-6.5 h-6.5 rounded-lg bg-surface-hover/70 group-hover:bg-surface-hover flex items-center justify-center text-text-muted group-hover:text-text-main transition-colors duration-150 shrink-0"
+                  aria-hidden="true"
+                >
+                  <ChevronDown
+                    size={14}
+                    className={`transition-transform duration-250 ease-in-out ${isCourseContentOpen ? 'rotate-0' : 'rotate-180'}`}
+                  />
+                </div>
+              </div>
             </div>
 
-            <div className="p-2 space-y-0.5 max-h-[640px] overflow-y-auto custom-scrollbar">
+            {/* Collapsible Body: Progress Bar, Scrollable List, and Legend */}
+            <AnimatePresence initial={false}>
+              {isCourseContentOpen && (
+                <motion.div
+                  key="desktop-course-content-body"
+                  initial={{ height: 0, opacity: 0 }}
+                  animate={{ height: 'auto', opacity: 1 }}
+                  exit={{ height: 0, opacity: 0 }}
+                  transition={{ duration: 0.24, ease: [0.4, 0, 0.2, 1] }}
+                  className="overflow-hidden flex flex-col flex-1 border-t border-border"
+                >
+                  {/* Thin Progress Track */}
+                  <div className="h-1 bg-surface-hover rounded-full overflow-hidden mx-4 sm:mx-5 mt-2.5 mb-1.5 flex-none">
+                    <div 
+                      className="h-full bg-primary rounded-full transition-all duration-500" 
+                      style={{ width: `${(completedItemsCount / (totalItemsCount || 1)) * 100}%` }}
+                    />
+                  </div>
+
+                  {/* Scrollable List with internal scroll */}
+                  <div 
+                    className="p-2 space-y-0.5 overflow-y-auto course-content-scroll flex-1 max-h-[380px]"
+                    style={{
+                      scrollbarWidth: 'thin',
+                      scrollbarColor: 'var(--color-border, var(--border, #26292d)) transparent',
+                    }}
+                  >
               {lessons.map((lesson, index) => {
                 const isSelected = activeLesson?.id === lesson.id;
                 const isVideoCompleted = completedVideos.includes(lesson.id);
                 const lesson1FinalDone = (completedActivities[lessons[0]?.id] || []).includes('c1-a4');
                 const lesson1VideoDone = completedVideos.includes(lessons[0]?.id);
+                const lesson2FinalDone = (completedActivities[lessons[1]?.id] || []).includes('c2-a4');
+                const lesson2VideoDone = completedVideos.includes(lessons[1]?.id);
+
                 const isLocked = !isAdmin && (
                   index === 0 ? false :
                   index === 1 ? (!lesson1FinalDone || !lesson1VideoDone) :
+                  index === 2 ? (!lesson2FinalDone || !lesson2VideoDone) :
                   !completedLessons.includes(lessons[index - 1]?.id)
                 );
 
-                // Progression states for Lesson 1 exercises
-                const isArabicLettersDone = (completedActivities[lesson.id] || []).includes('c1-a1');
-                const isHarakatDone = (completedActivities[lesson.id] || []).includes('c1-a2');
-                const isHearUnlocked = isArabicLettersDone && isHarakatDone;
-                const isHearDone = (completedActivities[lesson.id] || []).includes('c1-a3');
-                const isHearSelected = selectedActivity?.id === 'c1-a3';
+                // Progression states for standalone exercises (Lesson 1, Lesson 2, etc.)
+                const lessonPath = getPracticePathForLesson(effectiveCourseSlug, lesson.order || lesson.id);
+                const hasStandalone = !!lessonPath && lessonPath.activities.length >= 4;
+                const hearAct = hasStandalone ? lessonPath.activities.find(a => a.type === 'hear-recognize') : null;
+                const finalAct = hasStandalone ? lessonPath.activities.find(a => a.type === 'final-challenge') : null;
+
+                const act1 = hasStandalone ? lessonPath.activities[0] : null;
+                const act2 = hasStandalone ? lessonPath.activities[1] : null;
+                const isAct1Done = act1 ? (completedActivities[lesson.id] || []).includes(act1.id) : true;
+                const isAct2Done = act2 ? (completedActivities[lesson.id] || []).includes(act2.id) : true;
+
+                const isHearUnlocked = isAct1Done && isAct2Done;
+                const isHearDone = hearAct ? (completedActivities[lesson.id] || []).includes(hearAct.id) : false;
+                const isHearSelected = selectedActivity?.id === hearAct?.id;
 
                 const isFinalUnlocked = isHearDone;
-                const isFinalDone = (completedActivities[lesson.id] || []).includes('c1-a4');
-                const isFinalSelected = selectedActivity?.id === 'c1-a4';
+                const isFinalDone = finalAct ? (completedActivities[lesson.id] || []).includes(finalAct.id) : false;
+                const isFinalSelected = selectedActivity?.id === finalAct?.id;
 
                 const isVideoActive = isSelected && !selectedActivity;
 
                 return (
-                  <div key={lesson.id} className="space-y-0.5">
-                    {/* Video Lesson Row */}
+                  <div key={lesson.id} className="mb-1">
+                    {/* Parent (Video) Row */}
                     <div
+                      ref={isVideoActive ? desktopActiveItemRef : undefined}
                       onClick={() => {
                         if (!isLocked) {
                           handleSelectLesson(lesson);
@@ -1199,91 +1408,90 @@ export default function CourseContent() {
                           handleLockedClick(
                             index === 1
                               ? "Pass the Final Challenge with 75%+ score to unlock Pronouns."
+                              : index === 2
+                              ? "Pass Lesson 2 Final Challenge with 75%+ score to unlock Sentence Types."
                               : "Complete previous lessons to unlock."
                           );
                         }
                       }}
-                      className={`w-full py-2 px-2.5 rounded-[10px] transition-all text-left flex items-center gap-3 ${
+                      className={`w-full py-2 px-2.5 rounded-[9px] transition-all text-left flex items-center gap-2.5 ${
                         isLocked
-                          ? 'opacity-45 cursor-not-allowed'
+                          ? 'opacity-45 cursor-not-allowed text-text-muted'
                           : isVideoActive
-                          ? 'bg-primary/10 text-text-main cursor-pointer'
+                          ? 'bg-primary/10 border border-primary/20 text-text-main cursor-pointer'
                           : 'hover:bg-surface-hover/60 text-text-muted hover:text-text-main cursor-pointer'
                       }`}
                     >
-                      {/* Video Single-stroke Line Icon in 32px Square */}
-                      <div className={`w-8 h-8 rounded-[9px] flex items-center justify-center shrink-0 transition-colors ${
+                      {/* Video Single-stroke Line Icon in ~28px Square */}
+                      <div className={`w-7 h-7 rounded-[8px] flex items-center justify-center shrink-0 transition-colors ${
                         isVideoCompleted
                           ? 'bg-primary/20 text-primary'
                           : isVideoActive
                           ? 'bg-primary text-black font-semibold'
                           : isLocked
-                          ? 'bg-surface-hover text-text-muted opacity-45'
+                          ? 'bg-surface-hover text-text-muted opacity-60'
                           : 'bg-surface-hover text-text-muted'
                       }`}>
-                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                           <polygon points="6 3 20 12 6 21 6 3"/>
                         </svg>
                       </div>
 
                       <div className="flex-1 min-w-0">
-                        <div className={`text-sm leading-snug truncate ${
-                          isVideoActive ? 'text-text-main font-medium' : isLocked ? 'text-text-muted' : 'text-text-main/90 font-medium'
+                        <div className={`text-[13.5px] leading-snug truncate ${
+                          isVideoActive ? 'text-text-main font-semibold' : isLocked ? 'text-text-muted font-medium' : 'text-text-main/90 font-semibold'
                         }`}>
                           {lesson.title}
                         </div>
                         {isVideoActive && (
-                          <div className="text-xs text-primary mt-0.5 leading-none">
-                            Video · in progress
+                          <div className="text-[11px] text-primary mt-0.5 leading-none font-medium">
+                            In progress
                           </div>
                         )}
                       </div>
 
                       {isVideoCompleted ? (
-                        <svg className="w-4 h-4 text-primary shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round">
+                        <svg className="w-3.5 h-3.5 text-primary shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.8" strokeLinecap="round" strokeLinejoin="round">
                           <polyline points="20 6 9 17 4 12"/>
                         </svg>
                       ) : isLocked ? (
-                        <Lock size={14} className="text-text-muted shrink-0" />
+                        <Lock size={13} className="text-text-muted shrink-0" />
                       ) : null}
                     </div>
 
-                    {/* Standalone Exercises following Lesson 1 */}
-                    {lesson.order === 1 && (
-                      <>
-                        {/* Standalone Lesson 2: Hear & Recognize */}
+                    {/* Child rows (exercise, test): indented (~14px) with thin vertical connector line */}
+                    {hasStandalone && hearAct && finalAct && (
+                      <div className="ml-[14px] pl-[14px] border-l-[1.5px] border-border flex flex-col my-1 space-y-0.5">
+                        {/* Child Exercise: Hear & Recognize */}
                         <div
+                          ref={isHearSelected ? desktopActiveItemRef : undefined}
                           onClick={() => {
                             if (isHearUnlocked || isAdmin) {
-                              const act = allActivities.find((a) => a.id === 'c1-a3');
-                              if (act) {
-                                setActiveLesson(lesson);
-                                setSelectedActivity(act);
-                                setIsLessonListOpen(false);
-                              }
+                              setActiveLesson(lesson);
+                              setSelectedActivity(hearAct);
                             } else {
-                              handleLockedClick("Complete Arabic Letters & Harakat below the video first.");
+                              handleLockedClick(`Complete ${act1?.shortTitle || 'Activity 1'} & ${act2?.shortTitle || 'Activity 2'} below the video first.`);
                             }
                           }}
-                          className={`w-full py-2 px-2.5 rounded-[10px] transition-all text-left flex items-center gap-3 ${
+                          className={`w-full py-1.5 px-2 rounded-[7px] transition-all text-left flex items-center gap-2 ${
                             !isHearUnlocked && !isAdmin
-                              ? 'opacity-45 cursor-not-allowed'
+                              ? 'opacity-45 cursor-not-allowed text-text-muted'
                               : isHearSelected
-                              ? 'bg-primary/10 text-text-main cursor-pointer'
+                              ? 'bg-primary/10 border border-primary/20 text-text-main cursor-pointer'
                               : 'hover:bg-surface-hover/60 text-text-muted hover:text-text-main cursor-pointer'
                           }`}
                         >
-                          {/* Target / Concentric Circles Line Icon */}
-                          <div className={`w-8 h-8 rounded-[9px] flex items-center justify-center shrink-0 transition-colors ${
+                          {/* Exercise Icon (~19px) */}
+                          <div className={`w-[19px] h-[19px] rounded-[6px] flex items-center justify-center shrink-0 transition-colors ${
                             isHearDone
                               ? 'bg-primary/20 text-primary'
                               : isHearSelected
                               ? 'bg-primary text-black font-semibold'
                               : (!isHearUnlocked && !isAdmin)
-                              ? 'bg-surface-hover text-text-muted opacity-45'
+                              ? 'bg-surface-hover text-text-muted opacity-50'
                               : 'bg-surface-hover text-text-muted'
                           }`}>
-                            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                               <circle cx="12" cy="12" r="9"/>
                               <circle cx="12" cy="12" r="4.2"/>
                               <circle cx="12" cy="12" r="0.6" fill="currentColor"/>
@@ -1291,110 +1499,121 @@ export default function CourseContent() {
                           </div>
 
                           <div className="flex-1 min-w-0">
-                            <div className={`text-sm leading-snug truncate ${
-                              isHearSelected ? 'text-text-main font-medium' : (!isHearUnlocked && !isAdmin) ? 'text-text-muted' : 'text-text-main/90 font-medium'
+                            <span className={`text-[11.5px] font-medium leading-tight truncate block ${
+                              isHearSelected || isHearDone ? 'text-text-main' : 'text-text-muted'
                             }`}>
                               Hear &amp; Recognize
-                            </div>
-                            <div className={`text-xs mt-0.5 leading-none ${isHearSelected ? 'text-primary' : 'text-text-muted'}`}>
-                              {isHearSelected ? 'Exercise · in progress' : 'Exercise'}
-                            </div>
+                            </span>
                           </div>
 
+                          {isHearSelected && (
+                            <span className="text-[10px] text-primary leading-none font-medium shrink-0">
+                              In progress
+                            </span>
+                          )}
+
                           {isHearDone ? (
-                            <svg className="w-4 h-4 text-primary shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round">
+                            <svg className="w-2.5 h-2.5 text-primary shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.8" strokeLinecap="round" strokeLinejoin="round">
                               <polyline points="20 6 9 17 4 12"/>
                             </svg>
                           ) : (!isHearUnlocked && !isAdmin) ? (
-                            <Lock size={14} className="text-text-muted shrink-0" />
+                            <Lock size={11} className="text-text-muted shrink-0" />
                           ) : null}
                         </div>
 
-                        {/* Standalone Lesson 3: Final Challenge */}
+                        {/* Child Test: Final Challenge */}
                         <div
+                          ref={isFinalSelected ? desktopActiveItemRef : undefined}
                           onClick={() => {
                             if (isFinalUnlocked || isAdmin) {
-                              const act = allActivities.find((a) => a.id === 'c1-a4');
-                              if (act) {
-                                setActiveLesson(lesson);
-                                setSelectedActivity(act);
-                                setIsLessonListOpen(false);
-                              }
+                              setActiveLesson(lesson);
+                              setSelectedActivity(finalAct);
                             } else {
                               handleLockedClick("Complete Hear & Recognize first.");
                             }
                           }}
-                          className={`w-full py-2 px-2.5 rounded-[10px] transition-all text-left flex items-center gap-3 ${
+                          className={`w-full py-1.5 px-2 rounded-[7px] transition-all text-left flex items-center gap-2 ${
                             !isFinalUnlocked && !isAdmin
-                              ? 'opacity-45 cursor-not-allowed'
+                              ? 'opacity-45 cursor-not-allowed text-text-muted'
                               : isFinalSelected
-                              ? 'bg-primary/10 text-text-main cursor-pointer'
+                              ? 'bg-primary/10 border border-primary/20 text-text-main cursor-pointer'
                               : 'hover:bg-surface-hover/60 text-text-muted hover:text-text-main cursor-pointer'
                           }`}
                         >
-                          {/* Shield with checkmark Line Icon */}
-                          <div className={`w-8 h-8 rounded-[9px] flex items-center justify-center shrink-0 transition-colors ${
+                          {/* Test Icon (~19px) */}
+                          <div className={`w-[19px] h-[19px] rounded-[6px] flex items-center justify-center shrink-0 transition-colors ${
                             isFinalDone
                               ? 'bg-primary/20 text-primary'
                               : isFinalSelected
                               ? 'bg-primary text-black font-semibold'
                               : (!isFinalUnlocked && !isAdmin)
-                              ? 'bg-surface-hover text-text-muted opacity-45'
+                              ? 'bg-surface-hover text-text-muted opacity-50'
                               : 'bg-surface-hover text-text-muted'
                           }`}>
-                            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                               <path d="M12 3l7 3v6c0 4.5-3 7.5-7 9-4-1.5-7-4.5-7-9V6l7-3z"/>
                               <polyline points="9 12 11 14 15 10"/>
                             </svg>
                           </div>
 
                           <div className="flex-1 min-w-0">
-                            <div className={`text-sm leading-snug truncate ${
-                              isFinalSelected ? 'text-text-main font-medium' : (!isFinalUnlocked && !isAdmin) ? 'text-text-muted' : 'text-text-main/90 font-medium'
+                            <span className={`text-[11.5px] font-medium leading-tight truncate block ${
+                              isFinalSelected || isFinalDone ? 'text-text-main' : 'text-text-muted'
                             }`}>
                               Final Challenge
-                            </div>
-                            <div className={`text-xs mt-0.5 leading-none ${isFinalSelected ? 'text-primary' : 'text-text-muted'}`}>
-                              Test · 75% score
-                            </div>
+                            </span>
                           </div>
 
+                          {isFinalSelected ? (
+                            <span className="text-[10px] text-primary leading-none font-medium shrink-0">
+                              75%
+                            </span>
+                          ) : isFinalDone ? (
+                            <span className="text-[10px] text-text-muted leading-none font-normal shrink-0">
+                              75%
+                            </span>
+                          ) : null}
+
                           {isFinalDone ? (
-                            <svg className="w-4 h-4 text-primary shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round">
+                            <svg className="w-2.5 h-2.5 text-primary shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.8" strokeLinecap="round" strokeLinejoin="round">
                               <polyline points="20 6 9 17 4 12"/>
                             </svg>
                           ) : (!isFinalUnlocked && !isAdmin) ? (
-                            <Lock size={14} className="text-text-muted shrink-0" />
+                            <Lock size={11} className="text-text-muted shrink-0" />
                           ) : null}
                         </div>
-                      </>
+                      </div>
                     )}
                   </div>
                 );
               })}
             </div>
 
-            {/* Bottom Legend */}
-            <div className="p-3 border-t border-border flex items-center justify-between text-xs text-text-muted px-4">
-              <span className="flex items-center gap-1.5">
-                <span className="w-4 h-4 rounded-[5px] bg-surface-hover flex items-center justify-center text-text-muted">
-                  <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polygon points="6 3 20 12 6 21 6 3"/></svg>
-                </span>
-                Video
-              </span>
-              <span className="flex items-center gap-1.5">
-                <span className="w-4 h-4 rounded-[5px] bg-surface-hover flex items-center justify-center text-text-muted">
-                  <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4.2"/></svg>
-                </span>
-                Exercise
-              </span>
-              <span className="flex items-center gap-1.5">
-                <span className="w-4 h-4 rounded-[5px] bg-surface-hover flex items-center justify-center text-text-muted">
-                  <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 3l7 3v6c0 4.5-3 7.5-7 9-4-1.5-7-4.5-7-9V6l7-3z"/></svg>
-                </span>
-                Test
-              </span>
-            </div>
+                  {/* Bottom Legend */}
+                  <div className="p-3 border-t border-border flex items-center justify-between text-[11px] text-text-muted px-4 flex-none">
+                    <span className="flex items-center gap-1.5">
+                      <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <polygon points="6 3 20 12 6 21 6 3"/>
+                      </svg>
+                      Video
+                    </span>
+                    <span className="flex items-center gap-1.5">
+                      <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <circle cx="12" cy="12" r="9"/>
+                        <circle cx="12" cy="12" r="4.2"/>
+                      </svg>
+                      Exercise
+                    </span>
+                    <span className="flex items-center gap-1.5">
+                      <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <path d="M12 3l7 3v6c0 4.5-3 7.5-7 9-4-1.5-7-4.5-7-9V6l7-3z"/>
+                      </svg>
+                      Test
+                    </span>
+                  </div>
+                </motion.div>
+              )}
+            </AnimatePresence>
           </div>
 
           <div className="bg-accent/10 p-6 rounded-3xl border border-accent/20 space-y-4">
@@ -1415,12 +1634,12 @@ export default function CourseContent() {
         </motion.div>
       </div>
 
-      {/* Global Activity View Modal for inline practice exercises (Letters & Harakat) */}
+      {/* Global Activity View Modal for inline practice exercises */}
       <AnimatePresence>
-        {selectedActivity && selectedActivity.id !== 'c1-a3' && selectedActivity.id !== 'c1-a4' && activeLesson && (
+        {selectedActivity && selectedActivity.type !== 'hear-recognize' && selectedActivity.type !== 'final-challenge' && activeLesson && (
           <ActivityViewModal
             activity={selectedActivity}
-            allActivities={allActivities.filter(a => a.id === 'c1-a1' || a.id === 'c1-a2')}
+            allActivities={allActivities.filter(a => a.type !== 'hear-recognize' && a.type !== 'final-challenge')}
             completedActivityIds={lessonActsCompleted}
             onClose={() => setSelectedActivity(null)}
             onCompleteActivity={(actId) => handleCompleteActivity(activeLesson.id, actId)}

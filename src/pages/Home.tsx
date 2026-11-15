@@ -14,7 +14,8 @@ import {
   CheckCircle2,
   Lock
 } from 'lucide-react';
-import { CONTACT_INFO } from '../constants';
+import { CONTACT_INFO, COURSE_DATA } from '../constants';
+import SEO, { getSiteOrigin } from '../components/SEO';
 
 const fadeInUp = {
   initial: { opacity: 0, y: 35 },
@@ -67,8 +68,63 @@ export default function Home() {
     };
   }, [navigate]);
 
+  const origin = getSiteOrigin();
+  const homeStructuredData = [
+    {
+      '@type': 'EducationalOrganization',
+      '@id': `${origin}/#organization`,
+      name: 'Project 3een',
+      alternateName: 'Learn Arabic – Project 3een',
+      url: `${origin}/`,
+      logo: `${origin}/learnarabic-logo_1.png`,
+      email: CONTACT_INFO.email,
+      foundingDate: '2021',
+      description:
+        'A community-driven Arabic learning program offering structured Modern Standard Arabic courses for beginners, live sessions, homework feedback, and a 21,000+ member Discord community.',
+      sameAs: [CONTACT_INFO.discord, CONTACT_INFO.instagram],
+    },
+    {
+      '@type': 'WebSite',
+      '@id': `${origin}/#website`,
+      url: `${origin}/`,
+      name: 'Learn Arabic – Project 3een',
+      description:
+        'Online Arabic courses for beginners, Modern Standard Arabic lessons, and guided community practice.',
+      inLanguage: 'en',
+      publisher: { '@id': `${origin}/#organization` },
+    },
+    {
+      '@type': 'WebPage',
+      '@id': `${origin}/#webpage`,
+      url: `${origin}/`,
+      name: 'Learn Arabic Online for Beginners – Project 3een',
+      isPartOf: { '@id': `${origin}/#website` },
+      about: { '@id': `${origin}/#organization` },
+      description:
+        'Start learning Arabic online step by step with Project 3een. Explore beginner Modern Standard Arabic courses, live sessions, and a 21,000+ learner community.',
+      inLanguage: 'en',
+    },
+    {
+      '@type': 'Course',
+      name: COURSE_DATA.title,
+      description:
+        'A beginner-friendly Modern Standard Arabic course covering Arabic letters, harakat, pronouns, sentence types, verb types, and gender.',
+      educationalLevel: 'Beginner',
+      inLanguage: ['en', 'ar'],
+      provider: { '@id': `${origin}/#organization` },
+      url: `${origin}/courses`,
+    },
+  ];
+
   return (
     <div className="relative overflow-hidden bg-background text-text-main pb-24 md:pb-36 space-y-24 md:space-y-36 lg:space-y-48">
+      <SEO
+        title="Learn Arabic Online for Beginners – Project 3een"
+        description="Start learning Arabic online step by step with Project 3een. Explore beginner Modern Standard Arabic courses, live sessions, and a 21,000+ learner community."
+        keywords="Arabic learning, online Arabic courses, Arabic for beginners, Modern Standard Arabic, learn Arabic step by step, Project 3een"
+        canonicalPath="/"
+        structuredData={homeStructuredData}
+      />
       {/* 1. HERO GATEWAY INTRO */}
       <section id="hero-section" className="relative min-h-[85vh] lg:min-h-[90vh] flex flex-col items-center justify-center section-padding text-center">
         <div className="space-y-8 max-w-5xl">
@@ -350,6 +406,7 @@ export default function Home() {
                 <iframe 
                   id="discord-widget"
                   src="https://discord.com/widget?id=823889299325714462&theme=dark" 
+                  loading="lazy"
                   className="w-full h-[480px] rounded-[1.8rem] block border-0" 
                   sandbox="allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts"
                   title="Project 3een Discord Community Live Status"
@@ -406,7 +463,7 @@ export default function Home() {
                   <span className="absolute bottom-1 right-1 text-xs">{member.flags}</span>
                 </div>
                 <div>
-                  <h4 className="text-sm font-extrabold text-text-main tracking-tight leading-none">{member.name}</h4>
+                  <h3 className="text-sm font-extrabold text-text-main tracking-tight leading-none">{member.name}</h3>
                   <span className="text-[10px] font-bold text-text-muted uppercase tracking-widest block pt-1.5">{member.role}</span>
                 </div>
               </motion.div>
@@ -446,7 +503,7 @@ export default function Home() {
               { title: "Content creators & teachers", desc: "Help design worksheets, write guides, or teach lessons." }
             ].map((pillar, idx) => (
               <div key={idx} className="bg-white/5 border border-white/10 p-5 rounded-2xl space-y-1.5 backdrop-blur-md">
-                <h4 className="text-white font-extrabold text-sm">{pillar.title}</h4>
+                <h3 className="text-white font-extrabold text-sm">{pillar.title}</h3>
                 <p className="text-white/50 text-xs leading-relaxed">{pillar.desc}</p>
               </div>
             ))}

@@ -3,6 +3,7 @@ import { Navigate, useLocation, useNavigate } from 'react-router-dom';
 import { supabase } from '../lib/supabase';
 import { getSafeUserRole, clearCachedRole } from '../lib/authUtils';
 import { Loader2, Lock, ArrowRight } from 'lucide-react';
+import SEO from './SEO';
 
 interface ProtectedRouteProps {
   children: React.ReactNode;
@@ -123,6 +124,12 @@ export default function ProtectedRoute({ children, requireAdmin = false, require
   if (loading) {
     return (
       <div className="min-h-[60vh] flex items-center justify-center flex-col gap-4">
+        <SEO
+          title="Restricted Area – Project 3een"
+          description="Restricted learning portal on Project 3een."
+          noindex={true}
+          nofollow={true}
+        />
         <Loader2 className="animate-spin text-primary" size={40} />
         <p className="text-text-muted text-sm animate-pulse">Checking permissions...</p>
       </div>
@@ -141,6 +148,12 @@ export default function ProtectedRoute({ children, requireAdmin = false, require
 
     return (
       <div className="min-h-[60vh] flex items-center justify-center p-6">
+        <SEO
+          title="Access Restricted – Project 3een"
+          description="Restricted learning portal on Project 3een."
+          noindex={true}
+          nofollow={true}
+        />
         <div className="bg-surface border border-border p-8 rounded-3xl max-w-md w-full text-center space-y-6 shadow-xl">
           <div className="w-16 h-16 bg-amber-500/10 rounded-full flex items-center justify-center text-amber-500 mx-auto">
             <Lock size={32} />

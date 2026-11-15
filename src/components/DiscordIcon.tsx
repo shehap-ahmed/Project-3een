@@ -7,6 +7,7 @@ export default function DiscordIcon({ size = 24, className = "" }: { size?: numb
       height={size} 
       viewBox="0 0 24 24" 
       fill="currentColor" 
+      aria-hidden="true"
       className={className}
       xmlns="http://www.w3.org/2000/svg"
     >

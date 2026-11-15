@@ -77,8 +77,8 @@ export default function Footer() {
           </p>
         </div>
 
-        <div>
-          <h4 className="font-bold text-text-main mb-4">Quick Links</h4>
+        <nav aria-label="Footer navigation">
+          <h2 className="font-bold text-text-main mb-4">Quick Links</h2>
           <ul className="space-y-2 text-sm text-text-muted">
             {visibleLinks.map((link) => (
               <li key={link.path}>
@@ -88,15 +88,16 @@ export default function Footer() {
               </li>
             ))}
           </ul>
-        </div>
+        </nav>
 
         <div>
-          <h4 className="font-bold text-text-main mb-4">Connect</h4>
+          <h2 className="font-bold text-text-main mb-4">Connect</h2>
           <div className="flex gap-4">
             <a
               href={CONTACT_INFO.discord}
               target="_blank"
               rel="noopener noreferrer"
+              aria-label="Join Project 3een on Discord"
               className="w-10 h-10 rounded-full bg-background flex items-center justify-center text-text-muted hover:bg-primary hover:text-white transition-all border border-border"
             >
               <DiscordIcon size={18} />
@@ -105,12 +106,14 @@ export default function Footer() {
               href={CONTACT_INFO.instagram}
               target="_blank"
               rel="noopener noreferrer"
+              aria-label="Follow Project 3een on Instagram"
               className="w-10 h-10 rounded-full bg-background flex items-center justify-center text-text-muted hover:bg-primary hover:text-white transition-all border border-border"
             >
               <Instagram size={18} />
             </a>
             <a
               href={`mailto:${CONTACT_INFO.email}`}
+              aria-label="Email Project 3een"
               className="w-10 h-10 rounded-full bg-background flex items-center justify-center text-text-muted hover:bg-primary hover:text-white transition-all border border-border"
             >
               <Mail size={18} />

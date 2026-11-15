@@ -6,6 +6,8 @@ export type ActivityType =
   | 'harakat'
   | 'hear-recognize'
   | 'final-challenge'
+  | 'meet-pronouns'
+  | 'pronouns-adjectives'
   | 'custom';
 
 export interface LetterExample {
@@ -90,7 +92,7 @@ export interface QuizQuestion {
   prompt: string;
   promptArabic?: string;
   audioPrompt?: string;
-  category: 'letters' | 'harakat' | 'listening' | 'connections';
+  category: 'letters' | 'harakat' | 'listening' | 'connections' | 'pronouns' | 'agreement' | 'masculine_feminine' | 'completion' | string;
   categoryLabel: string;
   options: QuizOption[];
   explanation?: string;

@@ -15,6 +15,7 @@ import { getAudioByKey } from '../data/msaClass7Audio';
 import { supabase } from '../lib/supabase';
 import { getSafeUserRole } from '../lib/authUtils';
 import { User } from '@supabase/supabase-js';
+import SEO from '../components/SEO';
 
 export default function MsaClass7() {
   const [currentSection, setCurrentSection] = useState<number>(1);
@@ -164,6 +165,12 @@ export default function MsaClass7() {
 
   return (
     <div className="min-h-screen bg-background text-text-main py-8 md:py-14 px-4 sm:px-6 lg:px-8 max-w-5xl mx-auto relative">
+      <SEO
+        title="MSA Class 7 Practice – Project 3een"
+        description="Restricted Modern Standard Arabic Class 7 audio practice for Project 3een members."
+        noindex={true}
+        nofollow={true}
+      />
       {/* Header Banner */}
       <div className="space-y-6 mb-8 text-center sm:text-left">
         <div className="flex flex-wrap items-center justify-between gap-4 border-b border-border/40 pb-5">
